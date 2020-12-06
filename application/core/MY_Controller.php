@@ -3,9 +3,7 @@
 class MY_Controller extends MX_Controller
 {
 
-	public $data = [
-		'server_online' => TRUE
-	];
+	public $core = [];
 
 	public function __construct()
 	{
@@ -179,5 +177,50 @@ class MY_Controller extends MX_Controller
 	// 	} else {
 	// 		redirect($this->data['link_jaja'], 'refresh');
 	// 	}
+	// }
+
+	// public function auth()
+	// {
+	//     $headers = $this->input->request_headers();
+	//     $response = [];
+
+	//     if (!empty($headers['Authorization'])) {
+	//         $get_token = $this->authorization->validate_token();
+	//         if ($get_token['error'] == FALSE) {
+	//             $this->core['customer'] = $this->api_model->select_data([
+	//                 'field' => '*',
+	//                 'table' => 'tbl_customer',
+	//                 'where' => [
+	//                     'id' => $get_token['data']->id
+	//                 ]
+	//             ])->row();
+
+	//             if (empty($this->core['customer'])) {
+	//                 $response = [
+	//                     'result' => [
+	//                         'status' => [
+	//                             'code' => SELF::HTTP_NOT_FOUND,
+	//                             'message' => 'data not found'
+	//                         ],
+	//                         'data' => null
+	//                     ],
+	//                     'status' => SELF::HTTP_NOT_FOUND
+	//                 ];
+	//             }
+	//         } else {
+	//             $response = [
+	//                 'result' => [
+	//                     'status' => [
+	//                         'code' => SELF::HTTP_UNAUTHORIZED,
+	//                         'message' => $get_token['data']
+	//                     ],
+	//                     'data' => null
+	//                 ],
+	//                 'status' => SELF::HTTP_UNAUTHORIZED
+	//             ];
+	//         }
+	//     }
+
+	//     return $response;
 	// }
 }

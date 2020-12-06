@@ -382,15 +382,9 @@ abstract class REST_Controller extends \MY_Controller
      * @param string $config Configuration filename minus the file extension
      * e.g: my_rest.php is passed as 'my_rest'
      */
-
-    protected $core = [];
     public function __construct($config = 'rest')
     {
         parent::__construct();
-
-        // Custom
-        date_default_timezone_set('Asia/Jakarta');
-        // End Custom
 
         $this->preflight_checks();
 
@@ -2114,51 +2108,4 @@ abstract class REST_Controller extends \MY_Controller
             exit;
         }
     }
-
-    // Custom
-    // public function auth()
-    // {
-    //     $headers = $this->input->request_headers();
-    //     $response = [];
-
-    //     if (!empty($headers['Authorization'])) {
-    //         $get_token = $this->authorization->validate_token();
-    //         if ($get_token['error'] == FALSE) {
-    //             $this->core['customer'] = $this->api_model->select_data([
-    //                 'field' => '*',
-    //                 'table' => 'tbl_customer',
-    //                 'where' => [
-    //                     'id' => $get_token['data']->id
-    //                 ]
-    //             ])->row();
-
-    //             if (empty($this->core['customer'])) {
-    //                 $response = [
-    //                     'result' => [
-    //                         'status' => [
-    //                             'code' => SELF::HTTP_NOT_FOUND,
-    //                             'message' => 'data not found'
-    //                         ],
-    //                         'data' => null
-    //                     ],
-    //                     'status' => SELF::HTTP_NOT_FOUND
-    //                 ];
-    //             }
-    //         } else {
-    //             $response = [
-    //                 'result' => [
-    //                     'status' => [
-    //                         'code' => SELF::HTTP_UNAUTHORIZED,
-    //                         'message' => $get_token['data']
-    //                     ],
-    //                     'data' => null
-    //                 ],
-    //                 'status' => SELF::HTTP_UNAUTHORIZED
-    //             ];
-    //         }
-    //     }
-
-    //     return $response;
-    // }
-    // End Custom
 }
