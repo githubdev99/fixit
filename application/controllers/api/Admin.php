@@ -13,9 +13,10 @@ class Admin extends REST_Controller
 
     public function index_post()
     {
-        $checking = TRUE;
+        $checking = true;
 
         if (!$this->post()) {
+            $checking = false;
             $response = [
                 'result' => [
                     'status' => [
@@ -34,7 +35,7 @@ class Admin extends REST_Controller
                     'LOWER(username)' => trim(strtolower($this->post('username')))
                 ]
             ])->row())) {
-                $checking = FALSE;
+                $checking = false;
                 $response = [
                     'result' => [
                         'status' => [
@@ -47,7 +48,7 @@ class Admin extends REST_Controller
                 ];
             }
 
-            if ($checking == TRUE) {
+            if ($checking == true) {
                 $query = $this->api_model->send_data([
                     'data' => [
                         'name' => $this->post('name'),
@@ -57,7 +58,7 @@ class Admin extends REST_Controller
                     'table' => 'admin'
                 ]);
 
-                if ($query['error'] == TRUE) {
+                if ($query['error'] == true) {
                     $response = [
                         'result' => [
                             'status' => [
@@ -85,7 +86,7 @@ class Admin extends REST_Controller
                         'field' => '*',
                         'table' => 'admin',
                         'where' => [
-                            'username' => $this->post('username')
+                            'id' => $this->db->insert_id()
                         ]
                     ])->row();
 

@@ -10,6 +10,12 @@ class MY_Controller extends MX_Controller
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
 
+		$this->core['enum'] = [
+			'gender' => [
+				'male', 'female'
+			]
+		];
+
 		// $this->load->module('master');
 		// $this->load->model('master/master_model');
 
