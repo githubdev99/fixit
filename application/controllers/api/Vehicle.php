@@ -96,6 +96,29 @@ class Vehicle extends REST_Controller
                     $data['updated_at'] = $parsing['vehicle']->updated_at;
                     $data['in_active'] = boolval($parsing['vehicle']->in_active);
 
+                    $parsing['vehicle_children'] = $this->api_model->select_data([
+                        'field' => '*',
+                        'table' => 'vehicle_children',
+                        'where' => [
+                            'vehicle_id' => $parsing['vehicle']->id
+                        ]
+                    ])->result();
+                    if (!empty($parsing['vehicle_children'])) {
+                        $data['children'] = [];
+                        foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
+                            $children['id'] = $key_vehicle_children->id;
+                            $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
+                            $children['name'] = $key_vehicle_children->name;
+                            $children['created_at'] = $key_vehicle_children->created_at;
+                            $children['updated_at'] = $key_vehicle_children->updated_at;
+                            $children['in_active'] = boolval($key_vehicle_children->in_active);
+
+                            $data['children'][] = $children;
+                        }
+                    } else {
+                        $data['children'] = null;
+                    }
+
                     $response['result']['data'] = $data;
                 }
             }
@@ -156,16 +179,20 @@ class Vehicle extends REST_Controller
                         'vehicle_id' => $parsing['vehicle']->id
                     ]
                 ])->result();
-                $data['children'] = [];
-                foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
-                    $children['id'] = $key_vehicle_children->id;
-                    $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
-                    $children['name'] = $key_vehicle_children->name;
-                    $children['created_at'] = $key_vehicle_children->created_at;
-                    $children['updated_at'] = $key_vehicle_children->updated_at;
-                    $children['in_active'] = boolval($key_vehicle_children->in_active);
+                if (!empty($parsing['vehicle_children'])) {
+                    $data['children'] = [];
+                    foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
+                        $children['id'] = $key_vehicle_children->id;
+                        $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
+                        $children['name'] = $key_vehicle_children->name;
+                        $children['created_at'] = $key_vehicle_children->created_at;
+                        $children['updated_at'] = $key_vehicle_children->updated_at;
+                        $children['in_active'] = boolval($key_vehicle_children->in_active);
 
-                    $data['children'][] = $children;
+                        $data['children'][] = $children;
+                    }
+                } else {
+                    $data['children'] = null;
                 }
 
                 $response['result']['data'] = $data;
@@ -248,16 +275,20 @@ class Vehicle extends REST_Controller
                                 'vehicle_id' => $key_vehicle->id
                             ]
                         ])->result();
-                        $data['children'] = [];
-                        foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
-                            $children['id'] = $key_vehicle_children->id;
-                            $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
-                            $children['name'] = $key_vehicle_children->name;
-                            $children['created_at'] = $key_vehicle_children->created_at;
-                            $children['updated_at'] = $key_vehicle_children->updated_at;
-                            $children['in_active'] = boolval($key_vehicle_children->in_active);
+                        if (!empty($parsing['vehicle_children'])) {
+                            $data['children'] = [];
+                            foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
+                                $children['id'] = $key_vehicle_children->id;
+                                $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
+                                $children['name'] = $key_vehicle_children->name;
+                                $children['created_at'] = $key_vehicle_children->created_at;
+                                $children['updated_at'] = $key_vehicle_children->updated_at;
+                                $children['in_active'] = boolval($key_vehicle_children->in_active);
 
-                            $data['children'][] = $children;
+                                $data['children'][] = $children;
+                            }
+                        } else {
+                            $data['children'] = null;
                         }
 
                         $response['result']['data'][] = $data;
@@ -389,16 +420,20 @@ class Vehicle extends REST_Controller
                             'vehicle_id' => $parsing['vehicle']->id
                         ]
                     ])->result();
-                    $data['children'] = [];
-                    foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
-                        $children['id'] = $key_vehicle_children->id;
-                        $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
-                        $children['name'] = $key_vehicle_children->name;
-                        $children['created_at'] = $key_vehicle_children->created_at;
-                        $children['updated_at'] = $key_vehicle_children->updated_at;
-                        $children['in_active'] = boolval($key_vehicle_children->in_active);
+                    if (!empty($parsing['vehicle_children'])) {
+                        $data['children'] = [];
+                        foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
+                            $children['id'] = $key_vehicle_children->id;
+                            $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
+                            $children['name'] = $key_vehicle_children->name;
+                            $children['created_at'] = $key_vehicle_children->created_at;
+                            $children['updated_at'] = $key_vehicle_children->updated_at;
+                            $children['in_active'] = boolval($key_vehicle_children->in_active);
 
-                        $data['children'][] = $children;
+                            $data['children'][] = $children;
+                        }
+                    } else {
+                        $data['children'] = null;
                     }
 
                     $response['result']['data'] = $data;
@@ -494,18 +529,6 @@ class Vehicle extends REST_Controller
                     $data['updated_at'] = $check['vehicle']->updated_at;
                     $data['in_active'] = boolval($check['vehicle']->in_active);
 
-                    $data['children'] = [];
-                    foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
-                        $children['id'] = $key_vehicle_children->id;
-                        $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
-                        $children['name'] = $key_vehicle_children->name;
-                        $children['created_at'] = $key_vehicle_children->created_at;
-                        $children['updated_at'] = $key_vehicle_children->updated_at;
-                        $children['in_active'] = boolval($key_vehicle_children->in_active);
-
-                        $data['children'][] = $children;
-                    }
-
                     $response['result']['data'] = $data;
                 }
             }
@@ -533,7 +556,7 @@ class Vehicle extends REST_Controller
         } else {
             $parsing['vehicle'] = $this->api_model->select_data([
                 'field' => '*',
-                'table' => 'vehicle_children',
+                'table' => 'vehicle',
                 'where' => [
                     'id' => $this->input->get('from_parent')
                 ]
@@ -694,7 +717,7 @@ class Vehicle extends REST_Controller
             } else {
                 $parsing['vehicle'] = $this->api_model->select_data([
                     'field' => '*',
-                    'table' => 'vehicle_children',
+                    'table' => 'vehicle',
                     'where' => [
                         'id' => $this->get('from_parent')
                     ]
