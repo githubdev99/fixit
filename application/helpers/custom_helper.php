@@ -121,6 +121,6 @@ if (!function_exists('seo')) {
 if (!function_exists('clean_rupiah')) {
     function clean_rupiah($rupiah)
     {
-        return str_replace('.', '', $rupiah);
+        return str_replace('.', '', $nominal);
     }
 }
