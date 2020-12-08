@@ -35,14 +35,7 @@ class Service extends REST_Controller
                     'id' => $this->post('vehicle_id')
                 ]
             ])->row();
-            $parsing['vehicle_children'] = $this->api_model->select_data([
-                'field' => '*',
-                'table' => 'vehicle_children',
-                'where' => [
-                    'id' => $this->post('vehicle_children_id')
-                ]
-            ])->row();
-            if (empty($parsing['vehicle']) || empty($parsing['vehicle_children'])) {
+            if (empty($parsing['vehicle'])) {
                 $checking = false;
                 $response = [
                     'result' => [
@@ -54,6 +47,29 @@ class Service extends REST_Controller
                     ],
                     'status' => SELF::HTTP_OK
                 ];
+            }
+
+            if (!empty($this->post('vehicle_children_id'))) {
+                $parsing['vehicle_children'] = $this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'vehicle_children',
+                    'where' => [
+                        'id' => $this->post('vehicle_children_id')
+                    ]
+                ])->row();
+                if (empty($parsing['vehicle_children'])) {
+                    $checking = false;
+                    $response = [
+                        'result' => [
+                            'status' => [
+                                'code' => SELF::HTTP_NOT_FOUND,
+                                'message' => 'data not found'
+                            ],
+                            'data' => null
+                        ],
+                        'status' => SELF::HTTP_OK
+                    ];
+                }
             }
 
             if (!empty($this->api_model->select_data([
@@ -79,8 +95,8 @@ class Service extends REST_Controller
             if ($checking == true) {
                 $query = $this->api_model->send_data([
                     'data' => [
-                        'vehicle_id' => $parsing['vehicle']->id,
-                        'vehicle_children_id' => $parsing['vehicle_children']->id,
+                        'vehicle_id' => $this->post('vehicle_id'),
+                        'vehicle_children_id' => (!empty($this->post('vehicle_children_id'))) ? $this->post('vehicle_children_id') : null,
                         'name' => $this->post('name'),
                         'price' => $this->post('price'),
                         'created_at' => date('Y-m-d H:i:s')
@@ -377,14 +393,7 @@ class Service extends REST_Controller
                     'id' => $this->put('vehicle_id')
                 ]
             ])->row();
-            $parsing['vehicle_children'] = $this->api_model->select_data([
-                'field' => '*',
-                'table' => 'vehicle_children',
-                'where' => [
-                    'id' => $this->put('vehicle_children_id')
-                ]
-            ])->row();
-            if (empty($parsing['vehicle']) || empty($parsing['vehicle_children'])) {
+            if (empty($parsing['vehicle'])) {
                 $checking = false;
                 $response = [
                     'result' => [
@@ -396,6 +405,29 @@ class Service extends REST_Controller
                     ],
                     'status' => SELF::HTTP_OK
                 ];
+            }
+
+            if (!empty($this->put('vehicle_children_id'))) {
+                $parsing['vehicle_children'] = $this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'vehicle_children',
+                    'where' => [
+                        'id' => $this->put('vehicle_children_id')
+                    ]
+                ])->row();
+                if (empty($parsing['vehicle_children'])) {
+                    $checking = false;
+                    $response = [
+                        'result' => [
+                            'status' => [
+                                'code' => SELF::HTTP_NOT_FOUND,
+                                'message' => 'data not found'
+                            ],
+                            'data' => null
+                        ],
+                        'status' => SELF::HTTP_OK
+                    ];
+                }
             }
 
             if (!empty($this->api_model->select_data([
@@ -425,8 +457,8 @@ class Service extends REST_Controller
                         'id' => $id
                     ],
                     'data' => [
-                        'vehicle_id' => $parsing['vehicle']->id,
-                        'vehicle_children_id' => $parsing['vehicle_children']->id,
+                        'vehicle_id' => $this->put('vehicle_id'),
+                        'vehicle_children_id' => (!empty($this->put('vehicle_children_id'))) ? $this->put('vehicle_children_id') : null,
                         'name' => $this->put('name'),
                         'price' => $this->put('price'),
                         'updated_at' => date('Y-m-d H:i:s')
