@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2020 at 04:40 AM
+-- Generation Time: Dec 08, 2020 at 07:54 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -188,6 +188,13 @@ CREATE TABLE `vehicle` (
   `in_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `vehicle`
+--
+
+INSERT INTO `vehicle` (`id`, `name`, `created_at`, `updated_at`, `in_active`) VALUES
+(1, 'Yamaha', '2020-12-08 10:47:33', NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -202,6 +209,13 @@ CREATE TABLE `vehicle_children` (
   `updated_at` datetime DEFAULT NULL,
   `in_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vehicle_children`
+--
+
+INSERT INTO `vehicle_children` (`id`, `vehicle_id`, `name`, `created_at`, `updated_at`, `in_active`) VALUES
+(1, 1, 'Jupiter MX 135 CC', '2020-12-08 13:54:29', NULL, 1);
 
 --
 -- Indexes for dumped tables
@@ -344,13 +358,13 @@ ALTER TABLE `transaction_detail`
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `vehicle_children`
 --
 ALTER TABLE `vehicle_children`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -388,6 +402,12 @@ ALTER TABLE `transaction`
 --
 ALTER TABLE `transaction_detail`
   ADD CONSTRAINT `transaction_detail_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `vehicle_children`
+--
+ALTER TABLE `vehicle_children`
+  ADD CONSTRAINT `vehicle_children_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
