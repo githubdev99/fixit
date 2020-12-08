@@ -15,32 +15,32 @@ class MY_Controller extends MX_Controller
 				'male', 'female'
 			]
 		];
+		$this->core['app_name'] = 'Fixit';
+		$this->core['mini_logo'] = '';
 
 		// $this->load->module('master');
 		// $this->load->model('master/master_model');
 
-		// $this->data['full_logo'] = base_url() . 'asset/images/logo-full.png';
-		// $this->data['mini_logo'] = base_url() . 'asset/images/logo-mini.png';
-		// $this->data['app_name'] = 'Seller Jaja ID';
+		// $this->core['full_logo'] = base_url() . 'asset/images/logo-full.png';
 
-		// if ($this->data['server_online'] == FALSE) {
-		// 	$this->data['link_seller'] = 'http://localhost/seller.jaja.id/';
-		// 	$this->data['link_jaja'] = 'http://localhost/jaja.id/';
+		// if ($this->core['server_online'] == FALSE) {
+		// 	$this->core['link_seller'] = 'http://localhost/seller.jaja.id/';
+		// 	$this->core['link_jaja'] = 'http://localhost/jaja.id/';
 		// } else {
-		// 	$this->data['link_seller'] = 'https://seller.jaja.id/';
-		// 	$this->data['link_jaja'] = 'https://jaja.id/';
+		// 	$this->core['link_seller'] = 'https://seller.jaja.id/';
+		// 	$this->core['link_jaja'] = 'https://jaja.id/';
 		// }
-		// $this->data['folder_upload'] = $this->data['link_seller'] . 'asset/images/';
-		// $this->data['folder_upload_other'] = $this->data['link_seller'] . 'asset/front/images/';
-		// $this->data['put_upload'] = 'asset/images/';
-		// $this->data['put_upload_other'] = 'asset/front/images/';
+		// $this->core['folder_upload'] = $this->core['link_seller'] . 'asset/images/';
+		// $this->core['folder_upload_other'] = $this->core['link_seller'] . 'asset/front/images/';
+		// $this->core['put_upload'] = 'asset/images/';
+		// $this->core['put_upload_other'] = 'asset/front/images/';
 
 		// if (!empty($this->input->get('credentials'))) {
 		// 	$credentials = explode('.', $this->input->get('credentials'));
 
 		// 	$this->session->set_userdata('id_customer', decrypt_text($credentials[0]));
 
-		// 	$this->data['seller'] = $this->master_model->select_data(
+		// 	$this->core['seller'] = $this->master_model->select_data(
 		// 		[
 		// 			'field' => 'toko.*, banner_toko.banner, banner_toko.banner_1, banner_toko.banner_2, banner_toko.banner_3, banner_toko.banner_4, banner_toko.banner_5, ro_province.province AS nama_provinsi, ro_city.city_name AS nama_kota, ro_kecamatan.kecamatan AS nama_kecamatan, ro_wilayah.kelurahan_desa AS nama_kelurahan, ro_kecamatan.kecamatan_kd',
 		// 			'table' => 'toko',
@@ -77,7 +77,7 @@ class MY_Controller extends MX_Controller
 		// 		]
 		// 	)->row();
 
-		// 	$this->data['customer'] = $this->master_model->select_data(
+		// 	$this->core['customer'] = $this->master_model->select_data(
 		// 		[
 		// 			'field' => '*',
 		// 			'table' => 'customer',
@@ -88,7 +88,7 @@ class MY_Controller extends MX_Controller
 		// 	)->row();
 		// } else {
 		// 	if ($this->session->has_userdata('id_customer')) {
-		// 		$this->data['seller'] = $this->master_model->select_data(
+		// 		$this->core['seller'] = $this->master_model->select_data(
 		// 			[
 		// 				'field' => 'toko.*, banner_toko.banner, banner_toko.banner_1, banner_toko.banner_2, banner_toko.banner_3, banner_toko.banner_4, banner_toko.banner_5, ro_province.province AS nama_provinsi, ro_city.city_name AS nama_kota, ro_kecamatan.kecamatan AS nama_kecamatan, ro_wilayah.kelurahan_desa AS nama_kelurahan, ro_kecamatan.kecamatan_kd',
 		// 				'table' => 'toko',
@@ -125,7 +125,7 @@ class MY_Controller extends MX_Controller
 		// 			]
 		// 		)->row();
 
-		// 		$this->data['customer'] = $this->master_model->select_data(
+		// 		$this->core['customer'] = $this->master_model->select_data(
 		// 			[
 		// 				'field' => '*',
 		// 				'table' => 'customer',
@@ -140,9 +140,9 @@ class MY_Controller extends MX_Controller
 
 	public function core($title)
 	{
-		$this->data['title_page'] = $title . ' | ' . $this->data['app_name'];
+		$this->core['title_page'] = $title . ' | ' . $this->core['app_name'];
 
-		return $this->data;
+		return $this->core;
 	}
 
 	public function alert_popup($message)
@@ -170,18 +170,18 @@ class MY_Controller extends MX_Controller
 	// public function auth_seller()
 	// {
 	// 	if ($this->session->has_userdata('id_customer')) {
-	// 		if ($this->data['customer']->status_login == 'T') {
+	// 		if ($this->core['customer']->status_login == 'T') {
 	// 			$this->session->sess_destroy();
-	// 			redirect($this->data['link_jaja'], 'refresh');
+	// 			redirect($this->core['link_jaja'], 'refresh');
 	// 		} else {
-	// 			if (empty($this->data['seller'])) {
+	// 			if (empty($this->core['seller'])) {
 	// 				if ($this->uri->segment(2) != 'buka_toko') {
-	// 					redirect($this->data['link_seller'] . 'home/buka_toko', 'refresh');
+	// 					redirect($this->core['link_seller'] . 'home/buka_toko', 'refresh');
 	// 				}
 	// 			}
 	// 		}
 	// 	} else {
-	// 		redirect($this->data['link_jaja'], 'refresh');
+	// 		redirect($this->core['link_jaja'], 'refresh');
 	// 	}
 	// }
 
