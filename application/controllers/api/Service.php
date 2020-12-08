@@ -156,20 +156,26 @@ class Service extends REST_Controller
                     $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
                     $vehicle['in_active'] = boolval($parsing['vehicle']->in_active);
 
-                    $parsing['vehicle_children'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle_children',
-                        'where' => [
-                            'id' => $parsing['service']->vehicle_children_id
-                        ]
-                    ])->row();
-                    $vehicle_children['id'] = $parsing['vehicle_children']->id;
-                    $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
-                    $vehicle_children['name'] = $parsing['vehicle_children']->name;
-                    $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
-                    $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
-                    $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
-                    $vehicle['children'] = $vehicle_children;
+                    if (!empty($parsing['service']->vehicle_children_id)) {
+                        $parsing['vehicle_children'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'vehicle_children',
+                            'where' => [
+                                'id' => $parsing['service']->vehicle_children_id
+                            ]
+                        ])->row();
+                        $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                        $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                        $vehicle_children['name'] = $parsing['vehicle_children']->name;
+                        $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
+                        $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
+                        $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
+
+                        $vehicle['children'] = $vehicle_children;
+                    } else {
+                        $vehicle['children'] = null;
+                    }
+
                     $data['vehicle'] = $vehicle;
 
                     $response['result']['data'] = $data;
@@ -239,20 +245,26 @@ class Service extends REST_Controller
                 $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
                 $vehicle['in_active'] = boolval($parsing['vehicle']->in_active);
 
-                $parsing['vehicle_children'] = $this->api_model->select_data([
-                    'field' => '*',
-                    'table' => 'vehicle_children',
-                    'where' => [
-                        'id' => $parsing['service']->vehicle_children_id
-                    ]
-                ])->row();
-                $vehicle_children['id'] = $parsing['vehicle_children']->id;
-                $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
-                $vehicle_children['name'] = $parsing['vehicle_children']->name;
-                $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
-                $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
-                $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
-                $vehicle['children'] = $vehicle_children;
+                if (!empty($parsing['service']->vehicle_children_id)) {
+                    $parsing['vehicle_children'] = $this->api_model->select_data([
+                        'field' => '*',
+                        'table' => 'vehicle_children',
+                        'where' => [
+                            'id' => $parsing['service']->vehicle_children_id
+                        ]
+                    ])->row();
+                    $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                    $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                    $vehicle_children['name'] = $parsing['vehicle_children']->name;
+                    $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
+                    $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
+                    $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
+
+                    $vehicle['children'] = $vehicle_children;
+                } else {
+                    $vehicle['children'] = null;
+                }
+
                 $data['vehicle'] = $vehicle;
 
                 $response['result']['data'] = $data;
@@ -342,20 +354,26 @@ class Service extends REST_Controller
                         $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
                         $vehicle['in_active'] = boolval($parsing['vehicle']->in_active);
 
-                        $parsing['vehicle_children'] = $this->api_model->select_data([
-                            'field' => '*',
-                            'table' => 'vehicle_children',
-                            'where' => [
-                                'id' => $key_service->vehicle_children_id
-                            ]
-                        ])->row();
-                        $vehicle_children['id'] = $parsing['vehicle_children']->id;
-                        $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
-                        $vehicle_children['name'] = $parsing['vehicle_children']->name;
-                        $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
-                        $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
-                        $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
-                        $vehicle['children'] = $vehicle_children;
+                        if (!empty($key_service->vehicle_children_id)) {
+                            $parsing['vehicle_children'] = $this->api_model->select_data([
+                                'field' => '*',
+                                'table' => 'vehicle_children',
+                                'where' => [
+                                    'id' => $key_service->vehicle_children_id
+                                ]
+                            ])->row();
+                            $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                            $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                            $vehicle_children['name'] = $parsing['vehicle_children']->name;
+                            $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
+                            $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
+                            $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
+
+                            $vehicle['children'] = $vehicle_children;
+                        } else {
+                            $vehicle['children'] = null;
+                        }
+
                         $data['vehicle'] = $vehicle;
 
                         $response['result']['data'][] = $data;
@@ -386,14 +404,14 @@ class Service extends REST_Controller
                 'status' => SELF::HTTP_OK
             ];
         } else {
-            $parsing['vehicle'] = $this->api_model->select_data([
+            $check['service'] = $this->api_model->select_data([
                 'field' => '*',
-                'table' => 'vehicle',
+                'table' => 'service',
                 'where' => [
-                    'id' => $this->put('vehicle_id')
+                    'id' => $id
                 ]
             ])->row();
-            if (empty($parsing['vehicle'])) {
+            if (empty($check['service'])) {
                 $checking = false;
                 $response = [
                     'result' => [
@@ -405,17 +423,15 @@ class Service extends REST_Controller
                     ],
                     'status' => SELF::HTTP_OK
                 ];
-            }
-
-            if (!empty($this->put('vehicle_children_id'))) {
-                $parsing['vehicle_children'] = $this->api_model->select_data([
+            } else {
+                $parsing['vehicle'] = $this->api_model->select_data([
                     'field' => '*',
-                    'table' => 'vehicle_children',
+                    'table' => 'vehicle',
                     'where' => [
-                        'id' => $this->put('vehicle_children_id')
+                        'id' => $this->put('vehicle_id')
                     ]
                 ])->row();
-                if (empty($parsing['vehicle_children'])) {
+                if (empty($parsing['vehicle'])) {
                     $checking = false;
                     $response = [
                         'result' => [
@@ -428,113 +444,142 @@ class Service extends REST_Controller
                         'status' => SELF::HTTP_OK
                     ];
                 }
-            }
 
-            if (!empty($this->api_model->select_data([
-                'field' => '*',
-                'table' => 'service',
-                'where' => [
-                    'LOWER(name)' => trim(strtolower($this->put('name'))),
-                    'id !=' => $id
-                ]
-            ])->row())) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_CONFLICT,
-                            'message' => 'name has input'
-                        ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
-            }
+                if (!empty($this->put('vehicle_children_id'))) {
+                    $parsing['vehicle_children'] = $this->api_model->select_data([
+                        'field' => '*',
+                        'table' => 'vehicle_children',
+                        'where' => [
+                            'id' => $this->put('vehicle_children_id')
+                        ]
+                    ])->row();
+                    if (empty($parsing['vehicle_children'])) {
+                        $checking = false;
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_NOT_FOUND,
+                                    'message' => 'data not found'
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    }
+                }
 
-            if ($checking == true) {
-                $query = $this->api_model->send_data([
+                if (!empty($this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'service',
                     'where' => [
-                        'id' => $id
-                    ],
-                    'data' => [
-                        'vehicle_id' => $this->put('vehicle_id'),
-                        'vehicle_children_id' => (!empty($this->put('vehicle_children_id'))) ? $this->put('vehicle_children_id') : null,
-                        'name' => $this->put('name'),
-                        'price' => $this->put('price'),
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ],
-                    'table' => 'service'
-                ]);
-
-                if ($query['error'] == true) {
+                        'LOWER(name)' => trim(strtolower($this->put('name'))),
+                        'id !=' => $id
+                    ]
+                ])->row())) {
+                    $checking = false;
                     $response = [
                         'result' => [
                             'status' => [
-                                'code' => SELF::HTTP_BAD_REQUEST,
-                                'message' => 'edit data failed',
-                                'from_system' => $query['system']
+                                'code' => SELF::HTTP_CONFLICT,
+                                'message' => 'name has input'
                             ],
                             'data' => null
                         ],
                         'status' => SELF::HTTP_OK
                     ];
-                } else {
-                    $response = [
-                        'result' => [
-                            'status' => [
-                                'code' => SELF::HTTP_OK,
-                                'message' => 'edit data success'
-                            ],
-                            'data' => []
-                        ],
-                        'status' => SELF::HTTP_OK
-                    ];
+                }
 
-                    $parsing['service'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'service',
+                if ($checking == true) {
+                    $query = $this->api_model->send_data([
                         'where' => [
                             'id' => $id
-                        ]
-                    ])->row();
+                        ],
+                        'data' => [
+                            'vehicle_id' => $this->put('vehicle_id'),
+                            'vehicle_children_id' => (!empty($this->put('vehicle_children_id'))) ? $this->put('vehicle_children_id') : null,
+                            'name' => $this->put('name'),
+                            'price' => $this->put('price'),
+                            'updated_at' => date('Y-m-d H:i:s')
+                        ],
+                        'table' => 'service'
+                    ]);
 
-                    $data['id'] = $parsing['service']->id;
-                    $data['vehicle_id'] = $parsing['service']->vehicle_id;
-                    $data['name'] = $parsing['service']->name;
-                    $data['created_at'] = $parsing['service']->created_at;
-                    $data['updated_at'] = $parsing['service']->updated_at;
-                    $data['in_active'] = boolval($parsing['service']->in_active);
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'edit data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    } else {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'edit data success'
+                                ],
+                                'data' => []
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
 
-                    $parsing['vehicle'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle',
-                        'where' => [
-                            'id' => $parsing['service']->vehicle_id
-                        ]
-                    ])->row();
-                    $vehicle['id'] = $parsing['vehicle']->id;
-                    $vehicle['name'] = $parsing['vehicle']->name;
-                    $vehicle['created_at'] = $parsing['vehicle']->created_at;
-                    $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
-                    $vehicle['in_active'] = boolval($parsing['vehicle']->in_active);
+                        $parsing['service'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'service',
+                            'where' => [
+                                'id' => $id
+                            ]
+                        ])->row();
 
-                    $parsing['vehicle_children'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle_children',
-                        'where' => [
-                            'id' => $parsing['service']->vehicle_children_id
-                        ]
-                    ])->row();
-                    $vehicle_children['id'] = $parsing['vehicle_children']->id;
-                    $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
-                    $vehicle_children['name'] = $parsing['vehicle_children']->name;
-                    $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
-                    $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
-                    $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
-                    $vehicle['children'] = $vehicle_children;
-                    $data['vehicle'] = $vehicle;
+                        $data['id'] = $parsing['service']->id;
+                        $data['name'] = $parsing['service']->name;
+                        $data['price'] = $parsing['service']->price;
+                        $data['price_currency_format'] = rupiah($parsing['service']->price);
+                        $data['created_at'] = $parsing['service']->created_at;
+                        $data['updated_at'] = $parsing['service']->updated_at;
 
-                    $response['result']['data'] = $data;
+                        $parsing['vehicle'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'vehicle',
+                            'where' => [
+                                'id' => $parsing['service']->vehicle_id
+                            ]
+                        ])->row();
+                        $vehicle['id'] = $parsing['vehicle']->id;
+                        $vehicle['name'] = $parsing['vehicle']->name;
+                        $vehicle['created_at'] = $parsing['vehicle']->created_at;
+                        $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
+                        $vehicle['in_active'] = boolval($parsing['vehicle']->in_active);
+
+                        if (!empty($parsing['service']->vehicle_children_id)) {
+                            $parsing['vehicle_children'] = $this->api_model->select_data([
+                                'field' => '*',
+                                'table' => 'vehicle_children',
+                                'where' => [
+                                    'id' => $parsing['service']->vehicle_children_id
+                                ]
+                            ])->row();
+                            $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                            $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                            $vehicle_children['name'] = $parsing['vehicle_children']->name;
+                            $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
+                            $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
+                            $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
+
+                            $vehicle['children'] = $vehicle_children;
+                        } else {
+                            $vehicle['children'] = null;
+                        }
+
+                        $data['vehicle'] = $vehicle;
+
+                        $response['result']['data'] = $data;
+                    }
                 }
             }
         }
@@ -547,7 +592,6 @@ class Service extends REST_Controller
         $checking = true;
 
         if (empty($id)) {
-            $checking = false;
             $response = [
                 'result' => [
                     'status' => [
@@ -566,7 +610,6 @@ class Service extends REST_Controller
                     'id' => $id
                 ]
             ])->row();
-
             if (empty($check['service'])) {
                 $checking = false;
                 $response = [
@@ -633,20 +676,26 @@ class Service extends REST_Controller
                     $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
                     $vehicle['in_active'] = boolval($parsing['vehicle']->in_active);
 
-                    $parsing['vehicle_children'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle_children',
-                        'where' => [
-                            'id' => $check['service']->vehicle_children_id
-                        ]
-                    ])->row();
-                    $vehicle_children['id'] = $parsing['vehicle_children']->id;
-                    $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
-                    $vehicle_children['name'] = $parsing['vehicle_children']->name;
-                    $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
-                    $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
-                    $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
-                    $vehicle['children'] = $vehicle_children;
+                    if (!empty($check['service']->vehicle_children_id)) {
+                        $parsing['vehicle_children'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'vehicle_children',
+                            'where' => [
+                                'id' => $parsing['service']->vehicle_children_id
+                            ]
+                        ])->row();
+                        $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                        $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                        $vehicle_children['name'] = $parsing['vehicle_children']->name;
+                        $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
+                        $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
+                        $vehicle_children['in_active'] = boolval($parsing['vehicle_children']->in_active);
+
+                        $vehicle['children'] = $vehicle_children;
+                    } else {
+                        $vehicle['children'] = null;
+                    }
+
                     $data['vehicle'] = $vehicle;
 
                     $response['result']['data'] = $data;

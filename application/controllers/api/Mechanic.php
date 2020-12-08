@@ -284,7 +284,6 @@ class Mechanic extends REST_Controller
                     'id' => $id
                 ]
             ])->row();
-
             if (empty($check['mechanic'])) {
                 $checking = false;
                 $response = [
@@ -297,100 +296,100 @@ class Mechanic extends REST_Controller
                     ],
                     'status' => SELF::HTTP_OK
                 ];
-            }
-
-            if (!empty($this->api_model->select_data([
-                'field' => '*',
-                'table' => 'mechanic',
-                'where' => [
-                    'LOWER(username)' => trim(strtolower($this->put('username'))),
-                    'id !=' => $id
-                ]
-            ])->row())) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_CONFLICT,
-                            'message' => 'username has registered'
-                        ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
-            }
-
-            if (!in_array($this->put('gender'), $this->core['enum']['gender'])) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_NOT_FOUND,
-                            'message' => 'gender not found'
-                        ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
-            }
-
-            if ($checking == true) {
-                $query = $this->api_model->send_data([
+            } else {
+                if (!empty($this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'mechanic',
                     'where' => [
-                        'id' => $id
-                    ],
-                    'data' => [
-                        'name' => $this->put('name'),
-                        'birth_date' => date('Y-m-d', strtotime($this->put('birth_date'))),
-                        'phone_number' => $this->put('phone_number'),
-                        'gender' => $this->put('gender'),
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ],
-                    'table' => 'mechanic'
-                ]);
-
-                if ($query['error'] == true) {
+                        'LOWER(username)' => trim(strtolower($this->put('username'))),
+                        'id !=' => $id
+                    ]
+                ])->row())) {
+                    $checking = false;
                     $response = [
                         'result' => [
                             'status' => [
-                                'code' => SELF::HTTP_BAD_REQUEST,
-                                'message' => 'edit data failed',
-                                'from_system' => $query['system']
+                                'code' => SELF::HTTP_CONFLICT,
+                                'message' => 'username has registered'
                             ],
                             'data' => null
                         ],
                         'status' => SELF::HTTP_OK
                     ];
-                } else {
+                }
+
+                if (!in_array($this->put('gender'), $this->core['enum']['gender'])) {
+                    $checking = false;
                     $response = [
                         'result' => [
                             'status' => [
-                                'code' => SELF::HTTP_OK,
-                                'message' => 'edit data success'
+                                'code' => SELF::HTTP_NOT_FOUND,
+                                'message' => 'gender not found'
                             ],
-                            'data' => []
+                            'data' => null
                         ],
                         'status' => SELF::HTTP_OK
                     ];
+                }
 
-                    $parsing['mechanic'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'mechanic',
+                if ($checking == true) {
+                    $query = $this->api_model->send_data([
                         'where' => [
                             'id' => $id
-                        ]
-                    ])->row();
+                        ],
+                        'data' => [
+                            'name' => $this->put('name'),
+                            'birth_date' => date('Y-m-d', strtotime($this->put('birth_date'))),
+                            'phone_number' => $this->put('phone_number'),
+                            'gender' => $this->put('gender'),
+                            'updated_at' => date('Y-m-d H:i:s')
+                        ],
+                        'table' => 'mechanic'
+                    ]);
 
-                    $data['id'] = $parsing['mechanic']->id;
-                    $data['name'] = $parsing['mechanic']->name;
-                    $data['birth_date'] = $parsing['mechanic']->birth_date;
-                    $data['phone_number'] = $parsing['mechanic']->phone_number;
-                    $data['username'] = $parsing['mechanic']->username;
-                    $data['gender'] = $parsing['mechanic']->gender;
-                    $data['created_at'] = $parsing['mechanic']->created_at;
-                    $data['updated_at'] = $parsing['mechanic']->updated_at;
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'edit data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    } else {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'edit data success'
+                                ],
+                                'data' => []
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
 
-                    $response['result']['data'] = $data;
+                        $parsing['mechanic'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'mechanic',
+                            'where' => [
+                                'id' => $id
+                            ]
+                        ])->row();
+
+                        $data['id'] = $parsing['mechanic']->id;
+                        $data['name'] = $parsing['mechanic']->name;
+                        $data['birth_date'] = $parsing['mechanic']->birth_date;
+                        $data['phone_number'] = $parsing['mechanic']->phone_number;
+                        $data['username'] = $parsing['mechanic']->username;
+                        $data['gender'] = $parsing['mechanic']->gender;
+                        $data['created_at'] = $parsing['mechanic']->created_at;
+                        $data['updated_at'] = $parsing['mechanic']->updated_at;
+
+                        $response['result']['data'] = $data;
+                    }
                 }
             }
         }

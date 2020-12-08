@@ -326,7 +326,6 @@ class Vehicle extends REST_Controller
                     'id' => $id
                 ]
             ])->row();
-
             if (empty($check['vehicle'])) {
                 $checking = false;
                 $response = [
@@ -339,104 +338,104 @@ class Vehicle extends REST_Controller
                     ],
                     'status' => SELF::HTTP_OK
                 ];
-            }
-
-            if (!empty($this->api_model->select_data([
-                'field' => '*',
-                'table' => 'vehicle',
-                'where' => [
-                    'LOWER(name)' => trim(strtolower($this->put('name'))),
-                    'id !=' => $id
-                ]
-            ])->row())) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_CONFLICT,
-                            'message' => 'name has input'
-                        ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
-            }
-
-            if ($checking == true) {
-                $query = $this->api_model->send_data([
+            } else {
+                if (!empty($this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'vehicle',
                     'where' => [
-                        'id' => $id
-                    ],
-                    'data' => [
-                        'name' => $this->put('name'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'in_active' => $this->put('in_active')
-                    ],
-                    'table' => 'vehicle'
-                ]);
-
-                if ($query['error'] == true) {
+                        'LOWER(name)' => trim(strtolower($this->put('name'))),
+                        'id !=' => $id
+                    ]
+                ])->row())) {
+                    $checking = false;
                     $response = [
                         'result' => [
                             'status' => [
-                                'code' => SELF::HTTP_BAD_REQUEST,
-                                'message' => 'edit data failed',
-                                'from_system' => $query['system']
+                                'code' => SELF::HTTP_CONFLICT,
+                                'message' => 'name has input'
                             ],
                             'data' => null
                         ],
                         'status' => SELF::HTTP_OK
                     ];
-                } else {
-                    $response = [
-                        'result' => [
-                            'status' => [
-                                'code' => SELF::HTTP_OK,
-                                'message' => 'edit data success'
-                            ],
-                            'data' => []
-                        ],
-                        'status' => SELF::HTTP_OK
-                    ];
+                }
 
-                    $parsing['vehicle'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle',
+                if ($checking == true) {
+                    $query = $this->api_model->send_data([
                         'where' => [
                             'id' => $id
-                        ]
-                    ])->row();
+                        ],
+                        'data' => [
+                            'name' => $this->put('name'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'in_active' => $this->put('in_active')
+                        ],
+                        'table' => 'vehicle'
+                    ]);
 
-                    $data['id'] = $parsing['vehicle']->id;
-                    $data['name'] = $parsing['vehicle']->name;
-                    $data['created_at'] = $parsing['vehicle']->created_at;
-                    $data['updated_at'] = $parsing['vehicle']->updated_at;
-                    $data['in_active'] = boolval($parsing['vehicle']->in_active);
-
-                    $parsing['vehicle_children'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle_children',
-                        'where' => [
-                            'vehicle_id' => $parsing['vehicle']->id
-                        ]
-                    ])->result();
-                    if (!empty($parsing['vehicle_children'])) {
-                        $data['children'] = [];
-                        foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
-                            $children['id'] = $key_vehicle_children->id;
-                            $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
-                            $children['name'] = $key_vehicle_children->name;
-                            $children['created_at'] = $key_vehicle_children->created_at;
-                            $children['updated_at'] = $key_vehicle_children->updated_at;
-                            $children['in_active'] = boolval($key_vehicle_children->in_active);
-
-                            $data['children'][] = $children;
-                        }
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'edit data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
                     } else {
-                        $data['children'] = null;
-                    }
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'edit data success'
+                                ],
+                                'data' => []
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
 
-                    $response['result']['data'] = $data;
+                        $parsing['vehicle'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'vehicle',
+                            'where' => [
+                                'id' => $id
+                            ]
+                        ])->row();
+
+                        $data['id'] = $parsing['vehicle']->id;
+                        $data['name'] = $parsing['vehicle']->name;
+                        $data['created_at'] = $parsing['vehicle']->created_at;
+                        $data['updated_at'] = $parsing['vehicle']->updated_at;
+                        $data['in_active'] = boolval($parsing['vehicle']->in_active);
+
+                        $parsing['vehicle_children'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'vehicle_children',
+                            'where' => [
+                                'vehicle_id' => $parsing['vehicle']->id
+                            ]
+                        ])->result();
+                        if (!empty($parsing['vehicle_children'])) {
+                            $data['children'] = [];
+                            foreach ($parsing['vehicle_children'] as $key_vehicle_children) {
+                                $children['id'] = $key_vehicle_children->id;
+                                $children['vehicle_id'] = $key_vehicle_children->vehicle_id;
+                                $children['name'] = $key_vehicle_children->name;
+                                $children['created_at'] = $key_vehicle_children->created_at;
+                                $children['updated_at'] = $key_vehicle_children->updated_at;
+                                $children['in_active'] = boolval($key_vehicle_children->in_active);
+
+                                $data['children'][] = $children;
+                            }
+                        } else {
+                            $data['children'] = null;
+                        }
+
+                        $response['result']['data'] = $data;
+                    }
                 }
             }
         }
@@ -846,7 +845,6 @@ class Vehicle extends REST_Controller
                     'id' => $id
                 ]
             ])->row();
-
             if (empty($check['vehicle_children'])) {
                 $checking = false;
                 $response = [
@@ -859,82 +857,82 @@ class Vehicle extends REST_Controller
                     ],
                     'status' => SELF::HTTP_OK
                 ];
-            }
-
-            if (!empty($this->api_model->select_data([
-                'field' => '*',
-                'table' => 'vehicle_children',
-                'where' => [
-                    'LOWER(name)' => trim(strtolower($this->put('name'))),
-                    'id !=' => $id
-                ]
-            ])->row())) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_CONFLICT,
-                            'message' => 'name has input'
-                        ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
-            }
-
-            if ($checking == true) {
-                $query = $this->api_model->send_data([
+            } else {
+                if (!empty($this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'vehicle_children',
                     'where' => [
-                        'id' => $id
-                    ],
-                    'data' => [
-                        'name' => $this->put('name'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'in_active' => $this->put('in_active')
-                    ],
-                    'table' => 'vehicle_children'
-                ]);
-
-                if ($query['error'] == true) {
+                        'LOWER(name)' => trim(strtolower($this->put('name'))),
+                        'id !=' => $id
+                    ]
+                ])->row())) {
+                    $checking = false;
                     $response = [
                         'result' => [
                             'status' => [
-                                'code' => SELF::HTTP_BAD_REQUEST,
-                                'message' => 'edit data failed',
-                                'from_system' => $query['system']
+                                'code' => SELF::HTTP_CONFLICT,
+                                'message' => 'name has input'
                             ],
                             'data' => null
                         ],
                         'status' => SELF::HTTP_OK
                     ];
-                } else {
-                    $response = [
-                        'result' => [
-                            'status' => [
-                                'code' => SELF::HTTP_OK,
-                                'message' => 'edit data success'
-                            ],
-                            'data' => []
-                        ],
-                        'status' => SELF::HTTP_OK
-                    ];
+                }
 
-                    $parsing['vehicle_children'] = $this->api_model->select_data([
-                        'field' => '*',
-                        'table' => 'vehicle_children',
+                if ($checking == true) {
+                    $query = $this->api_model->send_data([
                         'where' => [
                             'id' => $id
-                        ]
-                    ])->row();
+                        ],
+                        'data' => [
+                            'name' => $this->put('name'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'in_active' => $this->put('in_active')
+                        ],
+                        'table' => 'vehicle_children'
+                    ]);
 
-                    $data['id'] = $parsing['vehicle_children']->id;
-                    $data['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
-                    $data['name'] = $parsing['vehicle_children']->name;
-                    $data['created_at'] = $parsing['vehicle_children']->created_at;
-                    $data['updated_at'] = $parsing['vehicle_children']->updated_at;
-                    $data['in_active'] = boolval($parsing['vehicle_children']->in_active);
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'edit data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    } else {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'edit data success'
+                                ],
+                                'data' => []
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
 
-                    $response['result']['data'] = $data;
+                        $parsing['vehicle_children'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'vehicle_children',
+                            'where' => [
+                                'id' => $id
+                            ]
+                        ])->row();
+
+                        $data['id'] = $parsing['vehicle_children']->id;
+                        $data['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                        $data['name'] = $parsing['vehicle_children']->name;
+                        $data['created_at'] = $parsing['vehicle_children']->created_at;
+                        $data['updated_at'] = $parsing['vehicle_children']->updated_at;
+                        $data['in_active'] = boolval($parsing['vehicle_children']->in_active);
+
+                        $response['result']['data'] = $data;
+                    }
                 }
             }
         }
@@ -966,7 +964,6 @@ class Vehicle extends REST_Controller
                     'id' => $id
                 ]
             ])->row();
-
             if (empty($check['vehicle_children'])) {
                 $checking = false;
                 $response = [
