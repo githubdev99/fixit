@@ -11,9 +11,18 @@
             destroy: true,
             order: [],
             columnDefs: [{
-                targets: [0, 6],
-                orderable: false
-            }],
+                    targets: [0, 6],
+                    orderable: false
+                },
+                {
+                    targets: 6,
+                    createdCell: function(td, cellData, rowData, row, col) {
+                        $(td).attr({
+                            style: 'white-space: nowrap;'
+                        });
+                    }
+                }
+            ],
             language: {
                 paginate: {
                     previous: "<i class='uil uil-angle-left'>",

@@ -4,7 +4,7 @@
             <h4 class="mb-1 mt-0">Data Mekanik</h4>
         </div>
         <div class="float-right">
-            <button type="button" class="btn btn-success" onclick="show_modal('add');"><i class="fas fa-plus mr-2"></i>Tambah Data</button>
+            <button type="button" class="btn btn-success" onclick="show_modal({ modal: 'add' });"><i class="fas fa-plus mr-2"></i>Tambah Data</button>
         </div>
         <div class="clearfix"></div>
     </div>
