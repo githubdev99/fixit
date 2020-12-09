@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2020 at 07:54 AM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.7
+-- Generation Time: Dec 10, 2020 at 12:50 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -55,9 +55,17 @@ CREATE TABLE `cashier` (
   `username` varchar(50) NOT NULL,
   `password` text NOT NULL,
   `gender` enum('male','female') NOT NULL,
+  `address` text NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cashier`
+--
+
+INSERT INTO `cashier` (`id`, `name`, `birth_date`, `phone_number`, `username`, `password`, `gender`, `address`, `created_at`, `updated_at`) VALUES
+(2, 'Cashier 1', '2001-11-21', '098765', 'cashier1', '$2y$10$FiUv4lPZ.4yHs3wCC/rPe.MnJMIJsCR9nUE3Os/dopmJeNyVREx5m', 'female', 'Jl. jalan', '2020-12-09 09:47:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -77,6 +85,14 @@ CREATE TABLE `item` (
   `in_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`id`, `vehicle_id`, `vehicle_children_id`, `name`, `price`, `stock`, `created_at`, `updated_at`, `in_active`) VALUES
+(1, NULL, NULL, 'Oli Repsol', 30000, 15, '2020-12-08 19:48:26', NULL, 1),
+(2, 1, 1, 'Kanvas Rem', 15000, 10, '2020-12-08 20:03:36', NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -91,9 +107,17 @@ CREATE TABLE `mechanic` (
   `username` varchar(50) NOT NULL,
   `password` text NOT NULL,
   `gender` enum('male','female') NOT NULL,
+  `address` text NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `mechanic`
+--
+
+INSERT INTO `mechanic` (`id`, `name`, `birth_date`, `phone_number`, `username`, `password`, `gender`, `address`, `created_at`, `updated_at`) VALUES
+(3, 'Mechanic 1', '2001-11-21', '098765', 'mechanic1', '$2y$10$QjG1l3Q.8Y4/gO5oNpF2u.FYOs0o34bFarU9jN0CzFujoFpdJyzMu', 'male', 'Jl. jalan', '2020-12-09 17:12:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -117,9 +141,7 @@ CREATE TABLE `purchase` (
 CREATE TABLE `purchase_detail` (
   `id` int(11) NOT NULL,
   `purchase_id` int(11) NOT NULL,
-  `item_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`item_data`)),
-  `qty` int(11) NOT NULL,
-  `price` int(11) NOT NULL
+  `item_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`item_data`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -310,19 +332,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `cashier`
 --
 ALTER TABLE `cashier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `mechanic`
 --
 ALTER TABLE `mechanic`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `purchase`
