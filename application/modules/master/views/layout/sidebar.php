@@ -54,9 +54,15 @@ if (!empty($core['admin'])) {
         <div id="sidebar-menu" class="slimscroll-menu">
             <ul class="metismenu" id="menu-bar">
                 <li>
-                    <a href="<?= base_url() ?>home">
-                        <i data-feather="home"></i>
-                        <span> Beranda </span>
+                    <a href="<?= base_url() ?>admin/dashboard">
+                        <i class="fas fa-home"></i>
+                        <span> Dashboard </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url() ?>admin/mechanic">
+                        <i class="fas fa-users-cog"></i>
+                        <span> Mechanic </span>
                     </a>
                 </li>
             </ul>

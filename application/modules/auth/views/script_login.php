@@ -31,14 +31,14 @@
                         });
 
                         $('button[name="' + active_element.val() + '"]').removeAttr('disabled');
-                        $('button[name="' + active_element.val() + '"]').html('Simpan');
+                        $('button[name="' + active_element.val() + '"]').html('Login');
                     } else {
                         Swal.mixin({
                             toast: true,
                             position: "top",
                             showCloseButton: !0,
                             showConfirmButton: false,
-                            timer: 4000,
+                            timer: 3000,
                             onOpen: (toast) => {
                                 toast.addEventListener("mouseenter", Swal.stopTimer)
                                 toast.addEventListener("mouseleave", Swal.resumeTimer)
@@ -46,6 +46,8 @@
                         }).fire({
                             icon: response.type,
                             title: response.message
+                        }).then(function() {
+                            window.location = response.callback;
                         });
                     }
                 }

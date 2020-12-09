@@ -140,7 +140,7 @@ class Item extends REST_Controller
                         ]
                     ])->row();
 
-                    $data['id'] = $parsing['item']->id;
+                    $data['id'] = encrypt_text($parsing['item']->id);
                     $data['name'] = $parsing['item']->name;
                     $data['price'] = $parsing['item']->price;
                     $data['price_currency_format'] = rupiah($parsing['item']->price);
@@ -157,7 +157,7 @@ class Item extends REST_Controller
                                 'id' => $parsing['item']->vehicle_id
                             ]
                         ])->row();
-                        $vehicle['id'] = $parsing['vehicle']->id;
+                        $vehicle['id'] = encrypt_text($parsing['vehicle']->id);
                         $vehicle['name'] = $parsing['vehicle']->name;
                         $vehicle['created_at'] = $parsing['vehicle']->created_at;
                         $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
@@ -171,7 +171,7 @@ class Item extends REST_Controller
                                     'id' => $parsing['item']->vehicle_children_id
                                 ]
                             ])->row();
-                            $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                            $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
                             $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
                             $vehicle_children['name'] = $parsing['vehicle_children']->name;
                             $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
@@ -205,7 +205,7 @@ class Item extends REST_Controller
                 'field' => '*',
                 'table' => 'item',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
 
@@ -235,7 +235,7 @@ class Item extends REST_Controller
                     'status' => SELF::HTTP_OK
                 ];
 
-                $data['id'] = $parsing['item']->id;
+                $data['id'] = encrypt_text($parsing['item']->id);
                 $data['name'] = $parsing['item']->name;
                 $data['price'] = $parsing['item']->price;
                 $data['price_currency_format'] = rupiah($parsing['item']->price);
@@ -252,7 +252,7 @@ class Item extends REST_Controller
                             'id' => $parsing['item']->vehicle_id
                         ]
                     ])->row();
-                    $vehicle['id'] = $parsing['vehicle']->id;
+                    $vehicle['id'] = encrypt_text($parsing['vehicle']->id);
                     $vehicle['name'] = $parsing['vehicle']->name;
                     $vehicle['created_at'] = $parsing['vehicle']->created_at;
                     $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
@@ -266,7 +266,7 @@ class Item extends REST_Controller
                                 'id' => $parsing['item']->vehicle_children_id
                             ]
                         ])->row();
-                        $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                        $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
                         $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
                         $vehicle_children['name'] = $parsing['vehicle_children']->name;
                         $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
@@ -350,7 +350,7 @@ class Item extends REST_Controller
 
                 if (!empty($parsing['item'])) {
                     foreach ($parsing['item'] as $key_item) {
-                        $data['id'] = $key_item->id;
+                        $data['id'] = encrypt_text($key_item->id);
                         $data['name'] = $key_item->name;
                         $data['price'] = $key_item->price;
                         $data['price_currency_format'] = rupiah($key_item->price);
@@ -367,7 +367,7 @@ class Item extends REST_Controller
                                     'id' => $key_item->vehicle_id
                                 ]
                             ])->row();
-                            $vehicle['id'] = $parsing['vehicle']->id;
+                            $vehicle['id'] = encrypt_text($parsing['vehicle']->id);
                             $vehicle['name'] = $parsing['vehicle']->name;
                             $vehicle['created_at'] = $parsing['vehicle']->created_at;
                             $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
@@ -381,7 +381,7 @@ class Item extends REST_Controller
                                         'id' => $key_item->vehicle_children_id
                                     ]
                                 ])->row();
-                                $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                                $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
                                 $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
                                 $vehicle_children['name'] = $parsing['vehicle_children']->name;
                                 $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
@@ -430,7 +430,7 @@ class Item extends REST_Controller
                 'field' => '*',
                 'table' => 'item',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
             if (empty($check['item'])) {
@@ -516,7 +516,7 @@ class Item extends REST_Controller
                 if ($checking == true) {
                     $query = $this->api_model->send_data([
                         'where' => [
-                            'id' => $id
+                            'id' => decrypt_text($id)
                         ],
                         'data' => [
                             'vehicle_id' => (!empty($this->put('vehicle_id'))) ? $this->put('vehicle_id') : null,
@@ -558,11 +558,11 @@ class Item extends REST_Controller
                             'field' => '*',
                             'table' => 'item',
                             'where' => [
-                                'id' => $id
+                                'id' => decrypt_text($id)
                             ]
                         ])->row();
 
-                        $data['id'] = $parsing['item']->id;
+                        $data['id'] = encrypt_text($parsing['item']->id);
                         $data['name'] = $parsing['item']->name;
                         $data['price'] = $parsing['item']->price;
                         $data['price_currency_format'] = rupiah($parsing['item']->price);
@@ -579,7 +579,7 @@ class Item extends REST_Controller
                                     'id' => $parsing['item']->vehicle_id
                                 ]
                             ])->row();
-                            $vehicle['id'] = $parsing['vehicle']->id;
+                            $vehicle['id'] = encrypt_text($parsing['vehicle']->id);
                             $vehicle['name'] = $parsing['vehicle']->name;
                             $vehicle['created_at'] = $parsing['vehicle']->created_at;
                             $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
@@ -593,7 +593,7 @@ class Item extends REST_Controller
                                         'id' => $parsing['item']->vehicle_children_id
                                     ]
                                 ])->row();
-                                $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                                $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
                                 $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
                                 $vehicle_children['name'] = $parsing['vehicle_children']->name;
                                 $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
@@ -640,7 +640,7 @@ class Item extends REST_Controller
                 'field' => '*',
                 'table' => 'item',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
             if (empty($check['item'])) {
@@ -660,7 +660,7 @@ class Item extends REST_Controller
             if ($checking == true) {
                 $query = $this->api_model->delete_data([
                     'where' => [
-                        'id' => $id
+                        'id' => decrypt_text($id)
                     ],
                     'table' => 'item'
                 ]);
@@ -689,7 +689,7 @@ class Item extends REST_Controller
                         'status' => SELF::HTTP_OK
                     ];
 
-                    $data['id'] = $check['item']->id;
+                    $data['id'] = encrypt_text($check['item']->id);
                     $data['name'] = $check['item']->name;
                     $data['price'] = $check['item']->price;
                     $data['price_currency_format'] = rupiah($check['item']->price);
@@ -706,7 +706,7 @@ class Item extends REST_Controller
                                 'id' => $check['item']->vehicle_id
                             ]
                         ])->row();
-                        $vehicle['id'] = $parsing['vehicle']->id;
+                        $vehicle['id'] = encrypt_text($parsing['vehicle']->id);
                         $vehicle['name'] = $parsing['vehicle']->name;
                         $vehicle['created_at'] = $parsing['vehicle']->created_at;
                         $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
@@ -720,7 +720,7 @@ class Item extends REST_Controller
                                     'id' => $check['item']->vehicle_children_id
                                 ]
                             ])->row();
-                            $vehicle_children['id'] = $parsing['vehicle_children']->id;
+                            $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
                             $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
                             $vehicle_children['name'] = $parsing['vehicle_children']->name;
                             $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;

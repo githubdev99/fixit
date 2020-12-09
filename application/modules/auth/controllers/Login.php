@@ -39,28 +39,39 @@ class Login extends MY_Controller
                     'url' => $this->core['url_api'] . 'login',
                     'method' => 'POST',
                     'header' => [
-                        "Accept: application/json",
                         "Content-Type: application/json"
                     ],
-                    'data' => [
+                    'data' => json_encode([
                         'username' => $this->input->post('username'),
                         'password' => $this->input->post('password')
-                    ]
+                    ])
                 ]), true);
 
                 if ($response['status']['code'] == 200) {
-                    $output = [
-                        'error' => false,
-                        'type' => 'success',
-                        'message' => 'Anda berhasil login, mohon tunggu...'
-                    ];
-
-                    if ($this->session->has_userdata('admin')) {
-                        redirect(base_url() . 'admin/dashboard', 'refresh');
-                    } elseif ($this->session->has_userdata('cashier')) {
-                        redirect(base_url() . 'cashier/dashboard', 'refresh');
-                    } elseif ($this->session->has_userdata('mechanic')) {
-                        redirect(base_url() . 'mechanic/dashboard', 'refresh');
+                    if ($response['data']['session'] == 'admin') {
+                        $this->session->set_userdata('admin', $response['data']['id']);
+                        $output = [
+                            'error' => false,
+                            'type' => 'success',
+                            'message' => 'Anda berhasil login, mohon tunggu...',
+                            'callback' => base_url() . 'admin/dashboard'
+                        ];
+                    } elseif ($response['data']['session'] == 'cashier') {
+                        $this->session->set_userdata('cashier', $response['data']['id']);
+                        $output = [
+                            'error' => false,
+                            'type' => 'success',
+                            'message' => 'Anda berhasil login, mohon tunggu...',
+                            'callback' => base_url() . 'cashier/dashboard'
+                        ];
+                    } elseif ($response['data']['session'] == 'mechanic') {
+                        $this->session->set_userdata('mechanic', $response['data']['id']);
+                        $output = [
+                            'error' => false,
+                            'type' => 'success',
+                            'message' => 'Anda berhasil login, mohon tunggu...',
+                            'callback' => base_url() . 'mechanic/dashboard'
+                        ];
                     }
                 } else {
                     if ($response['status']['code'] == 401) {
@@ -77,6 +88,12 @@ class Login extends MY_Controller
                         ];
                     }
                 }
+            } else {
+                $output = [
+                    'error' => true,
+                    'type' => 'error',
+                    'message' => 'Ada kesalahan teknis.'
+                ];
             }
 
             $this->output->set_content_type('application/json')->set_output(json_encode($output));

@@ -92,7 +92,7 @@ if (!function_exists('shoot_api')) {
 
         curl_setopt($curl, CURLOPT_URL, $param['url']);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_ENCODING, true);
+        curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
         curl_setopt($curl, CURLOPT_TIMEOUT, 0);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -121,6 +121,17 @@ if (!function_exists('seo')) {
 if (!function_exists('clean_rupiah')) {
     function clean_rupiah($rupiah)
     {
-        return str_replace('.', '', $nominal);
+        return str_replace('.', '', $rupiah);
+    }
+}
+
+if (!function_exists('limit_text')) {
+    function limit_text($text)
+    {
+        if (strlen($text) >= 45) {
+            return substr($text, 0, 45) . '...';
+        } else {
+            return $text;
+        }
     }
 }

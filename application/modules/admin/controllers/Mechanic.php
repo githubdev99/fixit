@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Home extends MY_Controller
+class Mechanic extends MY_Controller
 {
 
     public function __construct()
@@ -14,12 +14,16 @@ class Home extends MY_Controller
 
     public function index()
     {
-        $title = 'Admin Dashboard';
+        $title = 'Mechanic';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'home/v_home',
-            'get_script' => 'home/script_home'
+            'get_view' => 'admin/v_mechanic',
+            'get_script' => 'admin/script_mechanic'
         ];
-        $this->master->template($data);
+
+        if (!$this->input->post()) {
+            $this->master->template($data);
+        } else {
+        }
     }
 }

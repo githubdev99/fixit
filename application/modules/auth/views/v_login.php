@@ -22,7 +22,7 @@
                                                 <i class="icon-dual" data-feather="user"></i>
                                             </span>
                                         </div>
-                                        <input type="text" name="username" class="form-control" placeholder="Enter your username">
+                                        <input type="text" name="username" class="form-control login" placeholder="Enter your username" required>
                                     </div>
                                 </div>
 
@@ -34,7 +34,7 @@
                                                 <i class="icon-dual" data-feather="lock"></i>
                                             </span>
                                         </div>
-                                        <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+                                        <input type="password" name="password" class="form-control login" placeholder="Enter your password" required>
                                     </div>
                                 </div>
 

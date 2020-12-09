@@ -21,6 +21,22 @@ class MY_Controller extends MX_Controller
 		$this->core['full_logo'] = base_url() . 'asset/images/logo-full.png';
 		$this->core['mini_logo'] = base_url() . 'asset/images/logo-mini.png';
 		$this->core['url_api'] = base_url() . 'api/';
+		$this->core['total_data'] = [
+			'cashier' => $this->api_model->count_all_data([
+				'table' => 'cashier'
+			]),
+			'mechanic' => $this->api_model->count_all_data([
+				'table' => 'mechanic'
+			]),
+			'purchase' => $this->api_model->select_data([
+				'field' => 'SUM(total_price) AS data',
+				'table' => 'purchase'
+			])->row()->data,
+			'transaction' => $this->api_model->select_data([
+				'field' => 'SUM(total_price) AS data',
+				'table' => 'transaction'
+			])->row()->data
+		];
 
 		if ($this->session->has_userdata('admin')) {
 			$this->core['admin'] = $this->api_model->select_data([

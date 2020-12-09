@@ -108,7 +108,7 @@ class Mechanic extends REST_Controller
                         ]
                     ])->row();
 
-                    $data['id'] = $parsing['mechanic']->id;
+                    $data['id'] = encrypt_text($parsing['mechanic']->id);
                     $data['name'] = $parsing['mechanic']->name;
                     $data['birth_date'] = $parsing['mechanic']->birth_date;
                     $data['phone_number'] = $parsing['mechanic']->phone_number;
@@ -134,7 +134,7 @@ class Mechanic extends REST_Controller
                 'field' => '*',
                 'table' => 'mechanic',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
 
@@ -164,7 +164,7 @@ class Mechanic extends REST_Controller
                     'status' => SELF::HTTP_OK
                 ];
 
-                $data['id'] = $parsing['mechanic']->id;
+                $data['id'] = encrypt_text($parsing['mechanic']->id);
                 $data['name'] = $parsing['mechanic']->name;
                 $data['birth_date'] = $parsing['mechanic']->birth_date;
                 $data['phone_number'] = $parsing['mechanic']->phone_number;
@@ -240,7 +240,7 @@ class Mechanic extends REST_Controller
 
                 if (!empty($parsing['mechanic'])) {
                     foreach ($parsing['mechanic'] as $key_mechanic) {
-                        $data['id'] = $key_mechanic->id;
+                        $data['id'] = encrypt_text($key_mechanic->id);
                         $data['name'] = $key_mechanic->name;
                         $data['birth_date'] = $key_mechanic->birth_date;
                         $data['phone_number'] = $key_mechanic->phone_number;
@@ -281,7 +281,7 @@ class Mechanic extends REST_Controller
                 'field' => '*',
                 'table' => 'mechanic',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
             if (empty($check['mechanic'])) {
@@ -335,7 +335,7 @@ class Mechanic extends REST_Controller
                 if ($checking == true) {
                     $query = $this->api_model->send_data([
                         'where' => [
-                            'id' => $id
+                            'id' => decrypt_text($id)
                         ],
                         'data' => [
                             'name' => $this->put('name'),
@@ -375,11 +375,11 @@ class Mechanic extends REST_Controller
                             'field' => '*',
                             'table' => 'mechanic',
                             'where' => [
-                                'id' => $id
+                                'id' => decrypt_text($id)
                             ]
                         ])->row();
 
-                        $data['id'] = $parsing['mechanic']->id;
+                        $data['id'] = encrypt_text($parsing['mechanic']->id);
                         $data['name'] = $parsing['mechanic']->name;
                         $data['birth_date'] = $parsing['mechanic']->birth_date;
                         $data['phone_number'] = $parsing['mechanic']->phone_number;
@@ -418,7 +418,7 @@ class Mechanic extends REST_Controller
                 'field' => '*',
                 'table' => 'mechanic',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
 
@@ -439,7 +439,7 @@ class Mechanic extends REST_Controller
             if ($checking == true) {
                 $query = $this->api_model->delete_data([
                     'where' => [
-                        'id' => $id
+                        'id' => decrypt_text($id)
                     ],
                     'table' => 'mechanic'
                 ]);
@@ -468,7 +468,7 @@ class Mechanic extends REST_Controller
                         'status' => SELF::HTTP_OK
                     ];
 
-                    $data['id'] = $check['mechanic']->id;
+                    $data['id'] = encrypt_text($check['mechanic']->id);
                     $data['name'] = $check['mechanic']->name;
                     $data['birth_date'] = $check['mechanic']->birth_date;
                     $data['phone_number'] = $check['mechanic']->phone_number;

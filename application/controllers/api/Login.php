@@ -4,7 +4,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Auth extends REST_Controller
+class Login extends REST_Controller
 {
 
     public function __construct()
@@ -124,24 +124,29 @@ class Auth extends REST_Controller
             }
 
             if ($checking == true) {
-                if (!empty($parsing['admin'])) {
-                    $this->session->set_userdata('admin', encrypt_text($parsing['admin']->id));
-                } elseif (!empty($parsing['cashier'])) {
-                    $this->session->set_userdata('cashier', encrypt_text($parsing['cashier']->id));
-                } elseif (!empty($parsing['mechanic'])) {
-                    $this->session->set_userdata('mechanic', encrypt_text($parsing['mechanic']->id));
-                }
-
                 $response = [
                     'result' => [
                         'status' => [
                             'code' => SELF::HTTP_OK,
                             'message' => 'login success'
                         ],
-                        'data' => 'session created'
+                        'data' => []
                     ],
                     'status' => SELF::HTTP_OK
                 ];
+
+                if (!empty($parsing['admin'])) {
+                    $data['session'] = 'admin';
+                    $data['id'] = encrypt_text($parsing['admin']->id);
+                } elseif (!empty($parsing['cashier'])) {
+                    $data['session'] = 'cashier';
+                    $data['id'] = encrypt_text($parsing['cashier']->id);
+                } elseif (!empty($parsing['mechanic'])) {
+                    $data['session'] = 'mechanic';
+                    $data['id'] = encrypt_text($parsing['mechanic']->id);
+                }
+
+                $response['result']['data'] = $data;
             }
         }
 

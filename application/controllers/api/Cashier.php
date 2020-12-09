@@ -108,7 +108,7 @@ class Cashier extends REST_Controller
                         ]
                     ])->row();
 
-                    $data['id'] = $parsing['cashier']->id;
+                    $data['id'] = encrypt_text($parsing['cashier']->id);
                     $data['name'] = $parsing['cashier']->name;
                     $data['birth_date'] = $parsing['cashier']->birth_date;
                     $data['phone_number'] = $parsing['cashier']->phone_number;
@@ -134,7 +134,7 @@ class Cashier extends REST_Controller
                 'field' => '*',
                 'table' => 'cashier',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
 
@@ -164,7 +164,7 @@ class Cashier extends REST_Controller
                     'status' => SELF::HTTP_OK
                 ];
 
-                $data['id'] = $parsing['cashier']->id;
+                $data['id'] = encrypt_text($parsing['cashier']->id);
                 $data['name'] = $parsing['cashier']->name;
                 $data['birth_date'] = $parsing['cashier']->birth_date;
                 $data['phone_number'] = $parsing['cashier']->phone_number;
@@ -240,7 +240,7 @@ class Cashier extends REST_Controller
 
                 if (!empty($parsing['cashier'])) {
                     foreach ($parsing['cashier'] as $key_cashier) {
-                        $data['id'] = $key_cashier->id;
+                        $data['id'] = encrypt_text($key_cashier->id);
                         $data['name'] = $key_cashier->name;
                         $data['birth_date'] = $key_cashier->birth_date;
                         $data['phone_number'] = $key_cashier->phone_number;
@@ -281,7 +281,7 @@ class Cashier extends REST_Controller
                 'field' => '*',
                 'table' => 'cashier',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
             if (empty($check['cashier'])) {
@@ -335,7 +335,7 @@ class Cashier extends REST_Controller
                 if ($checking == true) {
                     $query = $this->api_model->send_data([
                         'where' => [
-                            'id' => $id
+                            'id' => decrypt_text($id)
                         ],
                         'data' => [
                             'name' => $this->put('name'),
@@ -375,11 +375,11 @@ class Cashier extends REST_Controller
                             'field' => '*',
                             'table' => 'cashier',
                             'where' => [
-                                'id' => $id
+                                'id' => decrypt_text($id)
                             ]
                         ])->row();
 
-                        $data['id'] = $parsing['cashier']->id;
+                        $data['id'] = encrypt_text($parsing['cashier']->id);
                         $data['name'] = $parsing['cashier']->name;
                         $data['birth_date'] = $parsing['cashier']->birth_date;
                         $data['phone_number'] = $parsing['cashier']->phone_number;
@@ -418,7 +418,7 @@ class Cashier extends REST_Controller
                 'field' => '*',
                 'table' => 'cashier',
                 'where' => [
-                    'id' => $id
+                    'id' => decrypt_text($id)
                 ]
             ])->row();
 
@@ -439,7 +439,7 @@ class Cashier extends REST_Controller
             if ($checking == true) {
                 $query = $this->api_model->delete_data([
                     'where' => [
-                        'id' => $id
+                        'id' => decrypt_text($id)
                     ],
                     'table' => 'cashier'
                 ]);
@@ -468,7 +468,7 @@ class Cashier extends REST_Controller
                         'status' => SELF::HTTP_OK
                     ];
 
-                    $data['id'] = $check['cashier']->id;
+                    $data['id'] = encrypt_text($check['cashier']->id);
                     $data['name'] = $check['cashier']->name;
                     $data['birth_date'] = $check['cashier']->birth_date;
                     $data['phone_number'] = $check['cashier']->phone_number;
