@@ -71,6 +71,7 @@ class Cashier extends REST_Controller
                         'username' => $this->post('username'),
                         'password' => password_hash($this->post('password'), PASSWORD_DEFAULT),
                         'gender' => $this->post('gender'),
+                        'address' => $this->post('address'),
                         'created_at' => date('Y-m-d H:i:s')
                     ],
                     'table' => 'cashier'
@@ -342,6 +343,7 @@ class Cashier extends REST_Controller
                             'birth_date' => date('Y-m-d', strtotime($this->put('birth_date'))),
                             'phone_number' => $this->put('phone_number'),
                             'gender' => $this->put('gender'),
+                            'address' => $this->put('address'),
                             'updated_at' => date('Y-m-d H:i:s')
                         ],
                         'table' => 'cashier'

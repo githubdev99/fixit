@@ -1,6 +1,6 @@
 <?= $this->load->view('layout/header'); ?>
 <div id="wrapper">
-    <?php if ($this->uri->segment(1) == 'auth') : ?>
+    <?php if ($this->uri->segment(1) == 'auth' || $this->uri->segment(1) == '') : ?>
         <div class="container-fluid">
             <?php
             if (!empty($get_view)) {

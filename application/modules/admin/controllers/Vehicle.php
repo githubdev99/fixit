@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Mechanic extends MY_Controller
+class Vehicle extends MY_Controller
 {
 
     public function __construct()
@@ -14,11 +14,11 @@ class Mechanic extends MY_Controller
 
     public function index()
     {
-        $title = 'Mekanik';
+        $title = 'Kendaraan';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'admin/v_mechanic',
-            'get_script' => 'admin/script_mechanic'
+            'get_view' => 'admin/v_vehicle',
+            'get_script' => 'admin/script_vehicle'
         ];
 
         if (!$this->input->post()) {

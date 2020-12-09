@@ -73,7 +73,7 @@ if (!function_exists('date_indo')) {
 
         $split = explode('-', $date);
 
-        return $split[2] . ' ' . $month[(int)$split[1]] . ' ' . $split[0];
+        return $split[0] . ' ' . $month[(int)$split[1]] . ' ' . $split[2];
     }
 }
 

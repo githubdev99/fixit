@@ -28,6 +28,12 @@ class MY_Controller extends MX_Controller
 			'mechanic' => $this->api_model->count_all_data([
 				'table' => 'mechanic'
 			]),
+			'vehicle' => $this->api_model->count_all_data([
+				'table' => 'vehicle_children'
+			]),
+			'service' => $this->api_model->count_all_data([
+				'table' => 'service'
+			]),
 			'purchase' => $this->api_model->select_data([
 				'field' => 'SUM(total_price) AS data',
 				'table' => 'purchase'

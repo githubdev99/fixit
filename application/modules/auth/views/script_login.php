@@ -38,7 +38,7 @@
                             position: "top",
                             showCloseButton: !0,
                             showConfirmButton: false,
-                            timer: 3000,
+                            timer: 2000,
                             onOpen: (toast) => {
                                 toast.addEventListener("mouseenter", Swal.stopTimer)
                                 toast.addEventListener("mouseleave", Swal.resumeTimer)
