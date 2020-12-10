@@ -1,160 +1,242 @@
 $(document).ready(function () {
-  $(".select2").each(function () {
-    $(this).select2();
-  });
+	$(".select2").each(function () {
+		$(this).select2();
+	});
 
-  $(".datepicker").each(function () {
-    $(this).flatpickr({
-      dateFormat: "d M Y",
-    });
-  });
+	$(".datepicker").each(function () {
+		$(this).flatpickr({
+			dateFormat: "d M Y",
+		});
+	});
 
-  $(".daterangepicker").each(function () {
-    $(this).flatpickr({
-      dateFormat: "d M Y",
-      mode: "range",
-    });
-  });
+	$(".daterangepicker").each(function () {
+		$(this).flatpickr({
+			dateFormat: "d M Y",
+			mode: "range",
+		});
+	});
 
-  $(".hide-element").each(function () {
-    $(this).hide();
-  });
+	$(".hide-element").each(function () {
+		$(this).hide();
+	});
 });
 
-function select2_ajax(params) {
-  if (params.normal) {
-    $(params.selector).select2({
-      placeholder: "Pilih salah satu",
-    });
-    $.ajax({
-      url: params.url,
-      type: "POST",
-      data: {
-        params: params.data == undefined ? "" : params.data,
-      },
-      dataType: "json",
-      success: function (response) {
-        var data = response.data;
+function show_alert(params) {
+	if (params) {
+		if (params.callback) {
+			Swal.mixin({
+				toast: true,
+				position: "top",
+				showCloseButton: !0,
+				showConfirmButton: false,
+				timer: 2000,
+				timerProgressBar: true,
+				onOpen: (toast) => {
+					toast.addEventListener("mouseenter", Swal.stopTimer)
+					toast.addEventListener("mouseleave", Swal.resumeTimer)
+				}
+			}).fire({
+				icon: params.type,
+				title: params.message
+			}).then(function () {
+				window.location = params.callback;
+			});
+		} else {
+			Swal.mixin({
+				toast: true,
+				position: "top",
+				showCloseButton: !0,
+				showConfirmButton: false,
+				timer: 2000,
+				timerProgressBar: true,
+				onOpen: (toast) => {
+					toast.addEventListener("mouseenter", Swal.stopTimer)
+					toast.addEventListener("mouseleave", Swal.resumeTimer)
+				}
+			}).fire({
+				icon: params.type,
+				title: params.message
+			});
+		}
+	} else {
+		return Swal.mixin({
+			toast: true,
+			position: "top",
+			showCloseButton: !0,
+			showConfirmButton: false,
+			timer: 2000,
+			timerProgressBar: true,
+			onOpen: (toast) => {
+				toast.addEventListener("mouseenter", Swal.stopTimer)
+				toast.addEventListener("mouseleave", Swal.resumeTimer)
+			}
+		}).fire({
+			icon: "error",
+			title: "Ada kesalahan teknis"
+		});
+	}
+}
 
-        if (response.error == false) {
-          $(params.selector).append(data.html);
-        } else {
-          Swal.mixin({
-            toast: true,
-            position: "top",
-            showCloseButton: !0,
-            showConfirmButton: false,
-            timer: 4000,
-            onOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          }).fire({
-            icon: response.type,
-            title: response.message,
-          });
-        }
-      },
-    });
-  } else {
-    $(params.selector).each(function () {
-      $(this).select2({
-        ajax: {
-          type: "post",
-          url: params.url,
-          dataType: "json",
-          delay: 250,
-          data: function (data) {
-            return $.extend(
-              {
-                term: data.term,
-              },
-              params.data == undefined ? "" : params.data
-            );
-          },
-          processResults: function (response) {
-            return {
-              results: response.data,
-            };
-          },
-          cache: true,
-        },
-      });
-    });
-  }
+function trigger_enter(params) {
+	if (params.selector && params.target) {
+		$(params.selector).keypress(function (e) {
+			if (e.which == 13) {
+				$(this).blur();
+				$(params.target).focus().click();
+			}
+		});
+	} else {
+		Swal.mixin({
+			toast: true,
+			position: "top",
+			showCloseButton: !0,
+			showConfirmButton: false,
+			timer: 4000,
+			onOpen: (toast) => {
+				toast.addEventListener("mouseenter", Swal.stopTimer);
+				toast.addEventListener("mouseleave", Swal.resumeTimer);
+			},
+		}).fire({
+			icon: 'error',
+			title: 'Ada kesalahan teknis'
+		});
+	}
+}
+
+function select2_ajax(params) {
+	if (params.normal) {
+		$(params.selector).select2({
+			placeholder: "Pilih salah satu",
+		});
+		$.ajax({
+			url: params.url,
+			type: "POST",
+			data: {
+				params: params.data == undefined ? "" : params.data,
+			},
+			dataType: "json",
+			success: function (response) {
+				var data = response.data;
+
+				if (response.error == false) {
+					$(params.selector).append(data.html);
+				} else {
+					Swal.mixin({
+						toast: true,
+						position: "top",
+						showCloseButton: !0,
+						showConfirmButton: false,
+						timer: 4000,
+						onOpen: (toast) => {
+							toast.addEventListener("mouseenter", Swal.stopTimer);
+							toast.addEventListener("mouseleave", Swal.resumeTimer);
+						},
+					}).fire({
+						icon: response.type,
+						title: response.message,
+					});
+				}
+			},
+		});
+	} else {
+		$(params.selector).each(function () {
+			$(this).select2({
+				ajax: {
+					type: "post",
+					url: params.url,
+					dataType: "json",
+					delay: 250,
+					data: function (data) {
+						return $.extend(
+							{
+								term: data.term,
+							},
+							params.data == undefined ? "" : params.data
+						);
+					},
+					processResults: function (response) {
+						return {
+							results: response.data,
+						};
+					},
+					cache: true,
+				},
+			});
+		});
+	}
 }
 
 function show_button(value, element) {
-  if (value != "" || value != null) {
-    $(element).each(function () {
-      $(this).removeAttr("disabled");
-    });
-  } else {
-    $(element).each(function () {
-      $(this).attr("disabled");
-    });
-  }
+	if (value != "" || value != null) {
+		$(element).each(function () {
+			$(this).removeAttr("disabled");
+		});
+	} else {
+		$(element).each(function () {
+			$(this).attr("disabled");
+		});
+	}
 }
 
 function show_maxlength(name) {
-  var name = $('[name="' + name + '"]').attr("name");
-  var maxlength = $('[name="' + name + '"]').attr("maxlength");
-  var length = $('[name="' + name + '"]').val().length;
+	var name = $('[name="' + name + '"]').attr("name");
+	var maxlength = $('[name="' + name + '"]').attr("maxlength");
+	var length = $('[name="' + name + '"]').val().length;
 
-  $("#maxlength_" + name).html(length + "/" + maxlength);
+	$("#maxlength_" + name).html(length + "/" + maxlength);
 }
 
 function go_to(url) {
-  window.location = url;
+	window.location = url;
 }
 
 function number_only(evt) {
-  var theEvent = evt || window.event;
+	var theEvent = evt || window.event;
 
-  // Handle paste
-  if (theEvent.type === "paste") {
-    key = event.clipboardData.getData("text/plain");
-  } else {
-    // Handle key press
-    var key = theEvent.keyCode || theEvent.which;
-    key = String.fromCharCode(key);
-  }
-  var regex = /[0-9]|\./;
-  if (!regex.test(key)) {
-    theEvent.returnValue = false;
-    if (theEvent.preventDefault) theEvent.preventDefault();
-  }
+	// Handle paste
+	if (theEvent.type === "paste") {
+		key = event.clipboardData.getData("text/plain");
+	} else {
+		// Handle key press
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode(key);
+	}
+	var regex = /[0-9]|\./;
+	if (!regex.test(key)) {
+		theEvent.returnValue = false;
+		if (theEvent.preventDefault) theEvent.preventDefault();
+	}
 }
 
 function running_rupiah(name, value) {
-  $('[name="' + name + '"]').val(format_rupiah(value));
+	$('[name="' + name + '"]').val(format_rupiah(value));
 }
 
 function running_rupiah_array(find, name, value) {
-  $(find)
-    .find('[name="' + name + '"]')
-    .val(format_rupiah(value));
+	$(find)
+		.find('[name="' + name + '"]')
+		.val(format_rupiah(value));
 }
 
 function format_rupiah(angka) {
-  var number_string = angka.replace(/[^,\d]/g, "").toString(),
-    split = number_string.split(","),
-    sisa = split[0].length % 3,
-    rupiah = split[0].substr(0, sisa),
-    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+	var number_string = angka.replace(/[^,\d]/g, "").toString(),
+		split = number_string.split(","),
+		sisa = split[0].length % 3,
+		rupiah = split[0].substr(0, sisa),
+		ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-  if (ribuan) {
-    separator = sisa ? "." : "";
-    rupiah += separator + ribuan.join(".");
-  }
+	if (ribuan) {
+		separator = sisa ? "." : "";
+		rupiah += separator + ribuan.join(".");
+	}
 
-  rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-  return rupiah;
+	rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+	return rupiah;
 }
 
 function rupiah(number) {
-  var reverse = number.toString().split("").reverse().join(""),
-    ribuan = reverse.match(/\d{1,3}/g);
-  ribuan = ribuan.join(".").split("").reverse().join("");
-  return "Rp. " + ribuan;
+	var reverse = number.toString().split("").reverse().join(""),
+		ribuan = reverse.match(/\d{1,3}/g);
+	ribuan = ribuan.join(".").split("").reverse().join("");
+	return "Rp. " + ribuan;
 }

@@ -1,5 +1,10 @@
 <script>
     $(document).ready(function() {
+        trigger_enter({
+            selector: '.login',
+            target: 'button[name="login"]'
+        });
+
         $('form[name="login"]').submit(function(e) {
             e.preventDefault();
 
@@ -15,39 +20,18 @@
                 dataType: "json",
                 success: function(response) {
                     if (response.error == true) {
-                        Swal.mixin({
-                            toast: true,
-                            position: "top",
-                            showCloseButton: !0,
-                            showConfirmButton: false,
-                            timer: 4000,
-                            onOpen: (toast) => {
-                                toast.addEventListener("mouseenter", Swal.stopTimer)
-                                toast.addEventListener("mouseleave", Swal.resumeTimer)
-                            }
-                        }).fire({
-                            icon: response.type,
-                            title: response.message
+                        show_alert({
+                            type: response.type,
+                            message: response.message
                         });
 
                         $('button[name="' + active_element.val() + '"]').removeAttr('disabled');
                         $('button[name="' + active_element.val() + '"]').html('Login');
                     } else {
-                        Swal.mixin({
-                            toast: true,
-                            position: "top",
-                            showCloseButton: !0,
-                            showConfirmButton: false,
-                            timer: 2000,
-                            onOpen: (toast) => {
-                                toast.addEventListener("mouseenter", Swal.stopTimer)
-                                toast.addEventListener("mouseleave", Swal.resumeTimer)
-                            }
-                        }).fire({
-                            icon: response.type,
-                            title: response.message
-                        }).then(function() {
-                            window.location = response.callback;
+                        show_alert({
+                            type: response.type,
+                            message: response.message,
+                            callback: response.callback
                         });
                     }
                 }

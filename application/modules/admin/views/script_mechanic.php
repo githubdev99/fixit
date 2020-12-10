@@ -53,22 +53,23 @@
                 type: "POST",
                 dataType: "json",
                 error: function() {
-                    Swal.mixin({
-                        toast: true,
-                        position: "top",
-                        showCloseButton: !0,
-                        showConfirmButton: false,
-                        timer: 4000,
-                        onOpen: (toast) => {
-                            toast.addEventListener("mouseenter", Swal.stopTimer)
-                            toast.addEventListener("mouseleave", Swal.resumeTimer)
-                        }
-                    }).fire({
-                        icon: "error",
-                        title: "Ada kesalahan teknis"
-                    });
+                    show_alert();
                 }
             }
         });
+    }
+
+    function show_modal(params) {
+        if (params) {
+            if (params.modal == 'add') {
+                $('#add').modal({
+                    backdrop: 'static',
+                    keyboard: true,
+                    show: true
+                });
+            }
+        } else {
+            show_alert();
+        }
     }
 </script>
