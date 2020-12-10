@@ -21,7 +21,7 @@ class Logout extends MY_Controller
         $this->session->unset_userdata('mechanic');
 
         $this->alert_popup([
-            'name' => 'success',
+            'name' => 'show_alert',
             'swal' => [
                 'title' => 'Anda berhasil logout!',
                 'type' => 'success'

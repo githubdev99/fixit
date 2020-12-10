@@ -44,6 +44,11 @@ class MY_Controller extends MX_Controller
 			])->row()->data
 		];
 
+		$this->core['setting'] = $this->api_model->select_data([
+			'field' => '*',
+			'table' => 'setting'
+		])->result();
+
 		if ($this->session->has_userdata('admin')) {
 			$this->core['admin'] = $this->api_model->select_data([
 				'field' => '*',

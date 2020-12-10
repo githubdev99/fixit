@@ -25,10 +25,18 @@
     <script>
         // Alert
         $(document).ready(function() {
-            <?php if (!empty($this->session->flashdata('success'))) : ?>
-                <?= $this->session->flashdata('success'); ?>
-            <?php elseif (!empty($this->session->flashdata('failed'))) : ?>
-                <?= $this->session->flashdata('failed'); ?>
+            <?php if (!empty($this->session->flashdata('show_alert'))) : ?>
+                <?= $this->session->flashdata('show_alert'); ?>
+            <?php endif ?>
+
+            <?php if ($this->session->has_userdata('admin') && empty($core['setting']) && $this->uri->segment(2) != 'setting') : ?>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan!',
+                    text: 'Silahkan melakukan pengaturan terlebih dahulu!'
+                }).then(() => {
+                    window.location = '<?= base_url() . 'admin/setting' ?>'
+                });
             <?php endif ?>
         });
     </script>
