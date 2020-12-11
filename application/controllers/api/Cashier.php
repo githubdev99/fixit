@@ -62,6 +62,24 @@ class Cashier extends REST_Controller
                 ];
             }
 
+            $parsing['setting'] = $this->api_model->select_data([
+                'field' => '*',
+                'table' => 'setting'
+            ])->row();
+            if (empty($parsing['setting'])) {
+                $checking = false;
+                $response = [
+                    'result' => [
+                        'status' => [
+                            'code' => SELF::HTTP_BAD_REQUEST,
+                            'message' => 'bad request'
+                        ],
+                        'data' => null
+                    ],
+                    'status' => SELF::HTTP_OK
+                ];
+            }
+
             if ($checking == true) {
                 $query = $this->api_model->send_data([
                     'data' => [
@@ -69,7 +87,7 @@ class Cashier extends REST_Controller
                         'birth_date' => date('Y-m-d', strtotime($this->post('birth_date'))),
                         'phone_number' => $this->post('phone_number'),
                         'username' => $this->post('username'),
-                        'password' => password_hash($this->post('password'), PASSWORD_DEFAULT),
+                        'password' => password_hash($parsing['setting']->password_default, PASSWORD_DEFAULT),
                         'gender' => $this->post('gender'),
                         'address' => $this->post('address'),
                         'created_at' => date('Y-m-d H:i:s')

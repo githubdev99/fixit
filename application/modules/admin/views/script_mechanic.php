@@ -72,7 +72,7 @@
                         if (params.modal == 'delete') {
                             Swal.fire({
                                 title: 'Konfirmasi!',
-                                html: `Anda yakin ingin menghapus data mekanik <br> dengan username <b>${data.username}</b> ?`,
+                                html: `Anda yakin ingin menghapus data mekanik <br> dengan username ${data.username} ?`,
                                 icon: 'warning',
                                 showCloseButton: true,
                                 showCancelButton: true,
@@ -91,7 +91,7 @@
                                             if (response2.status.code == 200) {
                                                 show_alert({
                                                     type: 'success',
-                                                    message: `Data mekanik <b>${data2.username}</b> berhasil di hapus`
+                                                    message: `Data mekanik ${data2.username} berhasil di hapus`
                                                 });
 
                                                 load_table();
@@ -104,7 +104,7 @@
                                                 } else {
                                                     show_alert({
                                                         type: 'success',
-                                                        message: `Data mekanik <b>${data2.username}</b> gagal di hapus`
+                                                        message: `Data mekanik ${data2.username} gagal di hapus`
                                                     });
                                                 }
                                             }
