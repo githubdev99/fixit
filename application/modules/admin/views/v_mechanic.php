@@ -20,6 +20,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama</th>
+                                <th>Username</th>
                                 <th>Telepon</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Tanggal Input</th>
@@ -59,12 +60,6 @@
                                 <label class="col-lg-3 col-form-label">Username <span class="text-danger">*</span></label>
                                 <div class="col-lg-9">
                                     <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-lg-3 col-form-label">Password <span class="text-danger">*</span></label>
-                                <div class="col-lg-9">
-                                    <input type="password" name="password" class="form-control" placeholder="Masukkan nama" required>
                                 </div>
                             </div>
                             <div class="form-group row">

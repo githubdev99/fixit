@@ -16,15 +16,23 @@
 
                     var active_element = $(document.activeElement);
 
-                    Swal.mixin({
-                        toast: true,
-                        position: "top",
-                        showCloseButton: !0,
-                        showConfirmButton: true,
-                        showCancelButton: true
-                    }).fire({
-                        icon: "warning",
-                        title: "Anda yakin ingin melakukan pengaturan ini ?"
+                    if (active_element.val() != 'reset') {
+                        var alert = 'Anda yakin ingin melakukan pengaturan ini ?';
+                        var confirm_color = '#1aaac8';
+                    } else {
+                        var alert = 'Anda yakin ingin me-reset pengaturan ini ?';
+                        var confirm_color = '#d33';
+                    }
+
+                    Swal.fire({
+                        title: 'Konfirmasi!',
+                        html: alert,
+                        icon: 'warning',
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        confirmButtonColor: confirm_color,
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.value) {
                             $.ajax({

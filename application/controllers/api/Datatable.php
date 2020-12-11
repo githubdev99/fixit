@@ -48,6 +48,7 @@ class Datatable extends REST_Controller
 
                 $column[] = $no;
                 $column[] = $key->name;
+                $column[] = $key->username;
                 $column[] = $key->phone_number;
                 $column[] = ($key->gender == 'male') ? 'Laki-Laki' : 'Perempuan';
                 $column[] = date_indo(date('d-m-Y', strtotime($created_at[0])));
