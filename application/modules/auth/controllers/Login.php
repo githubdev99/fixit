@@ -86,6 +86,12 @@ class Login extends MY_Controller
                             'type' => 'warning',
                             'message' => 'Akun tidak ditemukan.'
                         ];
+                    } else {
+                        $output = [
+                            'error' => true,
+                            'type' => 'error',
+                            'message' => 'Anda dilarang mengakses.'
+                        ];
                     }
                 }
             } else {

@@ -91,11 +91,179 @@ class Admin extends REST_Controller
                         ]
                     ])->row();
 
-                    $data['id'] = $parsing['admin']->id;
+                    $data['id'] = encrypt_text($parsing['admin']->id);
                     $data['name'] = $parsing['admin']->name;
                     $data['username'] = $parsing['admin']->username;
 
                     $response['result']['data'] = $data;
+                }
+            }
+        }
+
+        $this->response($response['result'], $response['status']);
+    }
+
+    public function setting_post($type = null)
+    {
+        $checking = true;
+
+        if (!$this->post() || empty($type)) {
+            $checking = false;
+            $response = [
+                'result' => [
+                    'status' => [
+                        'code' => SELF::HTTP_BAD_REQUEST,
+                        'message' => 'bad request'
+                    ],
+                    'data' => null
+                ],
+                'status' => SELF::HTTP_OK
+            ];
+        } else {
+            $arr_type = [
+                'create', 'update', 'reset'
+            ];
+
+            if (!in_array($type, $arr_type)) {
+                $checking = false;
+                $response = [
+                    'result' => [
+                        'status' => [
+                            'code' => SELF::HTTP_BAD_REQUEST,
+                            'message' => 'bad request'
+                        ],
+                        'data' => null
+                    ],
+                    'status' => SELF::HTTP_OK
+                ];
+            }
+
+            if ($checking == true) {
+                if ($type == 'create') {
+                    $query = $this->api_model->send_data([
+                        'data' => [
+                            'password_default' => $this->post('password_default')
+                        ],
+                        'table' => 'setting'
+                    ]);
+
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'add data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    } else {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'add data success'
+                                ],
+                                'data' => []
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+
+                        $parsing['setting'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'setting',
+                            'where' => [
+                                'id' => $this->db->insert_id()
+                            ]
+                        ])->row();
+
+                        $data['id'] = encrypt_text($parsing['setting']->id);
+                        $data['password_default'] = $parsing['setting']->password_default;
+
+                        $response['result']['data'] = $data;
+                    }
+                } elseif ($type == 'update') {
+                    $query = $this->api_model->send_data([
+                        'where' => [
+                            'id' => decrypt_text($this->post('id'))
+                        ],
+                        'data' => [
+                            'password_default' => $this->post('password_default')
+                        ],
+                        'table' => 'setting'
+                    ]);
+
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'update data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    } else {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'update data success'
+                                ],
+                                'data' => []
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+
+                        $parsing['setting'] = $this->api_model->select_data([
+                            'field' => '*',
+                            'table' => 'setting',
+                            'where' => [
+                                'id' => decrypt_text($this->post('id'))
+                            ]
+                        ])->row();
+
+                        $data['id'] = encrypt_text($parsing['setting']->id);
+                        $data['password_default'] = $parsing['setting']->password_default;
+
+                        $response['result']['data'] = $data;
+                    }
+                } elseif ($type == 'reset') {
+                    $query = $this->api_model->delete_data([
+                        'where' => [
+                            'id' => decrypt_text($this->post('id'))
+                        ],
+                        'table' => 'setting'
+                    ]);
+
+                    if ($query['error'] == true) {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_BAD_REQUEST,
+                                    'message' => 'reset data failed',
+                                    'from_system' => $query['system']
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    } else {
+                        $response = [
+                            'result' => [
+                                'status' => [
+                                    'code' => SELF::HTTP_OK,
+                                    'message' => 'reset data success'
+                                ],
+                                'data' => null
+                            ],
+                            'status' => SELF::HTTP_OK
+                        ];
+                    }
                 }
             }
         }

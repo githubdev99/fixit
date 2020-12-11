@@ -13,7 +13,7 @@
                             <p class="text-muted mt-1 mb-4">Enter your username and password to
                                 access panel.</p>
 
-                            <form action="<?= base_url() ?>auth/login" method="post" name="login">
+                            <form action="<?= base_url() ?>auth/login" method="post" enctype="multipart/form-data" name="login">
                                 <div class="form-group">
                                     <label class="form-control-label">Username</label>
                                     <div class="input-group input-group-merge">
