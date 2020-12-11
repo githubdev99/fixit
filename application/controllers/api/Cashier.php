@@ -133,6 +133,7 @@ class Cashier extends REST_Controller
                     $data['phone_number'] = $parsing['cashier']->phone_number;
                     $data['username'] = $parsing['cashier']->username;
                     $data['gender'] = $parsing['cashier']->gender;
+                    $data['address'] = $parsing['cashier']->address;
                     $data['created_at'] = $parsing['cashier']->created_at;
                     $data['updated_at'] = $parsing['cashier']->updated_at;
 
@@ -189,6 +190,7 @@ class Cashier extends REST_Controller
                 $data['phone_number'] = $parsing['cashier']->phone_number;
                 $data['username'] = $parsing['cashier']->username;
                 $data['gender'] = $parsing['cashier']->gender;
+                $data['address'] = $parsing['cashier']->address;
                 $data['created_at'] = $parsing['cashier']->created_at;
                 $data['updated_at'] = $parsing['cashier']->updated_at;
 
@@ -265,6 +267,7 @@ class Cashier extends REST_Controller
                         $data['phone_number'] = $key_cashier->phone_number;
                         $data['username'] = $key_cashier->username;
                         $data['gender'] = $key_cashier->gender;
+                        $data['address'] = $key_cashier->address;
                         $data['created_at'] = $key_cashier->created_at;
                         $data['updated_at'] = $key_cashier->updated_at;
 
@@ -405,6 +408,7 @@ class Cashier extends REST_Controller
                         $data['phone_number'] = $parsing['cashier']->phone_number;
                         $data['username'] = $parsing['cashier']->username;
                         $data['gender'] = $parsing['cashier']->gender;
+                        $data['address'] = $parsing['cashier']->address;
                         $data['created_at'] = $parsing['cashier']->created_at;
                         $data['updated_at'] = $parsing['cashier']->updated_at;
 
@@ -494,6 +498,7 @@ class Cashier extends REST_Controller
                     $data['phone_number'] = $check['cashier']->phone_number;
                     $data['username'] = $check['cashier']->username;
                     $data['gender'] = $check['cashier']->gender;
+                    $data['address'] = $check['cashier']->address;
                     $data['created_at'] = $check['cashier']->created_at;
                     $data['updated_at'] = $check['cashier']->updated_at;
 

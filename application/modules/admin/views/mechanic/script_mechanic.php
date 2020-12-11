@@ -11,11 +11,11 @@
             destroy: true,
             order: [],
             columnDefs: [{
-                    targets: [0, 7],
+                    targets: [0, 6],
                     orderable: false
                 },
                 {
-                    targets: 7,
+                    targets: 6,
                     createdCell: function(td, cellData, rowData, row, col) {
                         $(td).attr({
                             style: 'white-space: nowrap;'
@@ -119,13 +119,7 @@
                     }
                 });
             } else {
-                if (params.modal == 'add') {
-                    $('#add').modal({
-                        backdrop: 'static',
-                        keyboard: true,
-                        show: true
-                    });
-                }
+                show_alert();
             }
         } else {
             show_alert();

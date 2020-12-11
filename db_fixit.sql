@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2020 at 01:09 AM
+-- Generation Time: Dec 12, 2020 at 12:29 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -55,7 +55,7 @@ CREATE TABLE `cashier` (
   `username` varchar(50) NOT NULL,
   `password` text NOT NULL,
   `gender` enum('male','female') NOT NULL,
-  `address` text NOT NULL,
+  `address` text DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -107,7 +107,7 @@ CREATE TABLE `mechanic` (
   `username` varchar(50) NOT NULL,
   `password` text NOT NULL,
   `gender` enum('male','female') NOT NULL,
-  `address` text NOT NULL,
+  `address` text DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -117,7 +117,9 @@ CREATE TABLE `mechanic` (
 --
 
 INSERT INTO `mechanic` (`id`, `name`, `birth_date`, `phone_number`, `username`, `password`, `gender`, `address`, `created_at`, `updated_at`) VALUES
-(3, 'Mechanic 1', '2001-11-21', '098765', 'mechanic1', '$2y$10$QjG1l3Q.8Y4/gO5oNpF2u.FYOs0o34bFarU9jN0CzFujoFpdJyzMu', 'male', 'Jl. jalan', '2020-12-09 17:12:32', NULL);
+(3, 'Mechanic 1', '2001-11-21', '098765', 'mechanic1', '$2y$10$QjG1l3Q.8Y4/gO5oNpF2u.FYOs0o34bFarU9jN0CzFujoFpdJyzMu', 'male', 'Jl. jalan', '2020-12-09 17:12:32', NULL),
+(9, 'Testing Mekanik edit111', '1996-12-02', '11111111111111', 'test1', '$2y$10$jRwkDGVHmB5bn3fMCOovl.Zd6hDLLMPusD1J83bYuRhOtSEWIxuEG', 'male', 'Jl. kemana nih', '2020-12-12 05:34:09', '2020-12-12 06:14:40'),
+(10, 'Testing Mekanik', '2020-12-07', '2131313', 'test12', '$2y$10$c.g01oIRDHUDLB1txjXKmeAuVeBJQPEOJgogSSDMmb4PE5JGldmjK', 'female', 'assavasv\r\n', '2020-12-12 05:37:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -368,7 +370,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `mechanic`
 --
 ALTER TABLE `mechanic`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `purchase`

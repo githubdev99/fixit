@@ -17,8 +17,8 @@ class Vehicle extends MY_Controller
         $title = 'Kendaraan';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'admin/v_vehicle',
-            'get_script' => 'admin/script_vehicle'
+            'get_view' => 'admin/vehicle/v_vehicle',
+            'get_script' => 'admin/vehicle/script_vehicle'
         ];
 
         if (!$this->input->post()) {

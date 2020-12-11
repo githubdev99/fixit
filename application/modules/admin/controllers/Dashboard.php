@@ -17,8 +17,8 @@ class Dashboard extends MY_Controller
         $title = 'Admin Dashboard';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'admin/v_dashboard',
-            'get_script' => 'admin/script_dashboard'
+            'get_view' => 'admin/dashboard/v_dashboard',
+            'get_script' => 'admin/dashboard/script_dashboard'
         ];
 
         $this->master->template($data);

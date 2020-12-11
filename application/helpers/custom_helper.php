@@ -98,7 +98,10 @@ if (!function_exists('shoot_api')) {
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $param['method']);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $param['header']);
+
+        if (array_key_exists('header', $param)) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $param['header']);
+        }
 
         if (array_key_exists('data', $param)) {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $param['data']);

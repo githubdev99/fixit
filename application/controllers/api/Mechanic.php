@@ -133,6 +133,7 @@ class Mechanic extends REST_Controller
                     $data['phone_number'] = $parsing['mechanic']->phone_number;
                     $data['username'] = $parsing['mechanic']->username;
                     $data['gender'] = $parsing['mechanic']->gender;
+                    $data['address'] = $parsing['mechanic']->address;
                     $data['created_at'] = $parsing['mechanic']->created_at;
                     $data['updated_at'] = $parsing['mechanic']->updated_at;
 
@@ -189,6 +190,7 @@ class Mechanic extends REST_Controller
                 $data['phone_number'] = $parsing['mechanic']->phone_number;
                 $data['username'] = $parsing['mechanic']->username;
                 $data['gender'] = $parsing['mechanic']->gender;
+                $data['address'] = $parsing['mechanic']->address;
                 $data['created_at'] = $parsing['mechanic']->created_at;
                 $data['updated_at'] = $parsing['mechanic']->updated_at;
 
@@ -265,6 +267,7 @@ class Mechanic extends REST_Controller
                         $data['phone_number'] = $key_mechanic->phone_number;
                         $data['username'] = $key_mechanic->username;
                         $data['gender'] = $key_mechanic->gender;
+                        $data['address'] = $key_mechanic->address;
                         $data['created_at'] = $key_mechanic->created_at;
                         $data['updated_at'] = $key_mechanic->updated_at;
 
@@ -494,6 +497,7 @@ class Mechanic extends REST_Controller
                     $data['phone_number'] = $check['mechanic']->phone_number;
                     $data['username'] = $check['mechanic']->username;
                     $data['gender'] = $check['mechanic']->gender;
+                    $data['address'] = $check['mechanic']->address;
                     $data['created_at'] = $check['mechanic']->created_at;
                     $data['updated_at'] = $check['mechanic']->updated_at;
 

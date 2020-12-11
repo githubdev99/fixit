@@ -17,8 +17,8 @@ class Setting extends MY_Controller
         $title = 'Pengaturan Admin';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'admin/v_setting',
-            'get_script' => 'admin/script_setting'
+            'get_view' => 'admin/setting/v_setting',
+            'get_script' => 'admin/setting/script_setting'
         ];
 
         if (!$this->input->post()) {
