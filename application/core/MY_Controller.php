@@ -95,7 +95,8 @@ class MY_Controller extends MX_Controller
 			position: "top",
 			showCloseButton: !0,
 			showConfirmButton: false,
-			timer: 4000,
+			timer: 2000,
+			timerProgressBar: true,
 			onOpen: (toast) => {
 				toast.addEventListener("mouseenter", Swal.stopTimer)
 				toast.addEventListener("mouseleave", Swal.resumeTimer)
