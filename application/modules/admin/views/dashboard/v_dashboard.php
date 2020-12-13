@@ -5,7 +5,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6 col-md-6 col-lg-6">
+    <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="<?= base_url() ?>admin/transaction">
             <div class="card card-dashboard">
                 <div class="card-body p-0">
@@ -23,7 +23,7 @@
         </a>
     </div>
 
-    <div class="col-sm-6 col-md-6 col-lg-6">
+    <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="<?= base_url() ?>admin/purchase">
             <div class="card card-dashboard">
                 <div class="card-body p-0">

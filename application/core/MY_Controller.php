@@ -34,6 +34,9 @@ class MY_Controller extends MX_Controller
 			'service' => $this->api_model->count_all_data([
 				'table' => 'service'
 			]),
+			'item' => $this->api_model->count_all_data([
+				'table' => 'item'
+			]),
 			'purchase' => $this->api_model->select_data([
 				'field' => 'SUM(total_price) AS data',
 				'table' => 'purchase'
