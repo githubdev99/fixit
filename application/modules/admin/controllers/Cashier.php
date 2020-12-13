@@ -175,13 +175,7 @@ class Cashier extends MY_Controller
                                 ]
                             ]);
                         } else {
-                            if ($response['status']['code'] == 409) {
-                                $output = [
-                                    'error' => true,
-                                    'type' => 'error',
-                                    'message' => 'Username sudah terpakai'
-                                ];
-                            } elseif ($response['status']['code'] == 404) {
+                            if ($response['status']['code'] == 404) {
                                 $output = [
                                     'error' => true,
                                     'type' => 'warning',
