@@ -24,12 +24,6 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-2 col-form-label">Username <span class="text-danger">*</span></label>
-                                <div class="col-lg-10">
-                                    <input type="text" name="username" class="form-control edit" placeholder="Masukkan username" required value="<?= $get_data['username'] ?>">
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label class="col-lg-2 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                                 <div class="col-lg-10">
                                     <div class="input-group mt-2">
