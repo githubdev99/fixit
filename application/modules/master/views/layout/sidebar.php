@@ -95,6 +95,12 @@ if (!empty($core['admin'])) {
                         <span> Servis </span>
                     </a>
                 </li>
+                <li class="<?= ($this->uri->segment(2) == 'item') ? 'mm-active' : ''; ?>">
+                    <a href="<?= base_url() ?>admin/item">
+                        <i class="fas fa-box-open"></i>
+                        <span> Barang </span>
+                    </a>
+                </li>
                 <li class="<?= ($this->uri->segment(2) == 'setting') ? 'mm-active' : ''; ?>">
                     <a href="<?= base_url() ?>admin/setting">
                         <i class="fas fa-cog"></i>
