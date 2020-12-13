@@ -1,11 +1,11 @@
 <script>
     $(document).ready(function() {
         trigger_enter({
-            selector: '.edit',
-            target: 'button[name="edit"]'
+            selector: '.add',
+            target: 'button[name="add"]'
         });
 
-        $('form[name="edit"]').submit(function(e) {
+        $('form[name="add"]').submit(function(e) {
             e.preventDefault();
 
             var active_element = $(document.activeElement);
@@ -26,7 +26,7 @@
                         });
 
                         $('button[name="' + active_element.val() + '"]').removeAttr('disabled');
-                        $('button[name="' + active_element.val() + '"]').html('Edit');
+                        $('button[name="' + active_element.val() + '"]').html('Simpan');
                     } else {
                         show_alert({
                             type: response.type,

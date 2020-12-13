@@ -319,27 +319,6 @@ class Mechanic extends REST_Controller
                     'status' => SELF::HTTP_OK
                 ];
             } else {
-                if (!empty($this->api_model->select_data([
-                    'field' => '*',
-                    'table' => 'mechanic',
-                    'where' => [
-                        'LOWER(username)' => trim(strtolower($this->put('username'))),
-                        'id !=' => $id
-                    ]
-                ])->row())) {
-                    $checking = false;
-                    $response = [
-                        'result' => [
-                            'status' => [
-                                'code' => SELF::HTTP_CONFLICT,
-                                'message' => 'username has registered'
-                            ],
-                            'data' => null
-                        ],
-                        'status' => SELF::HTTP_OK
-                    ];
-                }
-
                 if (!in_array($this->put('gender'), $this->core['enum']['gender'])) {
                     $checking = false;
                     $response = [
