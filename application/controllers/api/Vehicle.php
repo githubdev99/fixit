@@ -344,7 +344,7 @@ class Vehicle extends REST_Controller
                     'table' => 'vehicle',
                     'where' => [
                         'LOWER(name)' => trim(strtolower($this->put('name'))),
-                        'id !=' => $id
+                        'id !=' => decrypt_text($id)
                     ]
                 ])->row())) {
                     $checking = false;
@@ -368,7 +368,7 @@ class Vehicle extends REST_Controller
                         'data' => [
                             'name' => $this->put('name'),
                             'updated_at' => date('Y-m-d H:i:s'),
-                            'in_active' => $this->put('in_active')
+                            'in_active' => (int) boolval($this->put('in_active'))
                         ],
                         'table' => 'vehicle'
                     ]);
@@ -863,7 +863,7 @@ class Vehicle extends REST_Controller
                     'table' => 'vehicle_children',
                     'where' => [
                         'LOWER(name)' => trim(strtolower($this->put('name'))),
-                        'id !=' => $id
+                        'id !=' => decrypt_text($id)
                     ]
                 ])->row())) {
                     $checking = false;
@@ -887,7 +887,7 @@ class Vehicle extends REST_Controller
                         'data' => [
                             'name' => $this->put('name'),
                             'updated_at' => date('Y-m-d H:i:s'),
-                            'in_active' => $this->put('in_active')
+                            'in_active' => (int) boolval($this->put('in_active'))
                         ],
                         'table' => 'vehicle_children'
                     ]);

@@ -473,7 +473,7 @@ class Service extends REST_Controller
                     'table' => 'service',
                     'where' => [
                         'LOWER(name)' => trim(strtolower($this->put('name'))),
-                        'id !=' => $id
+                        'id !=' => decrypt_text($id)
                     ]
                 ])->row())) {
                     $checking = false;

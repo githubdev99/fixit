@@ -67,14 +67,14 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
                             <strong>Tanggal Input</strong>
                         </td>
                         <td>&ensp;</td>
-                        <td><?= date_indo(date('d-m-Y', strtotime($created_at[0]))) ?></td>
+                        <td><?= date_indo(date('d-m-Y', strtotime($created_at[0]))) ?> <?= $created_at[1] ?></td>
                     </tr>
                     <tr>
                         <td class="text-right">
                             <strong>Tanggal Update</strong>
                         </td>
                         <td>&ensp;</td>
-                        <td><?= (!empty($updated_at)) ? date_indo(date('d-m-Y', strtotime($created_at[0]))) : 'Belum Update'; ?></td>
+                        <td><?= (!empty($updated_at)) ? date_indo(date('d-m-Y', strtotime($created_at[0]))) . ' ' . $updated_at[1] : 'Belum Update'; ?></td>
                     </tr>
                 </table>
             </div>

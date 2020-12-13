@@ -120,6 +120,12 @@ class Mechanic extends MY_Controller
                             ];
                         }
                     }
+                } else {
+                    $output = [
+                        'error' => true,
+                        'type' => 'error',
+                        'message' => 'Ada kesalahan teknis.'
+                    ];
                 }
 
                 $this->output->set_content_type('application/json')->set_output(json_encode($output));
@@ -189,6 +195,12 @@ class Mechanic extends MY_Controller
                                 ];
                             }
                         }
+                    } else {
+                        $output = [
+                            'error' => true,
+                            'type' => 'error',
+                            'message' => 'Ada kesalahan teknis.'
+                        ];
                     }
 
                     $this->output->set_content_type('application/json')->set_output(json_encode($output));

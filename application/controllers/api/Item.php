@@ -497,7 +497,7 @@ class Item extends REST_Controller
                     'table' => 'item',
                     'where' => [
                         'LOWER(name)' => trim(strtolower($this->put('name'))),
-                        'id !=' => $id
+                        'id !=' => decrypt_text($id)
                     ]
                 ])->row())) {
                     $checking = false;
@@ -525,7 +525,7 @@ class Item extends REST_Controller
                             'price' => $this->put('price'),
                             'stock' => $this->put('stock'),
                             'updated_at' => date('Y-m-d H:i:s'),
-                            'in_active' => $this->put('in_active')
+                            'in_active' => (int) boolval($this->put('in_active'))
                         ],
                         'table' => 'item'
                     ]);
