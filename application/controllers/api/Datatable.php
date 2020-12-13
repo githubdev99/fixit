@@ -176,10 +176,10 @@ class Datatable extends REST_Controller
 
                 if ($key->in_active != 0) {
                     $in_active = '<div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked><label class="custom-control-label" for="' . encrypt_text($key->id) . '"></label></div>';
+                    <input type="checkbox" class="custom-control-input" id="vehicle_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked><label class="custom-control-label" for="vehicle_' . encrypt_text($key->id) . '"></label></div>';
                 } else {
                     $in_active = '<div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><label class="custom-control-label" for="' . encrypt_text($key->id) . '"></label></div>';
+                    <input type="checkbox" class="custom-control-input" id="vehicle_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><label class="custom-control-label" for="vehicle_' . encrypt_text($key->id) . '"></label></div>';
                 }
 
                 $column[] = $no;
@@ -228,7 +228,7 @@ class Datatable extends REST_Controller
         $param['table'] = 'vehicle_children';
 
         $arr_default = [
-            'vehicle_id' => $this->input->post('params')['vehicle_id']
+            'vehicle_id' => decrypt_text($this->input->post('params')['vehicle_id'])
         ];
 
         if ($this->input->post('params')['in_active'] != 'all') {
@@ -261,10 +261,10 @@ class Datatable extends REST_Controller
 
                 if ($key->in_active != 0) {
                     $in_active = '<div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked><label class="custom-control-label" for="' . encrypt_text($key->id) . '"></label></div>';
+                    <input type="checkbox" class="custom-control-input" id="vehicle_children_' . encrypt_text($key->id) . '" onclick="show_modal_child({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked><label class="custom-control-label" for="vehicle_children_' . encrypt_text($key->id) . '"></label></div>';
                 } else {
                     $in_active = '<div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><label class="custom-control-label" for="' . encrypt_text($key->id) . '"></label></div>';
+                    <input type="checkbox" class="custom-control-input" id="vehicle_children_' . encrypt_text($key->id) . '" onclick="show_modal_child({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><label class="custom-control-label" for="vehicle_children_' . encrypt_text($key->id) . '"></label></div>';
                 }
 
                 $column[] = $no;
@@ -273,8 +273,8 @@ class Datatable extends REST_Controller
                 $column[] = (!empty($updated_at)) ? date_indo(date('d-m-Y', strtotime($updated_at[0]))) . '<br>' . $updated_at[1] : 'Belum Update';
                 $column[] = $in_active;
                 $column[] = '
-                <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data" onclick="show_modal({ modal: ' . "'edit_child'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-edit"></i></button>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete_child'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data" onclick="show_modal_child({ modal: ' . "'edit'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-edit"></i></button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal_child({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
 				';
 
                 $data[] = $column;

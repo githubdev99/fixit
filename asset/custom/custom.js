@@ -29,7 +29,7 @@ function show_alert(params) {
 				position: "top",
 				showCloseButton: !0,
 				showConfirmButton: false,
-				timer: 2000,
+				timer: 1500,
 				timerProgressBar: true,
 				onOpen: (toast) => {
 					toast.addEventListener("mouseenter", Swal.stopTimer)
@@ -47,7 +47,7 @@ function show_alert(params) {
 				position: "top",
 				showCloseButton: !0,
 				showConfirmButton: false,
-				timer: 2000,
+				timer: 1500,
 				timerProgressBar: true,
 				onOpen: (toast) => {
 					toast.addEventListener("mouseenter", Swal.stopTimer)
@@ -64,7 +64,7 @@ function show_alert(params) {
 			position: "top",
 			showCloseButton: !0,
 			showConfirmButton: false,
-			timer: 2000,
+			timer: 1500,
 			timerProgressBar: true,
 			onOpen: (toast) => {
 				toast.addEventListener("mouseenter", Swal.stopTimer)

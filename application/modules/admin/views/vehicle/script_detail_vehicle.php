@@ -2,7 +2,7 @@
     $(document).ready(function() {
         load_table({
             in_active: 'all',
-            vehicle_id: '<?= encrypt_text($get_data['vehicle_id']) ?>'
+            vehicle_id: '<?= $get_data['id'] ?>'
         });
 
         trigger_enter({
@@ -178,7 +178,7 @@
                 });
             },
             ajax: {
-                url: "<?= $core['url_api'] ?>datatable/vehicle",
+                url: "<?= $core['url_api'] ?>datatable/vehicle_children",
                 type: "POST",
                 data: {
                     params: params
@@ -195,7 +195,8 @@
         $('.status_load').each(function() {
             if ($(this).hasClass('active')) {
                 load_table({
-                    in_active: $(this).data('load')
+                    in_active: $(this).data('load'),
+                    vehicle_id: '<?= $get_data['id'] ?>'
                 });
             }
         });
@@ -211,7 +212,7 @@
                     success: function(response) {
                         var data = response.data;
 
-                        if (params.modal == 'delete_child') {
+                        if (params.modal == 'delete') {
                             Swal.fire({
                                 title: 'Konfirmasi!',
                                 html: `Anda yakin ingin menghapus data kendaraan ${data.name} ?`,
@@ -233,9 +234,10 @@
                                             if (response2.status.code == 200) {
                                                 show_alert({
                                                     type: 'success',
-                                                    message: `Data kendaraan ${data2.name} berhasil di hapus`,
-                                                    callback: '<?= base_url() ?>admin/vehicle'
+                                                    message: `Data kendaraan ${data2.name} berhasil di hapus`
                                                 });
+
+                                                refresh_table();
                                             } else {
                                                 if (response2.status.code == 404) {
                                                     show_alert({
@@ -253,8 +255,9 @@
                                     });
                                 }
                             });
-                        } else if (params.modal == 'edit_child') {
+                        } else if (params.modal == 'edit') {
                             $('#edit_child [name="id"]').val(data.id);
+                            $('#edit_child [name="vehicle_id"]').val(data.vehicle_id);
                             $('#edit_child [name="in_active"]').val(data.in_active);
                             $('#edit_child [name="name"]').val(data.name);
 
@@ -263,7 +266,7 @@
                                 keyboard: true,
                                 show: true
                             });
-                        } else if (params.modal == 'active_child') {
+                        } else if (params.modal == 'active') {
                             $.ajax({
                                 type: 'put',
                                 url: '<?= $core['url_api'] ?>vehicle/children/' + params.id,
@@ -278,9 +281,10 @@
                                     if (response2.status.code == 200) {
                                         show_alert({
                                             type: 'success',
-                                            message: `Data kendaraan ${data2.name} berhasil di aktifkan`,
-                                            callback: '<?= site_url(uri_string()) ?>'
+                                            message: `Data kendaraan ${data2.name} berhasil di aktifkan`
                                         });
+
+                                        refresh_table();
                                     } else {
                                         if (response2.status.code == 404) {
                                             show_alert({
@@ -296,7 +300,7 @@
                                     }
                                 }
                             });
-                        } else if (params.modal == 'not_active_child') {
+                        } else if (params.modal == 'not_active') {
                             $.ajax({
                                 type: 'put',
                                 url: '<?= $core['url_api'] ?>vehicle/children/' + params.id,
@@ -311,9 +315,10 @@
                                     if (response2.status.code == 200) {
                                         show_alert({
                                             type: 'success',
-                                            message: `Data kendaraan ${data2.name} berhasil di nonaktifkan`,
-                                            callback: '<?= site_url(uri_string()) ?>'
+                                            message: `Data kendaraan ${data2.name} berhasil di nonaktifkan`
                                         });
+
+                                        refresh_table();
                                     } else {
                                         if (response2.status.code == 404) {
                                             show_alert({
@@ -478,7 +483,13 @@
                     }
                 });
             } else {
-                show_alert();
+                if (params.modal == 'add') {
+                    $('#add_child').modal({
+                        backdrop: 'static',
+                        keyboard: true,
+                        show: true
+                    });
+                }
             }
         } else {
             show_alert();

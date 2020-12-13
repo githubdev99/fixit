@@ -80,7 +80,7 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
                 <h4 class="mb-1 mt-0">Detail Kendaraan</h4>
             </div>
             <div class="float-right">
-                <button type="button" class="btn btn-info" onclick="show_modal({ modal: 'add_child' })"><i class="fas fa-plus mr-2"></i>Tambah Data</button>
+                <button type="button" class="btn btn-info" onclick="show_modal({ modal: 'add' })"><i class="fas fa-plus mr-2"></i>Tambah Data</button>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -125,6 +125,70 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add_child" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-3">
+            <form action="<?= base_url() ?>admin/vehicle/detail/<?= $get_data['id'] ?>" method="post" enctype="multipart/form-data" name="add_child">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Detail Kendaraan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Nama <span class="text-danger">*</span></label>
+                                <div class="col-lg-9">
+                                    <input type="text" name="name" class="form-control add_child" placeholder="Masukkan nama" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger mr-2" data-dismiss="modal">Batal</button>
+                    <button type="submit" name="add_child" value="add_child" class="btn btn-info">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_child" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content p-3">
+            <form action="<?= base_url() ?>admin/vehicle/detail/<?= $get_data['id'] ?>" method="post" enctype="multipart/form-data" name="edit_child">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Detail Kendaraan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label">Nama <span class="text-danger">*</span></label>
+                                <div class="col-lg-9">
+                                    <input type="text" name="name" class="form-control edit_child" placeholder="Masukkan nama" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="in_active">
+                    <button type="button" class="btn btn-danger mr-2" data-dismiss="modal">Batal</button>
+                    <button type="submit" name="edit_child" value="edit_child" class="btn btn-info">Edit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
