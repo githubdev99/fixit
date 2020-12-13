@@ -36,7 +36,7 @@
                         <thead class="table-info">
                             <tr>
                                 <th>No.</th>
-                                <th>Jenis</th>
+                                <th>Nama</th>
                                 <th>Tanggal Input</th>
                                 <th>Tanggal Update</th>
                                 <th>Status</th>

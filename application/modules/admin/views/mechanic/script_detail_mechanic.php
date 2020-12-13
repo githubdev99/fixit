@@ -34,8 +34,6 @@
                                                     message: `Data mekanik ${data2.username} berhasil di hapus`,
                                                     callback: '<?= base_url() ?>admin/mechanic'
                                                 });
-
-                                                load_table();
                                             } else {
                                                 if (response2.status.code == 404) {
                                                     show_alert({

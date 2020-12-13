@@ -108,4 +108,34 @@ class Vehicle extends MY_Controller
             $this->output->set_content_type('application/json')->set_output(json_encode($output));
         }
     }
+
+    public function detail($id = null)
+    {
+        $response = json_decode(shoot_api([
+            'url' => $this->core['url_api'] . 'vehicle/' . $id,
+            'method' => 'get'
+        ]), true);
+
+        if ($response['status']['code'] == 200) {
+            $title = 'Detail Kendaraan';
+            $data = [
+                'core' => $this->core($title),
+                'get_view' => 'admin/vehicle/v_detail_vehicle',
+                'get_script' => 'admin/vehicle/script_detail_vehicle',
+                'get_data' => $response['data']
+            ];
+
+            $this->master->template($data);
+        } else {
+            $this->alert_popup([
+                'name' => 'show_alert',
+                'swal' => [
+                    'title' => 'Ada kesalahan teknis',
+                    'type' => 'error'
+                ]
+            ]);
+
+            redirect(base_url() . 'admin/vehicle', 'refresh');
+        }
+    }
 }

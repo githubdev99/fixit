@@ -32,7 +32,7 @@ class Service extends REST_Controller
                 'field' => '*',
                 'table' => 'vehicle',
                 'where' => [
-                    'id' => $this->post('vehicle_id')
+                    'id' => decrypt_text($this->post('vehicle_id'))
                 ]
             ])->row();
             if (empty($parsing['vehicle'])) {
@@ -54,7 +54,7 @@ class Service extends REST_Controller
                     'field' => '*',
                     'table' => 'vehicle_children',
                     'where' => [
-                        'id' => $this->post('vehicle_children_id')
+                        'id' => decrypt_text($this->post('vehicle_children_id'))
                     ]
                 ])->row();
                 if (empty($parsing['vehicle_children'])) {
@@ -95,8 +95,8 @@ class Service extends REST_Controller
             if ($checking == true) {
                 $query = $this->api_model->send_data([
                     'data' => [
-                        'vehicle_id' => $this->post('vehicle_id'),
-                        'vehicle_children_id' => (!empty($this->post('vehicle_children_id'))) ? $this->post('vehicle_children_id') : null,
+                        'vehicle_id' => decrypt_text($this->post('vehicle_id')),
+                        'vehicle_children_id' => (!empty($this->post('vehicle_children_id'))) ? decrypt_text($this->post('vehicle_children_id')) : null,
                         'name' => $this->post('name'),
                         'price' => $this->post('price'),
                         'created_at' => date('Y-m-d H:i:s')
@@ -165,7 +165,7 @@ class Service extends REST_Controller
                             ]
                         ])->row();
                         $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
-                        $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                        $vehicle_children['vehicle_id'] = encrypt_text($parsing['vehicle_children']->vehicle_id);
                         $vehicle_children['name'] = $parsing['vehicle_children']->name;
                         $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
                         $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
@@ -254,7 +254,7 @@ class Service extends REST_Controller
                         ]
                     ])->row();
                     $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
-                    $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                    $vehicle_children['vehicle_id'] = encrypt_text($parsing['vehicle_children']->vehicle_id);
                     $vehicle_children['name'] = $parsing['vehicle_children']->name;
                     $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
                     $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
@@ -363,7 +363,7 @@ class Service extends REST_Controller
                                 ]
                             ])->row();
                             $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
-                            $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                            $vehicle_children['vehicle_id'] = encrypt_text($parsing['vehicle_children']->vehicle_id);
                             $vehicle_children['name'] = $parsing['vehicle_children']->name;
                             $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
                             $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
@@ -428,7 +428,7 @@ class Service extends REST_Controller
                     'field' => '*',
                     'table' => 'vehicle',
                     'where' => [
-                        'id' => $this->put('vehicle_id')
+                        'id' => decrypt_text($this->put('vehicle_id'))
                     ]
                 ])->row();
                 if (empty($parsing['vehicle'])) {
@@ -450,7 +450,7 @@ class Service extends REST_Controller
                         'field' => '*',
                         'table' => 'vehicle_children',
                         'where' => [
-                            'id' => $this->put('vehicle_children_id')
+                            'id' => decrypt_text($this->put('vehicle_children_id'))
                         ]
                     ])->row();
                     if (empty($parsing['vehicle_children'])) {
@@ -495,8 +495,8 @@ class Service extends REST_Controller
                             'id' => decrypt_text($id)
                         ],
                         'data' => [
-                            'vehicle_id' => $this->put('vehicle_id'),
-                            'vehicle_children_id' => (!empty($this->put('vehicle_children_id'))) ? $this->put('vehicle_children_id') : null,
+                            'vehicle_id' => decrypt_text($this->put('vehicle_id')),
+                            'vehicle_children_id' => (!empty($this->put('vehicle_children_id'))) ? decrypt_text($this->put('vehicle_children_id')) : null,
                             'name' => $this->put('name'),
                             'price' => $this->put('price'),
                             'updated_at' => date('Y-m-d H:i:s')
@@ -565,7 +565,7 @@ class Service extends REST_Controller
                                 ]
                             ])->row();
                             $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
-                            $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                            $vehicle_children['vehicle_id'] = encrypt_text($parsing['vehicle_children']->vehicle_id);
                             $vehicle_children['name'] = $parsing['vehicle_children']->name;
                             $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
                             $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
@@ -685,7 +685,7 @@ class Service extends REST_Controller
                             ]
                         ])->row();
                         $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
-                        $vehicle_children['vehicle_id'] = $parsing['vehicle_children']->vehicle_id;
+                        $vehicle_children['vehicle_id'] = encrypt_text($parsing['vehicle_children']->vehicle_id);
                         $vehicle_children['name'] = $parsing['vehicle_children']->name;
                         $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
                         $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
