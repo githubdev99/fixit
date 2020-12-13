@@ -9,7 +9,7 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
             <h4 class="mb-1 mt-0">Detail Data Kasir</h4>
         </div>
         <div class="float-right">
-            <a href="<?= base_url() ?>admin/cashier" class="btn btn-info"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
+            <a href="<?= base_url() ?>admin/cashier" class="btn btn-primary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
         </div>
         <div class="clearfix"></div>
     </div>
