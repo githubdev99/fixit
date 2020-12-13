@@ -15,71 +15,76 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
+<div class="row col-center">
+    <div class="col-8">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Nama <span class="text-danger">*</span></label>
-                            <div class="col-lg-10">
-                                <input type="text" name="name" class="form-control edit" placeholder="Masukkan nama" required value="<?= $get_data['name'] ?>">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Username <span class="text-danger">*</span></label>
-                            <div class="col-lg-10">
-                                <input type="text" name="username" class="form-control edit" placeholder="Masukkan username" required value="<?= $get_data['username'] ?>">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
-                            <div class="col-lg-10">
-                                <div class="input-group mt-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
-                                    </div>
-                                    <input type="text" name="birth_date" class="form-control edit datepicker" placeholder="Masukkan tanggal lahir" required value="<?= date('d M Y', strtotime($get_data['birth_date'])) ?>">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
-                            <div class="col-lg-10">
-                                <select class="form-control edit select2" name="gender" data-placeholder="Pilih salah satu" required>
-                                    <option value=""></option>
-                                    <?php foreach ($this->core['enum']['gender'] as $key_gender) : $gender = ($key_gender == 'male') ? 'Laki-Laki' : 'Perempuan';
-                                        $selected = ($key_gender == $get_data['gender']) ? 'selected' : ''; ?>
-                                        <option value="<?= $key_gender ?>" <?= $selected ?>><?= $gender ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">No. Telp <span class="text-danger">*</span></label>
-                            <div class="col-lg-10">
-                                <input type="text" name="phone_number" class="form-control edit" placeholder="Masukkan no. telepon" required onkeypress="number_only(event)" value="<?= $get_data['phone_number'] ?>">
-                                <small class="help-block float-left mt-1 ml-1">Hanya berisi angka (0-9)</small>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">Alamat</label>
-                            <div class="col-lg-10">
-                                <textarea name="address" class="form-control edit" placeholder="Masukkan alamat" cols="20" rows="5"><?= $get_data['address'] ?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <table border="0" cellpadding="5" style="width: 100%;">
+                    <tr>
+                        <td class="text-right">
+                            <strong>Nama</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= $get_data['name'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Username</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= $get_data['username'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>No. Telepon</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= $get_data['phone_number'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Jenis Kelamin</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= ($get_data['gender'] == 'male') ? 'Laki-Laki' : 'Perempuan' ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Tanggal Lahir</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= date_indo(date('d-m-Y', strtotime($get_data['birth_date']))) ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Alamat</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= $get_data['address'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Tanggal Input</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= date_indo(date('d-m-Y', strtotime($created_at[0]))) ?></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <strong>Tanggal Update</strong>
+                        </td>
+                        <td>&ensp;</td>
+                        <td><?= (!empty($updated_at)) ? date_indo(date('d-m-Y', strtotime($created_at[0]))) : 'Belum Update'; ?></td>
+                    </tr>
+                </table>
             </div>
         </div>
-    </div>
-    <div class="col-12">
-        <div class="row">
-            <div class="col text-right">
-                <a href="<?= base_url() ?>admin/mechanic" class="btn btn-soft-dark btn-lg mr-2">Batal</a>
-                <button type="submit" class="btn btn-info btn-lg" name="edit" value="edit">Edit</button>
-            </div>
+        <div class="float-left">
+            <button type="button" onclick="show_modal({ modal: 'delete', id: '<?= $get_data['id'] ?>' })" class="btn btn-danger btn-lg">Hapus</button>
         </div>
+        <div class="float-right">
+            <a href="<?= base_url() ?>admin/mechanic/form/<?= $get_data['id'] ?>" class="btn btn-info btn-lg">Edit</a>
+        </div>
+        <div class="clearfix"></div>
     </div>
 </div>
