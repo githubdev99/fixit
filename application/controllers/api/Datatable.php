@@ -293,4 +293,103 @@ class Datatable extends REST_Controller
 
         $this->response($response['result'], $response['status']);
     }
+
+    public function item_post()
+    {
+        if (!empty($_REQUEST['draw'])) {
+            $draw = $_REQUEST['draw'];
+        } else {
+            $draw = 0;
+        }
+
+        $param['column_search'] = [
+            'vehicle_name', 'vehicle_children_name', 'name', 'price', 'stock', 'created_at', 'updated_at', 'in_active'
+        ];
+        $param['column_order'] = [
+            null, 'name', 'vehicle_children_name', 'price', 'stock', 'in_active', null
+        ];
+        $param['field'] = 'item.*, vehicle.name as vehicle_name, vehicle_children.name as vehicle_children_name';
+        $param['table'] = 'item';
+
+        if ($this->input->post('params')['in_active'] != 'all') {
+            $param['where'] = [
+                'item.in_active' => $this->input->post('params')['in_active']
+            ];
+        }
+
+        $param['join'] = [
+            [
+                'table' => 'vehicle',
+                'on' => 'vehicle.id = item.vehicle_id',
+                'type' => 'left'
+            ],
+            [
+                'table' => 'vehicle_children',
+                'on' => 'vehicle_children.id = item.vehicle_children_id',
+                'type' => 'left'
+            ]
+        ];
+
+        $param['order_by'] = [
+            'item.name' => 'asc'
+        ];
+
+        $data_parsing = $this->api_model->get_datatable($param);
+        $total_filtered = $this->api_model->get_total_filtered($param);
+        $total_data = $this->api_model->get_total_data($param);
+
+        $data = [];
+        if (!empty($data_parsing)) {
+            $no = $_REQUEST['start'];
+            foreach ($data_parsing as $key) {
+                $no++;
+                $column = [];
+                $jenis = '';
+
+                if ($key->in_active != 0) {
+                    $in_active = '<div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="item_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked><label class="custom-control-label" for="item_' . encrypt_text($key->id) . '"></label></div>';
+                } else {
+                    $in_active = '<div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="item_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><label class="custom-control-label" for="item_' . encrypt_text($key->id) . '"></label></div>';
+                }
+
+                if (!empty($key->vehicle_id)) {
+                    $jenis .= 'Kendaraan : ' . $key->vehicle_name;
+
+                    if (!empty($key->vehicle_children_id)) {
+                        $jenis .= '<br>Detail : ' . $key->vehicle_children_name;
+                    }
+                } else {
+                    $jenis = 'Umum';
+                }
+
+                $column[] = $no;
+                $column[] = $key->name;
+                $column[] = $jenis;
+                $column[] = rupiah($key->price);
+                $column[] = $key->stock;
+                $column[] = $in_active;
+                $column[] = '
+                <a href="' . base_url() . 'admin/item/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
+                <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data" onclick="show_modal({ modal: ' . "'edit'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-edit"></i></button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
+				';
+
+                $data[] = $column;
+            }
+        }
+
+        $response = [
+            'result' => [
+                'draw' => intval($draw),
+                'recordsTotal' => intval($total_data),
+                'recordsFiltered' => intval($total_filtered),
+                'data' => $data
+            ],
+            'status' => SELF::HTTP_OK
+        ];
+
+        $this->response($response['result'], $response['status']);
+    }
 }

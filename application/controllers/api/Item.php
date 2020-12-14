@@ -100,7 +100,7 @@ class Item extends REST_Controller
                         'vehicle_id' => (!empty($this->post('vehicle_id'))) ? decrypt_text($this->post('vehicle_id')) : null,
                         'vehicle_children_id' => (!empty($this->post('vehicle_children_id'))) ? decrypt_text($this->post('vehicle_children_id')) : null,
                         'name' => $this->post('name'),
-                        'price' => $this->post('price'),
+                        'price' => clean_rupiah($this->post('price')),
                         'stock' => $this->post('stock'),
                         'created_at' => date('Y-m-d H:i:s'),
                         'in_active' => 1
@@ -522,7 +522,7 @@ class Item extends REST_Controller
                             'vehicle_id' => (!empty($this->put('vehicle_id'))) ? decrypt_text($this->put('vehicle_id')) : null,
                             'vehicle_children_id' => (!empty($this->put('vehicle_children_id'))) ? decrypt_text($this->put('vehicle_children_id')) : null,
                             'name' => $this->put('name'),
-                            'price' => $this->put('price'),
+                            'price' => clean_rupiah($this->put('price')),
                             'stock' => $this->put('stock'),
                             'updated_at' => date('Y-m-d H:i:s'),
                             'in_active' => (int) boolval($this->put('in_active'))

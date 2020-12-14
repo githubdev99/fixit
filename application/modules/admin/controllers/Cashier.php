@@ -14,7 +14,7 @@ class Cashier extends MY_Controller
 
     public function index()
     {
-        $title = 'Cashier';
+        $title = 'Kasir';
         $data = [
             'core' => $this->core($title),
             'get_view' => 'admin/cashier/v_cashier',
@@ -32,7 +32,7 @@ class Cashier extends MY_Controller
         ]), true);
 
         if ($response['status']['code'] == 200) {
-            $title = 'Detail Cashier';
+            $title = 'Detail Kasir';
             $data = [
                 'core' => $this->core($title),
                 'get_view' => 'admin/cashier/v_detail_cashier',
@@ -57,7 +57,7 @@ class Cashier extends MY_Controller
     public function form($id = null)
     {
         if (empty($id)) {
-            $title = 'Tambah Cashier';
+            $title = 'Tambah Kasir';
             $data = [
                 'core' => $this->core($title),
                 'get_view' => 'admin/cashier/v_add_cashier',
@@ -137,7 +137,7 @@ class Cashier extends MY_Controller
             ]), true);
 
             if ($response['status']['code'] == 200) {
-                $title = 'Edit Cashier';
+                $title = 'Edit Kasir';
                 $data = [
                     'core' => $this->core($title),
                     'get_view' => 'admin/cashier/v_edit_cashier',
