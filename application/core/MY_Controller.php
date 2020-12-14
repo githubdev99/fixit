@@ -50,7 +50,11 @@ class MY_Controller extends MX_Controller
 			'vehicle' => json_decode(shoot_api([
 				'url' => $this->core['url_api'] . 'vehicle',
 				'method' => 'get'
-			]), true)
+			]), true)['data'],
+			'vehicle_children' => json_decode(shoot_api([
+				'url' => $this->core['url_api'] . 'vehicle/children',
+				'method' => 'get'
+			]), true)['data']
 		];
 
 		$this->core['setting'] = $this->api_model->select_data([
