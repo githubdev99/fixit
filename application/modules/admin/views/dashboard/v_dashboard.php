@@ -42,7 +42,7 @@
     </div>
 
     <div class="col-sm-4 col-md-4 col-lg-4">
-        <a href="<?= base_url() ?>admin/mechanic">
+        <a href="<?= base_url() ?>admin/item">
             <div class="card card-dashboard">
                 <div class="card-body p-0">
                     <div class="media p-3">

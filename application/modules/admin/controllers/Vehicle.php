@@ -238,11 +238,13 @@ class Vehicle extends MY_Controller
             ];
 
             foreach ($response['data'] as $key) {
-                $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
+                if ($key->in_active != 0) {
+                    $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
 
-                $output['html'] .= '
-                <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
-                ';
+                    $output['html'] .= '
+                    <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
+                    ';
+                }
             }
         } else {
             $output = [
@@ -269,11 +271,13 @@ class Vehicle extends MY_Controller
             ];
 
             foreach ($response['data'] as $key) {
-                $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
+                if ($key->in_active != 0) {
+                    $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
 
-                $output['html'] .= '
-                <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
-                ';
+                    $output['html'] .= '
+                    <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
+                    ';
+                }
             }
         } else {
             $output = [
