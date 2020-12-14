@@ -1,15 +1,26 @@
 <?php
 $created_at = explode(' ', $get_data['created_at']);
 $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['updated_at']) : null;
+$jenis = '';
+
+if (!empty($get_data['vehicle'])) {
+    $jenis .= 'Kendaraan : ' . $get_data['vehicle']['name'];
+
+    if (!empty($get_data['vehicle']['children'])) {
+        $jenis .= '<br>Detail : ' . $get_data['vehicle']['children']['name'];
+    }
+} else {
+    $jenis = 'Umum';
+}
 ?>
 
 <div class="row page-title">
     <div class="col-12">
         <div class="float-left">
-            <h4 class="mb-1 mt-0">Detail Data Kasir</h4>
+            <h4 class="mb-1 mt-0">Detail Data Barang</h4>
         </div>
         <div class="float-right">
-            <a href="<?= base_url() ?>admin/cashier" class="btn btn-primary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
+            <a href="<?= base_url() ?>admin/item" class="btn btn-primary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -29,38 +40,24 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>Username</strong>
+                            <strong>Jenis</strong>
                         </td>
                         <td>&ensp;</td>
-                        <td><?= $get_data['username'] ?></td>
+                        <td><?= $jenis ?></td>
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>No. Telepon</strong>
+                            <strong>Harga</strong>
                         </td>
                         <td>&ensp;</td>
-                        <td><?= $get_data['phone_number'] ?></td>
+                        <td><?= $get_data['price_currency_format'] ?></td>
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>Jenis Kelamin</strong>
+                            <strong>Stok</strong>
                         </td>
                         <td>&ensp;</td>
-                        <td><?= ($get_data['gender'] == 'male') ? 'Laki-Laki' : 'Perempuan' ?></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">
-                            <strong>Tanggal Lahir</strong>
-                        </td>
-                        <td>&ensp;</td>
-                        <td><?= date_indo(date('d-m-Y', strtotime($get_data['birth_date']))) ?></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">
-                            <strong>Alamat</strong>
-                        </td>
-                        <td>&ensp;</td>
-                        <td><?= $get_data['address'] ?></td>
+                        <td><?= $get_data['stock'] ?></td>
                     </tr>
                     <tr>
                         <td class="text-right">
@@ -83,7 +80,7 @@ $updated_at = (!empty($get_data['updated_at'])) ? explode(' ', $get_data['update
             <button type="button" onclick="show_modal({ modal: 'delete', id: '<?= $get_data['id'] ?>' })" class="btn btn-danger btn-lg">Hapus</button>
         </div>
         <div class="float-right">
-            <a href="<?= base_url() ?>admin/cashier/form/<?= $get_data['id'] ?>" class="btn btn-info btn-lg">Edit</a>
+            <a href="<?= base_url() ?>admin/item/form/<?= $get_data['id'] ?>" class="btn btn-info btn-lg">Edit</a>
         </div>
         <div class="clearfix"></div>
     </div>

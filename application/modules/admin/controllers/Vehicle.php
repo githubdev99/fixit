@@ -223,4 +223,66 @@ class Vehicle extends MY_Controller
             redirect(base_url() . 'admin/vehicle', 'refresh');
         }
     }
+
+    public function option()
+    {
+        $response = json_decode(shoot_api([
+            'url' => $this->core['url_api'] . 'vehicle',
+            'method' => 'get'
+        ]), true);
+
+        if ($response['status']['code'] == 200) {
+            $output = [
+                'error' => false,
+                'html' => '<option></option>'
+            ];
+
+            foreach ($response['data'] as $key) {
+                $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
+
+                $output['html'] .= '
+                <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
+                ';
+            }
+        } else {
+            $output = [
+                'error' => true,
+                'type' => 'error',
+                'message' => 'Ada kesalahan teknis.'
+            ];
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($output));
+    }
+
+    public function option_children($id = null)
+    {
+        $response = json_decode(shoot_api([
+            'url' => $this->core['url_api'] . 'vehicle/children?from_parent=' . $id,
+            'method' => 'get'
+        ]), true);
+
+        if ($response['status']['code'] == 200) {
+            $output = [
+                'error' => false,
+                'html' => '<option></option>'
+            ];
+
+            foreach ($response['data'] as $key) {
+                $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
+
+                $output['html'] .= '
+                <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
+                ';
+            }
+        } else {
+            $output = [
+                'error' => true,
+                'type' => 'error',
+                'message' => 'Ada kesalahan teknis.'
+            ];
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($output));
+    }
 }

@@ -50,7 +50,7 @@
                                 <label class="col-lg-2 col-form-label">No. Telp <span class="text-danger">*</span></label>
                                 <div class="col-lg-10">
                                     <input type="text" name="phone_number" class="form-control edit" placeholder="Masukkan no. telepon" required onkeypress="number_only(event)" value="<?= $get_data['phone_number'] ?>">
-                                    <small class="help-block float-left mt-1 ml-1">Hanya berisi angka (0-9)</small>
+                                    <small class="help-block mt-1 ml-1">Hanya berisi angka (0-9)</small>
                                 </div>
                             </div>
                             <div class="form-group row">

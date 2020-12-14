@@ -40,6 +40,24 @@
             </div>
         </a>
     </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <a href="<?= base_url() ?>admin/mechanic">
+            <div class="card card-dashboard">
+                <div class="card-body p-0">
+                    <div class="media p-3">
+                        <div class="media-body">
+                            <span class="text-muted text-uppercase font-size-11 font-weight-bold">Barang</span>
+                            <h5 class="mb-0"><?= $core['total_data']['item'] ?></h5>
+                        </div>
+                        <div class="align-self-center">
+                            <span class="text-dark font-weight-bold font-size-13"><i class="fas fa-box-open fa-3x"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
 </div>
 
 <div class="row">

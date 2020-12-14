@@ -32,31 +32,45 @@
                                         </div>
                                         <input type="text" name="price" class="form-control add" placeholder="Masukkan harga" required onkeypress="number_only(event)" onkeyup="running_rupiah('price', this.value)">
                                     </div>
-                                    <small class="help-block float-left mt-1 ml-1">Hanya berisi angka (0-9)</small>
+                                    <small class="help-block mt-1 ml-1">Hanya berisi angka (0-9)</small>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-2 col-form-label">Stok <span class="text-danger">*</span></label>
                                 <div class="col-lg-10">
                                     <input type="text" name="stock" class="form-control add" placeholder="Masukkan stok" required onkeypress="number_only(event)">
-                                    <small class="help-block float-left mt-1 ml-1">Hanya berisi angka (0-9)</small>
+                                    <small class="help-block mt-1 ml-1">Hanya berisi angka (0-9)</small>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-2 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                                <label class="col-lg-2 col-form-label">Jenis <span class="text-danger">*</span></label>
                                 <div class="col-lg-10">
-                                    <select class="form-control add select2" name="gender" data-placeholder="Pilih salah satu" required>
-                                        <option value=""></option>
-                                        <?php foreach ($this->core['enum']['gender'] as $key_gender) : ?>
-                                            <option value="<?= $key_gender ?>"><?= $gender ?></option>
-                                        <?php endforeach ?>
-                                    </select>
+                                    <div class="custom-control custom-radio mb-2">
+                                        <input type="radio" id="no" name="jenis" class="custom-control-input" value="no" onclick="show_jenis(this.value);" checked required>
+                                        <label class="custom-control-label" for="no">Umum</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="yes" name="jenis" class="custom-control-input" value="yes" onclick="show_jenis(this.value);" required>
+                                        <label class="custom-control-label" for="yes">Per-Jenis</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-lg-2 col-form-label">Alamat</label>
-                                <div class="col-lg-10">
-                                    <textarea name="address" class="form-control add" placeholder="Masukkan alamat" cols="20" rows="5"></textarea>
+                            <div class="form-border-dashed" id="jenis_choice" style="display: none;">
+                                <div class="form-group row mt-1">
+                                    <label class="col-lg-3 col-form-label">Kendaraan</label>
+                                    <div class="col-lg-6">
+                                        <select class="form-control select2" name="vehicle_id" data-placeholder="Pilih salah satu">
+                                        </select>
+                                        <small class="help-block mt-1 ml-1">Kosongkan bila tidak ada</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Detail Kendaraan</label>
+                                    <div class="col-lg-6">
+                                        <select class="form-control select2" name="vehicle_children_id" data-placeholder="Pilih salah satu">
+                                        </select>
+                                        <small class="help-block mt-1 ml-1">Kosongkan bila tidak ada</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>

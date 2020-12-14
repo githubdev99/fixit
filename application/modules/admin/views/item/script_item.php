@@ -122,7 +122,7 @@
                                                     message: `Data barang ${data2.name} berhasil di hapus`
                                                 });
 
-                                                load_table();
+                                                refresh_table();
                                             } else {
                                                 if (response2.status.code == 404) {
                                                     show_alert({

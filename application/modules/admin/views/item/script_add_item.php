@@ -37,5 +37,48 @@
                 }
             });
         });
+
+        $.ajax({
+            url: '<?= base_url() ?>admin/vehicle/option',
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                if (response.error == false) {
+                    $('select[name="vehicle_id"]').html(response.html);
+                } else {
+                    show_alert();
+                }
+            },
+        });
+
+        $('select[name="vehicle_id"]').change(function(e) {
+            e.preventDefault();
+
+            if ($(this).val()) {
+                $.ajax({
+                    url: '<?= base_url() ?>admin/vehicle/option_children/' + $(this).val(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.error == false) {
+                            $('select[name="vehicle_children_id"]').html(response.html);
+                        } else {
+                            show_alert();
+                        }
+                    },
+                });
+            }
+        });
     });
+
+    function show_jenis(value) {
+        if (value == 'yes') {
+            $('#jenis_choice').show();
+            $('[name="vehicle_id"]').attr('required', 'true');
+        } else {
+            $('#jenis_choice').hide();
+            $('[name="vehicle_id"]').removeAttr('required');
+            $('[name="vehicle_id"]').val(null).trigger('change');
+        }
+    }
 </script>
