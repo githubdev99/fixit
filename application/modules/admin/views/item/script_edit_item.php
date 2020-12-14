@@ -37,5 +37,76 @@
                 }
             });
         });
+
+        $.ajax({
+            url: '<?= base_url() ?>admin/vehicle/option',
+            type: 'POST',
+            data: {
+                id: '<?= (!empty($get_data['vehicle'])) ? $get_data['vehicle']['id'] : null; ?>'
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.error == false) {
+                    <?php if (!empty($get_data['vehicle'])) : ?>
+                        $('#jenis_choice').show();
+                        $('[name="vehicle_id"]').attr('required', 'true');
+                    <?php endif ?>
+
+                    $('select[name="vehicle_id"]').html(response.html);
+                } else {
+                    show_alert();
+                }
+            }
+        });
+
+        <?php if (!empty($get_data['vehicle'])) : ?>
+            $.ajax({
+                url: '<?= base_url() ?>admin/vehicle/option_children/<?= $get_data['vehicle']['id'] ?>',
+                type: 'POST',
+                data: {
+                    id: '<?= (!empty($get_data['vehicle']['children'])) ? $get_data['vehicle']['children']['id'] : null; ?>'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.error == false) {
+                        $('select[name="vehicle_children_id"]').html(response.html);
+                    } else {
+                        show_alert();
+                    }
+                },
+            });
+        <?php endif ?>
+
+        $('select[name="vehicle_id"]').change(function(e) {
+            e.preventDefault();
+
+            if ($(this).val()) {
+                $.ajax({
+                    url: '<?= base_url() ?>admin/vehicle/option_children/' + $(this).val(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.error == false) {
+                            $('select[name="vehicle_children_id"]').html(response.html);
+                        } else {
+                            show_alert();
+                        }
+                    },
+                });
+            }
+        });
     });
+
+    function show_jenis(value) {
+        console.log(value);
+        if (value == 'yes') {
+            $('#jenis_choice').show();
+            $('[name="vehicle_id"]').attr('required', 'true');
+        } else {
+            $('#jenis_choice').hide();
+            $('[name="vehicle_id"]').removeAttr('required');
+            $('[name="vehicle_id"]').val(null).trigger('change');
+            $('[name="vehicle_children_id"]').val(null).trigger('change');
+        }
+    }
 </script>

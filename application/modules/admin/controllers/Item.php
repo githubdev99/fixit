@@ -159,7 +159,8 @@ class Item extends MY_Controller
                                 'vehicle_children_id' => $this->input->post('vehicle_children_id'),
                                 'name' => $this->input->post('name'),
                                 'price' => $this->input->post('price'),
-                                'stock' => $this->input->post('stock')
+                                'stock' => $this->input->post('stock'),
+                                'in_active' => $response['data']['in_active']
                             ])
                         ]), true);
 

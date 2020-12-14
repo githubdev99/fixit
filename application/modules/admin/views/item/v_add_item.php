@@ -59,7 +59,7 @@
                                 <div class="form-group row mt-1">
                                     <label class="col-lg-3 col-form-label">Kendaraan</label>
                                     <div class="col-lg-6">
-                                        <select class="form-control select2" name="vehicle_id" data-placeholder="Pilih salah satu">
+                                        <select class="form-control select2 add" name="vehicle_id" data-placeholder="Pilih salah satu">
                                         </select>
                                         <small class="help-block mt-1 ml-1">Kosongkan bila tidak ada</small>
                                     </div>
@@ -67,7 +67,7 @@
                                 <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Detail Kendaraan</label>
                                     <div class="col-lg-6">
-                                        <select class="form-control select2" name="vehicle_children_id" data-placeholder="Pilih salah satu">
+                                        <select class="form-control select2 add" name="vehicle_children_id" data-placeholder="Pilih salah satu">
                                         </select>
                                         <small class="help-block mt-1 ml-1">Kosongkan bila tidak ada</small>
                                     </div>

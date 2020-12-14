@@ -48,7 +48,7 @@
                 } else {
                     show_alert();
                 }
-            },
+            }
         });
 
         $('select[name="vehicle_id"]').change(function(e) {
@@ -79,6 +79,7 @@
             $('#jenis_choice').hide();
             $('[name="vehicle_id"]').removeAttr('required');
             $('[name="vehicle_id"]').val(null).trigger('change');
+            $('[name="vehicle_children_id"]').val(null).trigger('change');
         }
     }
 </script>
