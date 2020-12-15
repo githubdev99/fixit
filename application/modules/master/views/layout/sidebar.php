@@ -53,60 +53,87 @@ if (!empty($core['admin'])) {
         <!--- Sidemenu -->
         <div id="sidebar-menu" class="slimscroll-menu">
             <ul class="metismenu" id="menu-bar">
-                <li class="<?= ($this->uri->segment(2) == 'dashboard') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/dashboard">
-                        <i class="fas fa-home"></i>
-                        <span> Dashboard </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'transaction') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/transaction">
-                        <i class="fas fa-dollar-sign"></i>
-                        <span> Penjualan </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'purchase') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/purchase">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span> Pembelian </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'mechanic') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/mechanic">
-                        <i class="fas fa-users-cog"></i>
-                        <span> Mekanik </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'cashier') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/cashier">
-                        <i class="fas fa-user-tag"></i>
-                        <span> Kasir </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'vehicle') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/vehicle">
-                        <i class="fas fa-motorcycle"></i>
-                        <span> Kendaraan </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'service') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/service">
-                        <i class="fas fa-wrench"></i>
-                        <span> Servis </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'item') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/item">
-                        <i class="fas fa-box-open"></i>
-                        <span> Barang </span>
-                    </a>
-                </li>
-                <li class="<?= ($this->uri->segment(2) == 'setting') ? 'mm-active' : ''; ?>">
-                    <a href="<?= base_url() ?>admin/setting">
-                        <i class="fas fa-cog"></i>
-                        <span> Pengaturan Admin </span>
-                    </a>
-                </li>
+                <?php if (!empty($core['admin'])) : ?>
+                    <li class="<?= ($this->uri->segment(2) == 'dashboard') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/dashboard">
+                            <i class="fas fa-home"></i>
+                            <span> Dashboard </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'transaction') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/transaction">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span> Transaksi </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'purchase') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/purchase">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span> Pembelian Supplier </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'mechanic') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/mechanic">
+                            <i class="fas fa-users-cog"></i>
+                            <span> Mekanik </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'cashier') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/cashier">
+                            <i class="fas fa-user-tag"></i>
+                            <span> Kasir </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'vehicle') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/vehicle">
+                            <i class="fas fa-motorcycle"></i>
+                            <span> Kendaraan </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'service') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/service">
+                            <i class="fas fa-wrench"></i>
+                            <span> Servis </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'item') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/item">
+                            <i class="fas fa-box-open"></i>
+                            <span> Barang </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'setting') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>admin/setting">
+                            <i class="fas fa-cog"></i>
+                            <span> Pengaturan Admin </span>
+                        </a>
+                    </li>
+                <?php elseif (!empty($core['cashier'])) : ?>
+                    <li class="<?= ($this->uri->segment(2) == 'dashboard') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>cashier/dashboard">
+                            <i class="fas fa-home"></i>
+                            <span> Dashboard </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'transaction') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>cashier/transaction">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span> Transaksi </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'purchase') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>cashier/purchase">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span> Pembelian Supplier </span>
+                        </a>
+                    </li>
+                    <li class="<?= ($this->uri->segment(2) == 'item') ? 'mm-active' : ''; ?>">
+                        <a href="<?= base_url() ?>cashier/item">
+                            <i class="fas fa-box-open"></i>
+                            <span> Barang </span>
+                        </a>
+                    </li>
+                <?php endif ?>
             </ul>
         </div>
         <!-- End Sidebar -->
