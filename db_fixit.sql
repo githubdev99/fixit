@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 15 Des 2020 pada 10.48
+-- Waktu pembuatan: 15 Des 2020 pada 16.33
 -- Versi server: 10.4.17-MariaDB
 -- Versi PHP: 7.4.13
 
@@ -65,7 +65,7 @@ CREATE TABLE `cashier` (
 --
 
 INSERT INTO `cashier` (`id`, `name`, `birth_date`, `phone_number`, `username`, `password`, `gender`, `address`, `created_at`, `updated_at`) VALUES
-(2, 'Cashier 1', '2001-11-21', '098765', 'cashier1', '$2y$10$YERCiDNBms94ZbsFzJmIS.A3uBfH9PgK/Zp/Sq02kkUQkGdTPmwUO', 'female', 'Jl. jalan', '2020-12-09 09:47:42', NULL);
+(2, 'Cashier 1', '2001-11-21', '098765', 'cashier1', '$2y$10$cXfKUdWcFECHGOf29FGU6.azlpR4MbGnZkXG6WGTwOBp1aIYsPydK', 'female', 'Jl. jalan', '2020-12-09 09:47:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -90,8 +90,9 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`id`, `vehicle_id`, `vehicle_children_id`, `name`, `price`, `stock`, `created_at`, `updated_at`, `in_active`) VALUES
-(1, NULL, NULL, 'Oli Repsol', 30000, 40, '2020-12-08 19:48:26', '2020-12-15 16:39:01', 1),
-(8, NULL, NULL, 'Kanvas Rem', 15000, 35, '2020-12-15 10:23:31', '2020-12-15 16:39:01', 1);
+(1, NULL, NULL, 'Oli Repsol', 30000, 84, '2020-12-08 19:48:26', '2020-12-15 22:27:35', 1),
+(8, 1, 2, 'Kanvas Rem', 15000, 95, '2020-12-15 10:23:31', '2020-12-15 22:31:43', 1),
+(10, 1, NULL, 'Oli Yamalube', 20000, 70, '2020-12-15 22:16:39', '2020-12-15 22:31:43', 1);
 
 -- --------------------------------------------------------
 
@@ -103,9 +104,18 @@ CREATE TABLE `purchase` (
   `id` int(11) NOT NULL,
   `invoice` text DEFAULT NULL,
   `supplier_name` varchar(100) NOT NULL,
+  `total_qty` int(11) NOT NULL,
   `total_price` int(11) NOT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `purchase`
+--
+
+INSERT INTO `purchase` (`id`, `invoice`, `supplier_name`, `total_qty`, `total_price`, `created_at`) VALUES
+(1, 'INV-P20121558311', 'Honda Warehouse', 42, 960000, '2020-12-15 22:27:35'),
+(2, 'INV-P20121521242', 'Bintara Yamaha Motor', 30, 500000, '2020-12-15 22:31:43');
 
 -- --------------------------------------------------------
 
@@ -117,8 +127,19 @@ CREATE TABLE `purchase_detail` (
   `id` int(11) NOT NULL,
   `purchase_id` int(11) NOT NULL,
   `item_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`item_data`)),
-  `qty` int(11) NOT NULL
+  `qty` int(11) NOT NULL,
+  `price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `purchase_detail`
+--
+
+INSERT INTO `purchase_detail` (`id`, `purchase_id`, `item_data`, `qty`, `price`) VALUES
+(1, 1, '{\"name\":\"Oli Repsol\",\"price\":\"30000\",\"price_currency_format\":\"Rp. 30.000\",\"stock\":\"84\",\"created_at\":\"2020-12-08 19:48:26\",\"updated_at\":\"2020-12-15 22:27:35\",\"in_active\":true,\"vehicle\":null}', 12, 360000),
+(2, 1, '{\"name\":\"Oli Yamalube\",\"price\":\"20000\",\"price_currency_format\":\"Rp. 20.000\",\"stock\":\"60\",\"created_at\":\"2020-12-15 22:16:39\",\"updated_at\":\"2020-12-15 22:27:35\",\"in_active\":true,\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":null}}', 30, 600000),
+(3, 2, '{\"name\":\"Oli Yamalube\",\"price\":\"20000\",\"price_currency_format\":\"Rp. 20.000\",\"stock\":\"70\",\"created_at\":\"2020-12-15 22:16:39\",\"updated_at\":\"2020-12-15 22:31:43\",\"in_active\":true,\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":null}}', 10, 200000),
+(4, 2, '{\"name\":\"Kanvas Rem\",\"price\":\"15000\",\"price_currency_format\":\"Rp. 15.000\",\"stock\":\"95\",\"created_at\":\"2020-12-15 10:23:31\",\"updated_at\":\"2020-12-15 22:31:43\",\"in_active\":true,\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}}', 20, 300000);
 
 -- --------------------------------------------------------
 
@@ -218,7 +239,7 @@ CREATE TABLE `vehicle` (
 INSERT INTO `vehicle` (`id`, `name`, `created_at`, `updated_at`, `in_active`) VALUES
 (1, 'Yamaha', '2020-12-08 10:47:33', NULL, 1),
 (3, 'Suzuki', '2020-12-14 16:53:52', '2020-12-15 10:19:13', 1),
-(4, 'Honda', '2020-12-15 15:07:05', NULL, 1);
+(4, 'Honda', '2020-12-15 15:07:05', '2020-12-15 21:37:14', 1);
 
 -- --------------------------------------------------------
 
@@ -343,19 +364,19 @@ ALTER TABLE `cashier`
 -- AUTO_INCREMENT untuk tabel `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `purchase_detail`
 --
 ALTER TABLE `purchase_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `service`

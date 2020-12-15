@@ -1,6 +1,10 @@
 <script>
     let detail = [];
     $(document).ready(function() {
+        load_table_detail('load');
+
+        $('input[name="item_data"]').val(JSON.stringify(detail));
+
         trigger_enter({
             selector: '.add',
             target: 'button[name="add"]'
@@ -34,6 +38,8 @@
                             message: response.message,
                             callback: response.callback
                         });
+
+                        localStorage.removeItem('detail');
                     }
                 }
             });
@@ -94,6 +100,9 @@
                             stock: data.stock,
                             qty: qty
                         });
+
+                        $('#item_option').val(null).trigger('change');
+                        $('#qty').val('');
                     },
                     error: function() {
                         show_alert();
@@ -111,7 +120,7 @@
                     message: 'Barang sudah ditambah!'
                 });
 
-                // show_detail();
+                show_detail();
                 return;
             }
         }
@@ -123,13 +132,85 @@
             price_currency_format: data.price_currency_format,
             stock: data.stock,
             qty: data.qty,
-            subprice: data.price * data.qty
+            subprice: data.price * data.qty,
+            subprice_currency_format: rupiah(data.price * data.qty)
         });
 
-        // show_detail();
+        show_detail();
+
         show_alert({
             type: 'success',
             message: 'Barang berhasil ditambahkan'
         });
+    }
+
+    function show_detail() {
+        if (window.localStorage) {
+            localStorage.detail = JSON.stringify(detail);
+        }
+
+        load_table_detail('clear');
+
+        var total_qty = 0;
+        var total_price = 0;
+        for (let i in detail) {
+            let no = i;
+            no++;
+
+            load_table_detail('create').row.add([
+                no,
+                `
+                Nama : ${detail[i].name}<br>
+                Jenis : ${detail[i].name}<br>
+                Harga : ${detail[i].price_currency_format}<br>
+                Stok Tersedia : ${detail[i].stock}<br>
+                `,
+                detail[i].qty,
+                detail[i].subprice_currency_format,
+                `<button type="button" class="btn btn-danger btn-sm" onclick="delete_detail(${i});"><i class="fas fa-times"></i></button>`
+            ]).draw(false);
+
+            total_qty += parseInt(detail[i].qty);
+            total_price += parseInt(detail[i].subprice);
+        }
+
+        $('#total_qty').html(total_qty);
+        $('#total_price').html(rupiah(total_price));
+        $('input[name="item_data"]').val(JSON.stringify(detail));
+    }
+
+    function delete_detail(index) {
+        detail.splice(index, 1);
+        show_detail();
+    }
+
+    function load_table_detail(params) {
+        if (params == 'load') {
+            $('#datatable').DataTable({
+                pagingType: "full_numbers",
+                destroy: true,
+                columnDefs: [{
+                    targets: 4,
+                    orderable: false
+                }],
+                drawCallback: function() {
+                    $('[data-toggle="tooltip"]').tooltip();
+                }
+            });
+        } else if (params == 'clear') {
+            $('#datatable').DataTable().clear().draw();
+        } else {
+            return $('#datatable').DataTable({
+                pagingType: "full_numbers",
+                destroy: true,
+                columnDefs: [{
+                    targets: 4,
+                    orderable: false
+                }],
+                drawCallback: function() {
+                    $('[data-toggle="tooltip"]').tooltip();
+                }
+            });
+        }
     }
 </script>

@@ -72,7 +72,7 @@ class Item extends MY_Controller
                     $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
 
                     $output['html'] .= '
-                    <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . '</option>
+                    <option value="' . $key['id'] . '" ' . $selected . '>' . $key['name'] . ' (Stok : ' . $key['stock'] . ')</option>
                     ';
                 }
             }

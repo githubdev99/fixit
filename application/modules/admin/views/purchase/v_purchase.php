@@ -15,6 +15,7 @@
                                 <th>No.</th>
                                 <th>Invoice</th>
                                 <th>Nama Supplier</th>
+                                <th>Kuantitas</th>
                                 <th>Total</th>
                                 <th>Detail</th>
                                 <th>Tanggal Input</th>
@@ -48,8 +49,8 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Barang</th>
-                                        <th>Qty</th>
-                                        <th>Harga</th>
+                                        <th>Kuantitas</th>
+                                        <th>Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -11,11 +11,11 @@
             destroy: true,
             order: [],
             columnDefs: [{
-                    targets: [0, 6],
+                    targets: [0, 7],
                     orderable: false
                 },
                 {
-                    targets: 6,
+                    targets: 7,
                     createdCell: function(td, cellData, rowData, row, col) {
                         $(td).attr({
                             style: 'white-space: nowrap;'

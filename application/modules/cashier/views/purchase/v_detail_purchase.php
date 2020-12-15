@@ -28,7 +28,7 @@ $created_at = explode(' ', $get_data['created_at']);
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>Total Qty</strong>
+                            <strong>Total Kuantitas</strong>
                         </td>
                         <td>&ensp;</td>
                         <td><?= $get_data['total_qty'] ?></td>
@@ -71,8 +71,8 @@ $created_at = explode(' ', $get_data['created_at']);
                             <tr>
                                 <th>No.</th>
                                 <th>Barang</th>
-                                <th>Qty</th>
-                                <th>Harga</th>
+                                <th>Kuantitas</th>
+                                <th>Sub Total</th>
                             </tr>
                         </thead>
                         <tbody>

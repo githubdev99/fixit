@@ -476,6 +476,7 @@ class Datatable extends REST_Controller
                 $column[] = $no;
                 $column[] = $key->invoice;
                 $column[] = $key->supplier_name;
+                $column[] = $key->total_qty;
                 $column[] = rupiah($key->total_price);
                 $column[] = '<a href="javascript:;" class="text-blue-href" onclick="show_modal({ modal: ' . "'detail'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })">' . $count_detail . ' Barang</a>';
                 $column[] = date_indo(date('d-m-Y', strtotime($created_at[0]))) . '<br>' . $created_at[1];
@@ -562,7 +563,7 @@ class Datatable extends REST_Controller
                 Nama : ' . $item_data['name'] . '<br>
                 Jenis : ' . $jenis . '<br>
                 Harga : ' . $item_data['price_currency_format'] . '<br>
-                Stok : ' . $item_data['stock'];
+                Stok Tersedia : ' . $item_data['stock'];
                 $column[] = $key->qty;
                 $column[] = rupiah($key->price);
 

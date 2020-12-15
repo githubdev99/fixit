@@ -50,177 +50,74 @@ class Purchase extends MY_Controller
                 ]
             ]);
 
-            redirect(base_url() . 'cashier/item', 'refresh');
+            redirect(base_url() . 'cashier/purchase', 'refresh');
         }
     }
 
-    public function form($id = null)
+    public function form()
     {
-        if (empty($id)) {
-            $title = 'Tambah Pembelian Supplier';
-            $data = [
-                'core' => $this->core($title),
-                'get_view' => 'cashier/purchase/v_add_purchase',
-                'get_script' => 'cashier/purchase/script_add_purchase'
-            ];
+        $title = 'Tambah Pembelian Supplier';
+        $data = [
+            'core' => $this->core($title),
+            'get_view' => 'cashier/purchase/v_add_purchase',
+            'get_script' => 'cashier/purchase/script_add_purchase'
+        ];
 
-            if (!$this->input->post()) {
-                $this->master->template($data);
-            } else {
-                if ($this->input->post('submit') == 'add') {
-                    $response = json_decode(shoot_api([
-                        'url' => $this->core['url_api'] . 'item',
-                        'method' => 'POST',
-                        'header' => [
-                            "Content-Type: application/json"
-                        ],
-                        'data' => json_encode([
-                            'vehicle_id' => $this->input->post('vehicle_id'),
-                            'vehicle_children_id' => $this->input->post('vehicle_children_id'),
-                            'name' => $this->input->post('name'),
-                            'price' => $this->input->post('price'),
-                            'stock' => $this->input->post('stock')
-                        ])
-                    ]), true);
-
-                    if ($response['status']['code'] == 201) {
-                        $output = [
-                            'error' => false,
-                            'type' => 'info',
-                            'message' => 'Data sedang di simpan, mohon tunggu...',
-                            'callback' => base_url() . 'cashier/item'
-                        ];
-
-                        $this->alert_popup([
-                            'name' => 'show_alert',
-                            'swal' => [
-                                'title' => 'Data barang ' . $response['data']['name'] . ' berhasil di simpan',
-                                'type' => 'success'
-                            ]
-                        ]);
-                    } else {
-                        if ($response['status']['code'] == 409) {
-                            $output = [
-                                'error' => true,
-                                'type' => 'error',
-                                'message' => 'Data barang ' . $response['data']['name'] . ' sudah ada'
-                            ];
-                        } elseif ($response['status']['code'] == 404) {
-                            $output = [
-                                'error' => true,
-                                'type' => 'warning',
-                                'message' => 'Data tidak ditemukan'
-                            ];
-                        } else {
-                            $output = [
-                                'error' => true,
-                                'type' => 'error',
-                                'message' => 'Data barang gagal di simpan'
-                            ];
-                        }
-                    }
-                } else {
-                    $output = [
-                        'error' => true,
-                        'type' => 'error',
-                        'message' => 'Ada kesalahan teknis.'
-                    ];
-                }
-
-                $this->output->set_content_type('application/json')->set_output(json_encode($output));
-            }
+        if (!$this->input->post()) {
+            $this->master->template($data);
         } else {
-            $response = json_decode(shoot_api([
-                'url' => $this->core['url_api'] . 'purchase/' . $id,
-                'method' => 'get'
-            ]), true);
+            if ($this->input->post('submit') == 'add') {
+                $response = json_decode(shoot_api([
+                    'url' => $this->core['url_api'] . 'purchase',
+                    'method' => 'POST',
+                    'header' => [
+                        "Content-Type: application/json"
+                    ],
+                    'data' => json_encode([
+                        'supplier_name' => $this->input->post('supplier_name'),
+                        'item_data' => json_decode($this->input->post('item_data'), true)
+                    ])
+                ]), true);
 
-            if ($response['status']['code'] == 200) {
-                $title = 'Edit Pembelian Supplier';
-                $data = [
-                    'core' => $this->core($title),
-                    'get_view' => 'cashier/purchase/v_edit_purchase',
-                    'get_script' => 'cashier/purchase/script_edit_purchase',
-                    'get_data' => $response['data']
-                ];
+                if ($response['status']['code'] == 201) {
+                    $output = [
+                        'error' => false,
+                        'type' => 'info',
+                        'message' => 'Data sedang di simpan, mohon tunggu...',
+                        'callback' => base_url() . 'cashier/purchase'
+                    ];
 
-                if (!$this->input->post()) {
-                    $this->master->template($data);
+                    $this->alert_popup([
+                        'name' => 'show_alert',
+                        'swal' => [
+                            'title' => 'Data pembelian supplier ' . $response['data']['supplier_name'] . ' berhasil di simpan',
+                            'type' => 'success'
+                        ]
+                    ]);
                 } else {
-                    if ($this->input->post('submit') == 'edit') {
-                        $response = json_decode(shoot_api([
-                            'url' => $this->core['url_api'] . 'purchase/' . $id,
-                            'method' => 'PUT',
-                            'header' => [
-                                "Content-Type: application/json"
-                            ],
-                            'data' => json_encode([
-                                'vehicle_id' => $this->input->post('vehicle_id'),
-                                'vehicle_children_id' => $this->input->post('vehicle_children_id'),
-                                'name' => $this->input->post('name'),
-                                'price' => $this->input->post('price'),
-                                'stock' => $this->input->post('stock'),
-                                'in_active' => $this->input->post('in_active')
-                            ])
-                        ]), true);
-
-                        if ($response['status']['code'] == 200) {
-                            $output = [
-                                'error' => false,
-                                'type' => 'info',
-                                'message' => 'Data sedang di edit, mohon tunggu...',
-                                'callback' => base_url() . 'cashier/item'
-                            ];
-
-                            $this->alert_popup([
-                                'name' => 'show_alert',
-                                'swal' => [
-                                    'title' => 'Data barang ' . $response['data']['name'] . ' berhasil di edit',
-                                    'type' => 'success'
-                                ]
-                            ]);
-                        } else {
-                            if ($response['status']['code'] == 409) {
-                                $output = [
-                                    'error' => true,
-                                    'type' => 'error',
-                                    'message' => 'Data barang ' . $response['data']['name'] . ' sudah ada'
-                                ];
-                            } elseif ($response['status']['code'] == 404) {
-                                $output = [
-                                    'error' => true,
-                                    'type' => 'warning',
-                                    'message' => 'Data tidak ditemukan'
-                                ];
-                            } else {
-                                $output = [
-                                    'error' => true,
-                                    'type' => 'error',
-                                    'message' => 'Data barang gagal di edit'
-                                ];
-                            }
-                        }
+                    if ($response['status']['code'] == 404) {
+                        $output = [
+                            'error' => true,
+                            'type' => 'warning',
+                            'message' => 'Data tidak ditemukan'
+                        ];
                     } else {
                         $output = [
                             'error' => true,
                             'type' => 'error',
-                            'message' => 'Ada kesalahan teknis.'
+                            'message' => 'Data pembelian supplier gagal di simpan' . var_dump($response)
                         ];
                     }
-
-                    $this->output->set_content_type('application/json')->set_output(json_encode($output));
                 }
             } else {
-                $this->alert_popup([
-                    'name' => 'show_alert',
-                    'swal' => [
-                        'title' => 'Ada kesalahan teknis',
-                        'type' => 'error'
-                    ]
-                ]);
-
-                redirect(base_url() . 'cashier/item', 'refresh');
+                $output = [
+                    'error' => true,
+                    'type' => 'error',
+                    'message' => 'Ada kesalahan teknis.'
+                ];
             }
+
+            $this->output->set_content_type('application/json')->set_output(json_encode($output));
         }
     }
 }
