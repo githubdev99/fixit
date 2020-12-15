@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Item extends MY_Controller
+class Service extends MY_Controller
 {
 
     public function __construct()
@@ -14,11 +14,11 @@ class Item extends MY_Controller
 
     public function index()
     {
-        $title = 'Barang';
+        $title = 'Servis';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'admin/item/v_item',
-            'get_script' => 'admin/item/script_item'
+            'get_view' => 'admin/service/v_service',
+            'get_script' => 'admin/service/script_service'
         ];
 
         $this->master->template($data);
@@ -27,16 +27,16 @@ class Item extends MY_Controller
     public function detail($id = null)
     {
         $response = json_decode(shoot_api([
-            'url' => $this->core['url_api'] . 'item/' . $id,
+            'url' => $this->core['url_api'] . 'service/' . $id,
             'method' => 'get'
         ]), true);
 
         if ($response['status']['code'] == 200) {
-            $title = 'Detail Barang';
+            $title = 'Detail Servis';
             $data = [
                 'core' => $this->core($title),
-                'get_view' => 'admin/item/v_detail_item',
-                'get_script' => 'admin/item/script_detail_item',
+                'get_view' => 'admin/service/v_detail_service',
+                'get_script' => 'admin/service/script_detail_service',
                 'get_data' => $response['data']
             ];
 
@@ -50,18 +50,18 @@ class Item extends MY_Controller
                 ]
             ]);
 
-            redirect(base_url() . 'admin/item', 'refresh');
+            redirect(base_url() . 'admin/service', 'refresh');
         }
     }
 
     public function form($id = null)
     {
         if (empty($id)) {
-            $title = 'Tambah Barang';
+            $title = 'Tambah Servis';
             $data = [
                 'core' => $this->core($title),
-                'get_view' => 'admin/item/v_add_item',
-                'get_script' => 'admin/item/script_add_item'
+                'get_view' => 'admin/service/v_add_service',
+                'get_script' => 'admin/service/script_add_service'
             ];
 
             if (!$this->input->post()) {
@@ -69,7 +69,7 @@ class Item extends MY_Controller
             } else {
                 if ($this->input->post('submit') == 'add') {
                     $response = json_decode(shoot_api([
-                        'url' => $this->core['url_api'] . 'item',
+                        'url' => $this->core['url_api'] . 'service',
                         'method' => 'POST',
                         'header' => [
                             "Content-Type: application/json"
@@ -78,8 +78,7 @@ class Item extends MY_Controller
                             'vehicle_id' => $this->input->post('vehicle_id'),
                             'vehicle_children_id' => $this->input->post('vehicle_children_id'),
                             'name' => $this->input->post('name'),
-                            'price' => $this->input->post('price'),
-                            'stock' => $this->input->post('stock')
+                            'price' => $this->input->post('price')
                         ])
                     ]), true);
 
@@ -88,13 +87,13 @@ class Item extends MY_Controller
                             'error' => false,
                             'type' => 'info',
                             'message' => 'Data sedang di simpan, mohon tunggu...',
-                            'callback' => base_url() . 'admin/item'
+                            'callback' => base_url() . 'admin/service'
                         ];
 
                         $this->alert_popup([
                             'name' => 'show_alert',
                             'swal' => [
-                                'title' => 'Data barang ' . $response['data']['name'] . ' berhasil di simpan',
+                                'title' => 'Data servis ' . $response['data']['name'] . ' berhasil di simpan',
                                 'type' => 'success'
                             ]
                         ]);
@@ -103,19 +102,19 @@ class Item extends MY_Controller
                             $output = [
                                 'error' => true,
                                 'type' => 'error',
-                                'message' => 'Data barang ' . $response['data']['name'] . ' sudah ada'
+                                'message' => 'Data servis ' . $response['data']['name'] . ' sudah ada'
                             ];
                         } elseif ($response['status']['code'] == 404) {
                             $output = [
                                 'error' => true,
                                 'type' => 'warning',
-                                'message' => 'Data tidak ditemukan'
+                                'message' => 'Data tidak dserviceukan'
                             ];
                         } else {
                             $output = [
                                 'error' => true,
                                 'type' => 'error',
-                                'message' => 'Data barang gagal di simpan'
+                                'message' => 'Data servis gagal di simpan'
                             ];
                         }
                     }
@@ -131,16 +130,16 @@ class Item extends MY_Controller
             }
         } else {
             $response = json_decode(shoot_api([
-                'url' => $this->core['url_api'] . 'item/' . $id,
+                'url' => $this->core['url_api'] . 'service/' . $id,
                 'method' => 'get'
             ]), true);
 
             if ($response['status']['code'] == 200) {
-                $title = 'Edit Barang';
+                $title = 'Edit Servis';
                 $data = [
                     'core' => $this->core($title),
-                    'get_view' => 'admin/item/v_edit_item',
-                    'get_script' => 'admin/item/script_edit_item',
+                    'get_view' => 'admin/service/v_edit_service',
+                    'get_script' => 'admin/service/script_edit_service',
                     'get_data' => $response['data']
                 ];
 
@@ -149,7 +148,7 @@ class Item extends MY_Controller
                 } else {
                     if ($this->input->post('submit') == 'edit') {
                         $response = json_decode(shoot_api([
-                            'url' => $this->core['url_api'] . 'item/' . $id,
+                            'url' => $this->core['url_api'] . 'service/' . $id,
                             'method' => 'PUT',
                             'header' => [
                                 "Content-Type: application/json"
@@ -158,9 +157,7 @@ class Item extends MY_Controller
                                 'vehicle_id' => $this->input->post('vehicle_id'),
                                 'vehicle_children_id' => $this->input->post('vehicle_children_id'),
                                 'name' => $this->input->post('name'),
-                                'price' => $this->input->post('price'),
-                                'stock' => $this->input->post('stock'),
-                                'in_active' => $this->input->post('in_active')
+                                'price' => $this->input->post('price')
                             ])
                         ]), true);
 
@@ -169,13 +166,13 @@ class Item extends MY_Controller
                                 'error' => false,
                                 'type' => 'info',
                                 'message' => 'Data sedang di edit, mohon tunggu...',
-                                'callback' => base_url() . 'admin/item'
+                                'callback' => base_url() . 'admin/service'
                             ];
 
                             $this->alert_popup([
                                 'name' => 'show_alert',
                                 'swal' => [
-                                    'title' => 'Data barang ' . $response['data']['name'] . ' berhasil di edit',
+                                    'title' => 'Data servis ' . $response['data']['name'] . ' berhasil di edit',
                                     'type' => 'success'
                                 ]
                             ]);
@@ -184,19 +181,19 @@ class Item extends MY_Controller
                                 $output = [
                                     'error' => true,
                                     'type' => 'error',
-                                    'message' => 'Data barang ' . $response['data']['name'] . ' sudah ada'
+                                    'message' => 'Data servis ' . $response['data']['name'] . ' sudah ada'
                                 ];
                             } elseif ($response['status']['code'] == 404) {
                                 $output = [
                                     'error' => true,
                                     'type' => 'warning',
-                                    'message' => 'Data tidak ditemukan'
+                                    'message' => 'Data tidak dserviceukan'
                                 ];
                             } else {
                                 $output = [
                                     'error' => true,
                                     'type' => 'error',
-                                    'message' => 'Data barang gagal di edit'
+                                    'message' => 'Data servis gagal di edit'
                                 ];
                             }
                         }
@@ -219,7 +216,7 @@ class Item extends MY_Controller
                     ]
                 ]);
 
-                redirect(base_url() . 'admin/item', 'refresh');
+                redirect(base_url() . 'admin/service', 'refresh');
             }
         }
     }

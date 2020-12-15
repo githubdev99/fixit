@@ -681,7 +681,7 @@ class Service extends REST_Controller
                             'field' => '*',
                             'table' => 'vehicle_children',
                             'where' => [
-                                'id' => $parsing['service']->vehicle_children_id
+                                'id' => $check['service']->vehicle_children_id
                             ]
                         ])->row();
                         $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);

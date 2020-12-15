@@ -1,15 +1,5 @@
 <script>
     $(document).ready(function() {
-        $('#in_active').change(function(e) {
-            e.preventDefault();
-
-            if ($(this).is(':checked')) {
-                $('input[name="in_active"]').val(1);
-            } else {
-                $('input[name="in_active"]').val(0);
-            }
-        });
-
         trigger_enter({
             selector: '.edit',
             target: 'button[name="edit"]'

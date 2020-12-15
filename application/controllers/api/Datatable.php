@@ -303,10 +303,10 @@ class Datatable extends REST_Controller
         }
 
         $param['column_search'] = [
-            'vehicle_name', 'vehicle_children_name', 'name', 'price', 'stock', 'created_at', 'updated_at', 'in_active'
+            'vehicle.name', 'vehicle_children.name', 'item.name', 'item.price', 'item.stock', 'item.created_at', 'item.updated_at', 'item.in_active'
         ];
         $param['column_order'] = [
-            null, 'name', 'vehicle_children_name', 'price', 'stock', 'in_active', null
+            null, 'item.name', 'vehicle.name', 'item.price', 'item.stock', 'item.in_active', null
         ];
         $param['field'] = 'item.*, vehicle.name as vehicle_name, vehicle_children.name as vehicle_children_name';
         $param['table'] = 'item';
@@ -373,6 +373,94 @@ class Datatable extends REST_Controller
                 $column[] = '
                 <a href="' . base_url() . 'admin/item/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
                 <a href="' . base_url() . 'admin/item/form/' . encrypt_text($key->id) . '" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data"><i class="fas fa-edit"></i></a>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
+				';
+
+                $data[] = $column;
+            }
+        }
+
+        $response = [
+            'result' => [
+                'draw' => intval($draw),
+                'recordsTotal' => intval($total_data),
+                'recordsFiltered' => intval($total_filtered),
+                'data' => $data
+            ],
+            'status' => SELF::HTTP_OK
+        ];
+
+        $this->response($response['result'], $response['status']);
+    }
+
+    public function service_post()
+    {
+        if (!empty($_REQUEST['draw'])) {
+            $draw = $_REQUEST['draw'];
+        } else {
+            $draw = 0;
+        }
+
+        $param['column_search'] = [
+            'vehicle.name', 'vehicle_children.name', 'service.name', 'service.price', 'service.created_at', 'service.updated_at',
+        ];
+        $param['column_order'] = [
+            null, 'service.name', 'vehicle.name', 'service.price', null
+        ];
+        $param['field'] = 'service.*, vehicle.name as vehicle_name, vehicle_children.name as vehicle_children_name';
+        $param['table'] = 'service';
+
+        $param['join'] = [
+            [
+                'table' => 'vehicle',
+                'on' => 'vehicle.id = service.vehicle_id',
+                'type' => 'left'
+            ],
+            [
+                'table' => 'vehicle_children',
+                'on' => 'vehicle_children.id = service.vehicle_children_id',
+                'type' => 'left'
+            ]
+        ];
+
+        $param['order_by'] = [
+            'service.name' => 'asc'
+        ];
+
+        $data_parsing = $this->api_model->get_datatable($param);
+        $total_filtered = $this->api_model->get_total_filtered($param);
+        $total_data = $this->api_model->get_total_data($param);
+
+        $data = [];
+        if (!empty($data_parsing)) {
+            $no = $_REQUEST['start'];
+            foreach ($data_parsing as $key) {
+                $no++;
+                $column = [];
+                $jenis = '';
+
+                $created_at = explode(' ', $key->created_at);
+                $updated_at = (!empty($key->updated_at)) ? explode(' ', $key->updated_at) : null;
+
+                if (!empty($key->vehicle_id)) {
+                    $jenis .= 'Kendaraan : ' . $key->vehicle_name;
+
+                    if (!empty($key->vehicle_children_id)) {
+                        $jenis .= '<br>Detail : ' . $key->vehicle_children_name;
+                    }
+                } else {
+                    $jenis = 'Umum';
+                }
+
+                $column[] = $no;
+                $column[] = $key->name;
+                $column[] = $jenis;
+                $column[] = rupiah($key->price);
+                $column[] = date_indo(date('d-m-Y', strtotime($created_at[0]))) . '<br>' . $created_at[1];
+                $column[] = (!empty($updated_at)) ? date_indo(date('d-m-Y', strtotime($updated_at[0]))) . '<br>' . $updated_at[1] : 'Belum Update';
+                $column[] = '
+                <a href="' . base_url() . 'admin/service/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
+                <a href="' . base_url() . 'admin/service/form/' . encrypt_text($key->id) . '" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data"><i class="fas fa-edit"></i></a>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
 				';
 

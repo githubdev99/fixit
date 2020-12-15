@@ -1,21 +1,11 @@
 <script>
     $(document).ready(function() {
-        $('#in_active').change(function(e) {
-            e.preventDefault();
-
-            if ($(this).is(':checked')) {
-                $('input[name="in_active"]').val(1);
-            } else {
-                $('input[name="in_active"]').val(0);
-            }
-        });
-
         trigger_enter({
-            selector: '.edit',
-            target: 'button[name="edit"]'
+            selector: '.add',
+            target: 'button[name="add"]'
         });
 
-        $('form[name="edit"]').submit(function(e) {
+        $('form[name="add"]').submit(function(e) {
             e.preventDefault();
 
             var active_element = $(document.activeElement);
@@ -36,7 +26,7 @@
                         });
 
                         $('button[name="' + active_element.val() + '"]').removeAttr('disabled');
-                        $('button[name="' + active_element.val() + '"]').html('Edit');
+                        $('button[name="' + active_element.val() + '"]').html('Simpan');
                     } else {
                         show_alert({
                             type: response.type,
@@ -51,17 +41,9 @@
         $.ajax({
             url: '<?= base_url() ?>admin/vehicle/option',
             type: 'POST',
-            data: {
-                id: '<?= (!empty($get_data['vehicle'])) ? $get_data['vehicle']['id'] : null; ?>'
-            },
             dataType: 'json',
             success: function(response) {
                 if (response.error == false) {
-                    <?php if (!empty($get_data['vehicle'])) : ?>
-                        $('#jenis_choice').show();
-                        $('[name="vehicle_id"]').attr('required', 'true');
-                    <?php endif ?>
-
                     $('select[name="vehicle_id"]').html(response.html);
                 } else {
                     show_alert();
@@ -69,23 +51,37 @@
             }
         });
 
-        <?php if (!empty($get_data['vehicle'])) : ?>
-            $.ajax({
-                url: '<?= base_url() ?>admin/vehicle/option_children/<?= $get_data['vehicle']['id'] ?>',
-                type: 'POST',
-                data: {
-                    id: '<?= (!empty($get_data['vehicle']['children'])) ? $get_data['vehicle']['children']['id'] : null; ?>'
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.error == false) {
-                        $('select[name="vehicle_children_id"]').html(response.html);
-                    } else {
-                        show_alert();
-                    }
-                },
-            });
-        <?php endif ?>
+        $('select[name="vehicle_id"]').change(function(e) {
+            e.preventDefault();
+
+            if ($(this).val()) {
+                $.ajax({
+                    url: '<?= base_url() ?>admin/vehicle/option_children/' + $(this).val(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.error == false) {
+                            $('select[name="vehicle_children_id"]').html(response.html);
+                        } else {
+                            show_alert();
+                        }
+                    },
+                });
+            }
+        });
+
+        $.ajax({
+            url: '<?= base_url() ?>admin/vehicle/option',
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                if (response.error == false) {
+                    $('select[name="vehicle_id"]').html(response.html);
+                } else {
+                    show_alert();
+                }
+            }
+        });
 
         $('select[name="vehicle_id"]').change(function(e) {
             e.preventDefault();

@@ -238,7 +238,7 @@ class Vehicle extends MY_Controller
             ];
 
             foreach ($response['data'] as $key) {
-                if ($key->in_active != 0) {
+                if ($key['in_active'] == true) {
                     $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
 
                     $output['html'] .= '
@@ -271,7 +271,7 @@ class Vehicle extends MY_Controller
             ];
 
             foreach ($response['data'] as $key) {
-                if ($key->in_active != 0) {
+                if ($key['in_active'] == true) {
                     $selected = (decrypt_text($this->input->post('id')) == decrypt_text($key['id'])) ? 'selected' : '';
 
                     $output['html'] .= '

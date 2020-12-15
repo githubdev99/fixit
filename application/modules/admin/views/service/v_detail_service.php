@@ -17,10 +17,10 @@ if (!empty($get_data['vehicle'])) {
 <div class="row page-title">
     <div class="col-12">
         <div class="float-left">
-            <h4 class="mb-1 mt-0">Detail Data Barang</h4>
+            <h4 class="mb-1 mt-0">Detail Data Servis</h4>
         </div>
         <div class="float-right">
-            <a href="<?= base_url() ?>admin/item" class="btn btn-primary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
+            <a href="<?= base_url() ?>admin/service" class="btn btn-primary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -54,13 +54,6 @@ if (!empty($get_data['vehicle'])) {
                     </tr>
                     <tr>
                         <td class="text-right">
-                            <strong>Stok</strong>
-                        </td>
-                        <td>&ensp;</td>
-                        <td><?= $get_data['stock'] ?></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">
                             <strong>Tanggal Input</strong>
                         </td>
                         <td>&ensp;</td>
@@ -73,25 +66,6 @@ if (!empty($get_data['vehicle'])) {
                         <td>&ensp;</td>
                         <td><?= (!empty($updated_at)) ? date_indo(date('d-m-Y', strtotime($created_at[0]))) . ' ' . $updated_at[1] : 'Belum Update'; ?></td>
                     </tr>
-                    <tr>
-                        <td class="text-right">
-                            <strong>Status</strong>
-                        </td>
-                        <td>&ensp;</td>
-                        <td>
-                            <?php if ($get_data['in_active'] != 0) : ?>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="<?= $get_data['id'] ?>" onclick="show_modal({ modal: 'not_active', id: '<?= $get_data['id'] ?>' })" checked>
-                                    <label class="custom-control-label" for="<?= $get_data['id'] ?>"></label>
-                                </div>
-                            <?php else : ?>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="<?= $get_data['id'] ?>" onclick="show_modal({ modal: 'active', id: '<?= $get_data['id'] ?>' })">
-                                    <label class="custom-control-label" for="<?= $get_data['id'] ?>"></label>
-                                </div>
-                            <?php endif ?>
-                        </td>
-                    </tr>
                 </table>
             </div>
         </div>
@@ -99,7 +73,7 @@ if (!empty($get_data['vehicle'])) {
             <button type="button" onclick="show_modal({ modal: 'delete', id: '<?= $get_data['id'] ?>' })" class="btn btn-danger btn-lg">Hapus</button>
         </div>
         <div class="float-right">
-            <a href="<?= base_url() ?>admin/item/form/<?= $get_data['id'] ?>" class="btn btn-info btn-lg">Edit</a>
+            <a href="<?= base_url() ?>admin/service/form/<?= $get_data['id'] ?>" class="btn btn-info btn-lg">Edit</a>
         </div>
         <div class="clearfix"></div>
     </div>
