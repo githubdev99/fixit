@@ -108,7 +108,7 @@ class Service extends MY_Controller
                             $output = [
                                 'error' => true,
                                 'type' => 'warning',
-                                'message' => 'Data tidak dserviceukan'
+                                'message' => 'Data tidak ditemukan'
                             ];
                         } else {
                             $output = [
@@ -187,7 +187,7 @@ class Service extends MY_Controller
                                 $output = [
                                     'error' => true,
                                     'type' => 'warning',
-                                    'message' => 'Data tidak dserviceukan'
+                                    'message' => 'Data tidak ditemukan'
                                 ];
                             } else {
                                 $output = [

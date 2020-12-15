@@ -28,25 +28,27 @@ class Service extends REST_Controller
                 'status' => SELF::HTTP_OK
             ];
         } else {
-            $parsing['vehicle'] = $this->api_model->select_data([
-                'field' => '*',
-                'table' => 'vehicle',
-                'where' => [
-                    'id' => decrypt_text($this->post('vehicle_id'))
-                ]
-            ])->row();
-            if (empty($parsing['vehicle'])) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_NOT_FOUND,
-                            'message' => 'data not found'
+            if (!empty($this->post('vehicle_children_id'))) {
+                $parsing['vehicle'] = $this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'vehicle',
+                    'where' => [
+                        'id' => decrypt_text($this->post('vehicle_id'))
+                    ]
+                ])->row();
+                if (empty($parsing['vehicle'])) {
+                    $checking = false;
+                    $response = [
+                        'result' => [
+                            'status' => [
+                                'code' => SELF::HTTP_NOT_FOUND,
+                                'message' => 'data not found'
+                            ],
+                            'data' => null
                         ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
+                        'status' => SELF::HTTP_OK
+                    ];
+                }
             }
 
             if (!empty($this->post('vehicle_children_id'))) {
@@ -70,26 +72,6 @@ class Service extends REST_Controller
                         'status' => SELF::HTTP_OK
                     ];
                 }
-            }
-
-            if (!empty($this->api_model->select_data([
-                'field' => '*',
-                'table' => 'service',
-                'where' => [
-                    'LOWER(name)' => trim(strtolower($this->post('name')))
-                ]
-            ])->row())) {
-                $checking = false;
-                $response = [
-                    'result' => [
-                        'status' => [
-                            'code' => SELF::HTTP_CONFLICT,
-                            'message' => 'name has input'
-                        ],
-                        'data' => null
-                    ],
-                    'status' => SELF::HTTP_OK
-                ];
             }
 
             if ($checking == true) {
@@ -466,27 +448,6 @@ class Service extends REST_Controller
                             'status' => SELF::HTTP_OK
                         ];
                     }
-                }
-
-                if (!empty($this->api_model->select_data([
-                    'field' => '*',
-                    'table' => 'service',
-                    'where' => [
-                        'LOWER(name)' => trim(strtolower($this->put('name'))),
-                        'id !=' => decrypt_text($id)
-                    ]
-                ])->row())) {
-                    $checking = false;
-                    $response = [
-                        'result' => [
-                            'status' => [
-                                'code' => SELF::HTTP_CONFLICT,
-                                'message' => 'name has input'
-                            ],
-                            'data' => null
-                        ],
-                        'status' => SELF::HTTP_OK
-                    ];
                 }
 
                 if ($checking == true) {
