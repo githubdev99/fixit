@@ -477,11 +477,94 @@ class Datatable extends REST_Controller
                 $column[] = $key->invoice;
                 $column[] = $key->supplier_name;
                 $column[] = rupiah($key->total_price);
-                $column[] = '<a href="javascript:;" class="text-blue-href" onclick="onclick="show_modal({ modal: ' . "'detail'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })">' . $count_detail . ' Barang</a>';
+                $column[] = '<a href="javascript:;" class="text-blue-href" onclick="show_modal({ modal: ' . "'detail'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })">' . $count_detail . ' Barang</a>';
                 $column[] = date_indo(date('d-m-Y', strtotime($created_at[0]))) . '<br>' . $created_at[1];
+
+                if (!empty($this->core['admin'])) {
+                    $column[] = '
+                    <a href="' . base_url() . 'admin/purchase/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
+                    ';
+                } else {
+                    $column[] = '
+                    <a href="' . base_url() . 'cashier/purchase/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
+                    ';
+                }
+
+                $data[] = $column;
+            }
+        }
+
+        $response = [
+            'result' => [
+                'draw' => intval($draw),
+                'recordsTotal' => intval($total_data),
+                'recordsFiltered' => intval($total_filtered),
+                'data' => $data
+            ],
+            'status' => SELF::HTTP_OK
+        ];
+
+        $this->response($response['result'], $response['status']);
+    }
+
+    public function purchase_detail_post()
+    {
+        if (!empty($_REQUEST['draw'])) {
+            $draw = $_REQUEST['draw'];
+        } else {
+            $draw = 0;
+        }
+
+        $param['column_search'] = [
+            'purchase_id', 'item_data', 'qty', 'price'
+        ];
+        $param['column_order'] = [
+            null, 'item_data', 'qty', 'price'
+        ];
+        $param['field'] = '*';
+        $param['table'] = 'purchase_detail';
+
+        $param['where'] = [
+            'purchase_id' => decrypt_text($this->input->post('params')['purchase_id'])
+        ];
+
+        $param['order_by'] = [
+            'qty' => 'desc'
+        ];
+
+        $data_parsing = $this->api_model->get_datatable($param);
+        $total_filtered = $this->api_model->get_total_filtered($param);
+        $total_data = $this->api_model->get_total_data($param);
+
+        $data = [];
+        if (!empty($data_parsing)) {
+            $no = $_REQUEST['start'];
+            foreach ($data_parsing as $key) {
+                $no++;
+                $column = [];
+
+                $jenis = '';
+
+                $item_data = json_decode($key->item_data, true);
+
+                if (!empty($item_data['vehicle'])) {
+                    $jenis .= '<br> - Kendaraan : ' . $item_data['vehicle']['name'];
+
+                    if (!empty($item_data['vehicle']['children'])) {
+                        $jenis .= '<br> - Detail : ' . $item_data['vehicle']['children']['name'];
+                    }
+                } else {
+                    $jenis = 'Umum';
+                }
+
+                $column[] = $no;
                 $column[] = '
-                <a href="' . base_url() . 'cashier/item/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
-                ';
+                Nama : ' . $item_data['name'] . '<br>
+                Jenis : ' . $jenis . '<br>
+                Harga : ' . $item_data['price_currency_format'] . '<br>
+                Stok : ' . $item_data['stock'];
+                $column[] = $key->qty;
+                $column[] = rupiah($key->price);
 
                 $data[] = $column;
             }

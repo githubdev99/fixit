@@ -1,4 +1,5 @@
 <script>
+    let detail = [];
     $(document).ready(function() {
         trigger_enter({
             selector: '.add',
@@ -39,47 +40,96 @@
         });
 
         $.ajax({
-            url: '<?= base_url() ?>admin/vehicle/option',
+            url: '<?= base_url() ?>cashier/item/option',
             type: 'POST',
             dataType: 'json',
             success: function(response) {
                 if (response.error == false) {
-                    $('select[name="vehicle_id"]').html(response.html);
+                    $('#item_option').html(response.html);
                 } else {
                     show_alert();
                 }
             }
         });
 
-        $('select[name="vehicle_id"]').change(function(e) {
+        if (localStorage.detail) {
+            detail = JSON.parse(localStorage.detail);
+            show_detail();
+        }
+
+        $('.add_detail').click(function(e) {
             e.preventDefault();
 
-            if ($(this).val()) {
+            var checking = true;
+            var item_id = $('#item_option').val();
+            var qty = $('#qty').val();
+
+            if (!item_id) {
+                checking = false;
+                show_alert({
+                    type: 'info',
+                    message: 'Barang belum dipilih!'
+                });
+            } else if (!qty) {
+                checking = false;
+                show_alert({
+                    type: 'info',
+                    message: 'Kuantitas belum diinput!'
+                });
+            }
+
+            if (checking == true) {
                 $.ajax({
-                    url: '<?= base_url() ?>admin/vehicle/option_children/' + $(this).val(),
-                    type: 'POST',
+                    type: 'get',
+                    url: '<?= $core['url_api'] ?>item/' + item_id,
                     dataType: 'json',
                     success: function(response) {
-                        if (response.error == false) {
-                            $('select[name="vehicle_children_id"]').html(response.html);
-                        } else {
-                            show_alert();
-                        }
+                        var data = response.data;
+
+                        save_detail({
+                            id: data.id,
+                            name: data.name,
+                            price: data.price,
+                            price_currency_format: data.price_currency_format,
+                            stock: data.stock,
+                            qty: qty
+                        });
                     },
+                    error: function() {
+                        show_alert();
+                    }
                 });
             }
         });
     });
 
-    function show_jenis(value) {
-        if (value == 'yes') {
-            $('#jenis_choice').show();
-            $('[name="vehicle_id"]').attr('required', 'true');
-        } else {
-            $('#jenis_choice').hide();
-            $('[name="vehicle_id"]').removeAttr('required');
-            $('[name="vehicle_id"]').val(null).trigger('change');
-            $('[name="vehicle_children_id"]').val(null).trigger('change');
+    function save_detail(data) {
+        for (let i in detail) {
+            if (detail[i].name == data.name) {
+                show_alert({
+                    type: 'warning',
+                    message: 'Barang sudah ditambah!'
+                });
+
+                // show_detail();
+                return;
+            }
         }
+
+        detail.push({
+            id: data.id,
+            name: data.name,
+            price: data.price,
+            price_currency_format: data.price_currency_format,
+            stock: data.stock,
+            qty: data.qty,
+            subprice: data.price * data.qty
+        });
+
+        // show_detail();
+        show_alert({
+            type: 'success',
+            message: 'Barang berhasil ditambahkan'
+        });
     }
 </script>

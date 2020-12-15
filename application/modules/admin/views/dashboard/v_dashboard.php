@@ -51,7 +51,7 @@
                             <h5 class="mb-0"><?= $core['total_data']['item'] ?></h5>
                         </div>
                         <div class="align-self-center">
-                            <span class="text-dark font-weight-bold font-size-13"><i class="fas fa-box-open fa-3x"></i></span>
+                            <span class="text-success font-weight-bold font-size-13"><i class="fas fa-box-open fa-3x"></i></span>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="<?= base_url() ?>admin/cashier">
             <div class="card card-dashboard">
                 <div class="card-body p-0">
@@ -79,7 +79,7 @@
         </a>
     </div>
 
-    <div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="<?= base_url() ?>admin/vehicle">
             <div class="card card-dashboard">
                 <div class="card-body p-0">
@@ -97,7 +97,7 @@
         </a>
     </div>
 
-    <div class="col-sm-6 col-md-6 col-lg-3">
+    <div class="col-sm-4 col-md-4 col-lg-4">
         <a href="<?= base_url() ?>admin/service">
             <div class="card card-dashboard">
                 <div class="card-body p-0">

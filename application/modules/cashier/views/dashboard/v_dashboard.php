@@ -51,7 +51,7 @@
                             <h5 class="mb-0"><?= $core['total_data']['item'] ?></h5>
                         </div>
                         <div class="align-self-center">
-                            <span class="text-dark font-weight-bold font-size-13"><i class="fas fa-box-open fa-3x"></i></span>
+                            <span class="text-success font-weight-bold font-size-13"><i class="fas fa-box-open fa-3x"></i></span>
                         </div>
                     </div>
                 </div>

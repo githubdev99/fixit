@@ -1,12 +1,6 @@
 <div class="row page-title">
     <div class="col-12">
-        <div class="float-left">
-            <h4 class="mb-1 mt-0">Data Pembelian Supplier</h4>
-        </div>
-        <div class="float-right">
-            <a href="<?= base_url() ?>cashier/purchase/form" class="btn btn-info"><i class="fas fa-plus mr-2"></i>Tambah Data</a>
-        </div>
-        <div class="clearfix"></div>
+        <h4 class="mb-1 mt-0">Data Pembelian Supplier</h4>
     </div>
 </div>
 

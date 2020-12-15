@@ -64,16 +64,8 @@ class Purchase extends REST_Controller
 
                 $last_purchase_id = $this->db->insert_id();
 
-                $this->api_model->send_data([
-                    'where' => [
-                        'id' => $last_purchase_id
-                    ],
-                    'data' => [
-                        'invoice' => 'INV-P' . date('ymd') . rand(0001, 9999) . $last_purchase_id
-                    ],
-                    'table' => 'purchase'
-                ]);
-
+                $total_qty = [];
+                $total_price = [];
                 foreach ($this->post('item_data') as $key_item_data) {
                     $parsing['item'] = $this->api_model->select_data([
                         'field' => '*',
@@ -82,6 +74,9 @@ class Purchase extends REST_Controller
                             'id' => decrypt_text($key_item_data['id'])
                         ]
                     ])->row();
+
+                    $total_qty[] = $key_item_data['qty'];
+                    $total_price[] = $parsing['item']->price * $key_item_data['qty'];
 
                     $this->api_model->send_data([
                         'where' => [
@@ -102,7 +97,6 @@ class Purchase extends REST_Controller
                         ]
                     ])->row();
 
-                    $item['id'] = encrypt_text($parsing['item']->id);
                     $item['name'] = $parsing['item']->name;
                     $item['price'] = $parsing['item']->price;
                     $item['price_currency_format'] = rupiah($parsing['item']->price);
@@ -119,7 +113,6 @@ class Purchase extends REST_Controller
                                 'id' => $parsing['item']->vehicle_id
                             ]
                         ])->row();
-                        $vehicle['id'] = encrypt_text($parsing['vehicle']->id);
                         $vehicle['name'] = $parsing['vehicle']->name;
                         $vehicle['created_at'] = $parsing['vehicle']->created_at;
                         $vehicle['updated_at'] = $parsing['vehicle']->updated_at;
@@ -133,8 +126,6 @@ class Purchase extends REST_Controller
                                     'id' => $parsing['item']->vehicle_children_id
                                 ]
                             ])->row();
-                            $vehicle_children['id'] = encrypt_text($parsing['vehicle_children']->id);
-                            $vehicle_children['vehicle_id'] = encrypt_text($parsing['vehicle_children']->vehicle_id);
                             $vehicle_children['name'] = $parsing['vehicle_children']->name;
                             $vehicle_children['created_at'] = $parsing['vehicle_children']->created_at;
                             $vehicle_children['updated_at'] = $parsing['vehicle_children']->updated_at;
@@ -154,11 +145,24 @@ class Purchase extends REST_Controller
                         'data' => [
                             'purchase_id' => $last_purchase_id,
                             'qty' => $key_item_data['qty'],
+                            'price' => $parsing['item']->price * $key_item_data['qty'],
                             'item_data' => json_encode($item)
                         ],
                         'table' => 'purchase_detail'
                     ]);
                 }
+
+                $this->api_model->send_data([
+                    'where' => [
+                        'id' => $last_purchase_id
+                    ],
+                    'data' => [
+                        'invoice' => 'INV-P' . date('ymd') . rand(0001, 9999) . $last_purchase_id,
+                        'total_qty' => array_sum($total_qty),
+                        'total_price' => array_sum($total_price)
+                    ],
+                    'table' => 'purchase'
+                ]);
 
                 $this->db->trans_complete();
 
@@ -198,7 +202,9 @@ class Purchase extends REST_Controller
                     $data['id'] = encrypt_text($parsing['purchase']->id);
                     $data['invoice'] = $parsing['purchase']->invoice;
                     $data['supplier_name'] = $parsing['purchase']->supplier_name;
+                    $data['total_qty'] = $parsing['purchase']->total_qty;
                     $data['total_price'] = $parsing['purchase']->total_price;
+                    $data['total_price_currency_format'] = rupiah($parsing['purchase']->total_price);
                     $data['created_at'] = $parsing['purchase']->created_at;
 
                     $parsing['purchase_detail'] = $this->api_model->select_data([
@@ -213,6 +219,8 @@ class Purchase extends REST_Controller
                         foreach ($parsing['purchase_detail'] as $key_purchase_detail) {
                             $detail['id'] = encrypt_text($key_purchase_detail->id);
                             $detail['qty'] = $key_purchase_detail->qty;
+                            $detail['price'] = $key_purchase_detail->price;
+                            $detail['price_currency_format'] = rupiah($key_purchase_detail->price);
                             $detail['item'] = json_decode($key_purchase_detail->item_data);
 
                             $data['detail'][] = $detail;
@@ -271,7 +279,9 @@ class Purchase extends REST_Controller
                 $data['id'] = encrypt_text($parsing['purchase']->id);
                 $data['invoice'] = $parsing['purchase']->invoice;
                 $data['supplier_name'] = $parsing['purchase']->supplier_name;
+                $data['total_qty'] = $parsing['purchase']->total_qty;
                 $data['total_price'] = $parsing['purchase']->total_price;
+                $data['total_price_currency_format'] = rupiah($parsing['purchase']->total_price);
                 $data['created_at'] = $parsing['purchase']->created_at;
 
                 $parsing['purchase_detail'] = $this->api_model->select_data([
@@ -286,6 +296,8 @@ class Purchase extends REST_Controller
                     foreach ($parsing['purchase_detail'] as $key_purchase_detail) {
                         $detail['id'] = encrypt_text($key_purchase_detail->id);
                         $detail['qty'] = $key_purchase_detail->qty;
+                        $detail['price'] = $key_purchase_detail->price;
+                        $detail['price_currency_format'] = rupiah($key_purchase_detail->price);
                         $detail['item'] = json_decode($key_purchase_detail->item_data);
 
                         $data['detail'][] = $detail;
@@ -364,7 +376,9 @@ class Purchase extends REST_Controller
                         $data['id'] = encrypt_text($key_purchase->id);
                         $data['invoice'] = $key_purchase->invoice;
                         $data['supplier_name'] = $key_purchase->supplier_name;
+                        $data['total_qty'] = $key_purchase->total_qty;
                         $data['total_price'] = $key_purchase->total_price;
+                        $data['total_price_currency_format'] = rupiah($key_purchase->total_price);
                         $data['created_at'] = $key_purchase->created_at;
 
                         $parsing['purchase_detail'] = $this->api_model->select_data([
@@ -379,6 +393,8 @@ class Purchase extends REST_Controller
                             foreach ($parsing['purchase_detail'] as $key_purchase_detail) {
                                 $detail['id'] = encrypt_text($key_purchase_detail->id);
                                 $detail['qty'] = $key_purchase_detail->qty;
+                                $detail['price'] = $key_purchase_detail->price;
+                                $detail['price_currency_format'] = rupiah($key_purchase_detail->price);
                                 $detail['item'] = json_decode($key_purchase_detail->item_data);
 
                                 $data['detail'][] = $detail;
