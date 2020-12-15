@@ -1,9 +1,9 @@
 <script>
-    let detail = [];
+    let detail_transaction = [];
     $(document).ready(function() {
         load_table_detail('load');
 
-        $('input[name="item_data"]').val(JSON.stringify(detail));
+        $('input[name="item_data"]').val(JSON.stringify(detail_transaction));
 
         trigger_enter({
             selector: '.add',
@@ -39,14 +39,59 @@
                             callback: response.callback
                         });
 
-                        localStorage.removeItem('detail');
+                        localStorage.removeItem('detail_transaction');
                     }
                 }
             });
         });
 
         $.ajax({
-            url: '<?= base_url() ?>cashier/purchase/option_item',
+            url: '<?= base_url() ?>cashier/transaction/option_vehicle',
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                if (response.error == false) {
+                    $('select[name="vehicle_id"]').html(response.html);
+                } else {
+                    show_alert();
+                }
+            }
+        });
+
+        $('select[name="vehicle_id"]').change(function(e) {
+            e.preventDefault();
+
+            if ($(this).val()) {
+                $.ajax({
+                    url: '<?= base_url() ?>cashier/transaction/option_vehicle_children/' + $(this).val(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.error == false) {
+                            $('select[name="vehicle_children_id"]').html(response.html);
+                        } else {
+                            show_alert();
+                        }
+                    }
+                });
+
+                $.ajax({
+                    url: '<?= base_url() ?>cashier/transaction/option_service',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.error == false) {
+                            $('select[name="service_data"]').html(response.html);
+                        } else {
+                            show_alert();
+                        }
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            url: '<?= base_url() ?>cashier/transaction/option_item',
             type: 'POST',
             dataType: 'json',
             success: function(response) {
@@ -58,8 +103,8 @@
             }
         });
 
-        if (localStorage.detail) {
-            detail = JSON.parse(localStorage.detail);
+        if (localStorage.detail_transaction) {
+            detail_transaction = JSON.parse(localStorage.detail_transaction);
             show_detail();
         }
 
@@ -113,8 +158,8 @@
     });
 
     function save_detail(data) {
-        for (let i in detail) {
-            if (detail[i].name == data.name) {
+        for (let i in detail_transaction) {
+            if (detail_transaction[i].name == data.name) {
                 show_alert({
                     type: 'warning',
                     message: 'Barang sudah ditambah!'
@@ -125,7 +170,7 @@
             }
         }
 
-        detail.push({
+        detail_transaction.push({
             id: data.id,
             name: data.name,
             price: data.price,
@@ -146,41 +191,41 @@
 
     function show_detail() {
         if (window.localStorage) {
-            localStorage.detail = JSON.stringify(detail);
+            localStorage.detail_transaction = JSON.stringify(detail_transaction);
         }
 
         load_table_detail('clear');
 
         var total_qty = 0;
         var total_price = 0;
-        for (let i in detail) {
+        for (let i in detail_transaction) {
             let no = i;
             no++;
 
             load_table_detail('create').row.add([
                 no,
                 `
-                Nama : ${detail[i].name}<br>
-                Jenis : ${detail[i].name}<br>
-                Harga : ${detail[i].price_currency_format}<br>
-                Stok Tersedia : ${detail[i].stock}<br>
+                Nama : ${detail_transaction[i].name}<br>
+                Jenis : ${detail_transaction[i].name}<br>
+                Harga : ${detail_transaction[i].price_currency_format}<br>
+                Stok Tersedia : ${detail_transaction[i].stock}<br>
                 `,
-                detail[i].qty,
-                detail[i].subprice_currency_format,
+                detail_transaction[i].qty,
+                detail_transaction[i].subprice_currency_format,
                 `<button type="button" class="btn btn-danger btn-sm" onclick="delete_detail(${i});"><i class="fas fa-times"></i></button>`
             ]).draw(false);
 
-            total_qty += parseInt(detail[i].qty);
-            total_price += parseInt(detail[i].subprice);
+            total_qty += parseInt(detail_transaction[i].qty);
+            total_price += parseInt(detail_transaction[i].subprice);
         }
 
         $('#total_qty').html(total_qty);
         $('#total_price').html(rupiah(total_price));
-        $('input[name="item_data"]').val(JSON.stringify(detail));
+        $('input[name="item_data"]').val(JSON.stringify(detail_transaction));
     }
 
     function delete_detail(index) {
-        detail.splice(index, 1);
+        detail_transaction.splice(index, 1);
         show_detail();
     }
 

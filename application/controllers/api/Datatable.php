@@ -583,4 +583,184 @@ class Datatable extends REST_Controller
 
         $this->response($response['result'], $response['status']);
     }
+
+    public function transaction_post()
+    {
+        if (!empty($_REQUEST['draw'])) {
+            $draw = $_REQUEST['draw'];
+        } else {
+            $draw = 0;
+        }
+
+        $param['column_search'] = [
+            'cashier.name', 'transaction.invoice', 'transaction.queue', 'transaction.customer_name', 'transaction.total_price', 'transaction.total_payment', 'transaction.total_change', 'transaction.status', 'transaction.created_at'
+        ];
+        $param['column_order'] = [
+            null, 'transaction.invoice', 'cashier.name', 'transaction.queue', 'transaction.total_price', 'transaction.total_payment', null, 'transaction.status', null
+        ];
+        $param['field'] = 'transaction.*, cashier.name as cashier_name';
+        $param['table'] = 'transaction';
+
+        $param['join'] = [
+            [
+                'table' => 'cashier',
+                'on' => 'cashier.id = transaction.cashier_id',
+                'type' => 'inner'
+            ]
+        ];
+
+        $param['order_by'] = [
+            'transaction.created_at' => 'desc'
+        ];
+
+        $data_parsing = $this->api_model->get_datatable($param);
+        $total_filtered = $this->api_model->get_total_filtered($param);
+        $total_data = $this->api_model->get_total_data($param);
+
+        $data = [];
+        if (!empty($data_parsing)) {
+            $no = $_REQUEST['start'];
+            foreach ($data_parsing as $key) {
+                $no++;
+                $column = [];
+                $service = '';
+
+                $count_detail = $this->api_model->count_all_data([
+                    'where' => [
+                        'transaction_id' => $key->id,
+                        'item_data !=' => null
+                    ],
+                    'table' => 'transaction_detail'
+                ]);
+
+                $parsing['transaction_detail'] = $this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'transaction_detail',
+                    'where' => [
+                        'transaction_id' => $key->id,
+                        'service_data !=' => null
+                    ]
+                ])->row();
+                if (!empty($parsing['transaction_detail'])) {
+                    $service = json_decode($parsing['transaction_detail']->service_data, true)['name'] . '<br>';
+                } else {
+                    $service = '';
+                }
+
+                if ($key->status == 'waiting') {
+                    $status = '<span class="badge badge-soft-secondary">Menunggu</span>';
+                } else {
+                    $status = '<span class="badge badge-success">Selesai</span>';
+                }
+
+                $column[] = $no;
+                $column[] = $key->invoice;
+                $column[] = $key->cashier_name;
+                $column[] = $key->queue . ' - ' . $key->customer_name;
+                $column[] = rupiah($key->total_price);
+                $column[] = '
+                ' . $service . '
+                <a href="javascript:;" class="text-blue-href" onclick="show_modal({ modal: ' . "'detail'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })">' . $count_detail . ' Barang</a>';
+                $column[] = $status;
+
+                if (!empty($this->core['admin'])) {
+                } else {
+                    $column[] = '
+                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Pembayaran" onclick="show_modal({ modal: ' . "'payment'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-wallet"></i></button>
+                    ';
+                }
+
+                $data[] = $column;
+            }
+        }
+
+        $response = [
+            'result' => [
+                'draw' => intval($draw),
+                'recordsTotal' => intval($total_data),
+                'recordsFiltered' => intval($total_filtered),
+                'data' => $data
+            ],
+            'status' => SELF::HTTP_OK
+        ];
+
+        $this->response($response['result'], $response['status']);
+    }
+
+    public function transaction_detail_post()
+    {
+        if (!empty($_REQUEST['draw'])) {
+            $draw = $_REQUEST['draw'];
+        } else {
+            $draw = 0;
+        }
+
+        $param['column_search'] = [
+            'transaction_id', 'item_data', 'qty', 'price'
+        ];
+        $param['column_order'] = [
+            null, 'item_data', 'qty', 'price'
+        ];
+        $param['field'] = '*';
+        $param['table'] = 'transaction_detail';
+
+        $param['where'] = [
+            'transaction_id' => decrypt_text($this->input->post('params')['transaction_id']),
+            'item_data !=' => null
+        ];
+
+        $param['order_by'] = [
+            'qty' => 'desc'
+        ];
+
+        $data_parsing = $this->api_model->get_datatable($param);
+        $total_filtered = $this->api_model->get_total_filtered($param);
+        $total_data = $this->api_model->get_total_data($param);
+
+        $data = [];
+        if (!empty($data_parsing)) {
+            $no = $_REQUEST['start'];
+            foreach ($data_parsing as $key) {
+                $no++;
+                $column = [];
+
+                $jenis = '';
+
+                $item_data = json_decode($key->item_data, true);
+
+                if (!empty($item_data['vehicle'])) {
+                    $jenis .= '<br> - Kendaraan : ' . $item_data['vehicle']['name'];
+
+                    if (!empty($item_data['vehicle']['children'])) {
+                        $jenis .= '<br> - Detail : ' . $item_data['vehicle']['children']['name'];
+                    }
+                } else {
+                    $jenis = 'Umum';
+                }
+
+                $column[] = $no;
+                $column[] = '
+                Nama : ' . $item_data['name'] . '<br>
+                Jenis : ' . $jenis . '<br>
+                Harga : ' . $item_data['price_currency_format'] . '<br>
+                Stok Tersedia : ' . $item_data['stock'];
+                $column[] = $key->qty;
+                $column[] = rupiah($key->price);
+
+                $data[] = $column;
+            }
+        }
+
+        $response = [
+            'result' => [
+                'draw' => intval($draw),
+                'recordsTotal' => intval($total_data),
+                'recordsFiltered' => intval($total_filtered),
+                'data' => $data
+            ],
+            'status' => SELF::HTTP_OK
+        ];
+
+        $this->response($response['result'], $response['status']);
+    }
 }

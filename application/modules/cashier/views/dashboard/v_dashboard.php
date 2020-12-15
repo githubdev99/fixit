@@ -11,7 +11,7 @@
                 <div class="card-body p-0">
                     <div class="media p-3">
                         <div class="media-body">
-                            <span class="text-muted text-uppercase font-size-11 font-weight-bold">Penjualan</span>
+                            <span class="text-muted text-uppercase font-size-11 font-weight-bold">Transaksi</span>
                             <h5 class="mb-0"><?= rupiah($core['total_data']['transaction']) ?></h5>
                         </div>
                         <div class="align-self-center">
@@ -29,7 +29,7 @@
                 <div class="card-body p-0">
                     <div class="media p-3">
                         <div class="media-body">
-                            <span class="text-muted text-uppercase font-size-11 font-weight-bold">Pembelian</span>
+                            <span class="text-muted text-uppercase font-size-11 font-weight-bold">Pembelian Supplier</span>
                             <h5 class="mb-0"><?= rupiah($core['total_data']['purchase']) ?></h5>
                         </div>
                         <div class="align-self-center">

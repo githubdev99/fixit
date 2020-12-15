@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 15 Des 2020 pada 16.33
+-- Waktu pembuatan: 15 Des 2020 pada 21.15
 -- Versi server: 10.4.17-MariaDB
 -- Versi PHP: 7.4.13
 
@@ -90,8 +90,8 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`id`, `vehicle_id`, `vehicle_children_id`, `name`, `price`, `stock`, `created_at`, `updated_at`, `in_active`) VALUES
-(1, NULL, NULL, 'Oli Repsol', 30000, 84, '2020-12-08 19:48:26', '2020-12-15 22:27:35', 1),
-(8, 1, 2, 'Kanvas Rem', 15000, 95, '2020-12-15 10:23:31', '2020-12-15 22:31:43', 1),
+(1, NULL, NULL, 'Oli Repsol', 30000, 50, '2020-12-08 19:48:26', '2020-12-16 02:50:29', 1),
+(8, 1, 2, 'Kanvas Rem', 15000, 73, '2020-12-15 10:23:31', '2020-12-16 02:53:43', 1),
 (10, 1, NULL, 'Oli Yamalube', 20000, 70, '2020-12-15 22:16:39', '2020-12-15 22:31:43', 1);
 
 -- --------------------------------------------------------
@@ -104,8 +104,8 @@ CREATE TABLE `purchase` (
   `id` int(11) NOT NULL,
   `invoice` text DEFAULT NULL,
   `supplier_name` varchar(100) NOT NULL,
-  `total_qty` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL,
+  `total_qty` int(11) DEFAULT NULL,
+  `total_price` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -163,7 +163,9 @@ CREATE TABLE `service` (
 
 INSERT INTO `service` (`id`, `vehicle_id`, `vehicle_children_id`, `name`, `price`, `created_at`, `updated_at`) VALUES
 (7, 3, 4, 'Servis Ringan', 40000, '2020-12-15 09:58:15', NULL),
-(9, 3, 4, 'Servis Lengkap', 75000, '2020-12-15 10:25:54', NULL);
+(9, 3, 4, 'Servis Lengkap', 75000, '2020-12-15 10:25:54', NULL),
+(10, 1, 2, 'Servis Ringan', 30000, '2020-12-15 22:53:01', '2020-12-15 22:56:09'),
+(11, 1, 2, 'Servis Lengkap', 70000, '2020-12-15 22:53:17', '2020-12-15 22:56:00');
 
 -- --------------------------------------------------------
 
@@ -192,15 +194,21 @@ INSERT INTO `setting` (`id`, `password_default`) VALUES
 CREATE TABLE `transaction` (
   `id` int(11) NOT NULL,
   `cashier_id` int(11) NOT NULL,
-  `invoice` text NOT NULL,
-  `queue` int(11) NOT NULL,
+  `invoice` text DEFAULT NULL,
+  `queue` text NOT NULL,
   `customer_name` varchar(100) NOT NULL,
-  `discount` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL,
-  `discount_price` int(11) NOT NULL,
-  `status` enum('waiting','repair','complete') NOT NULL,
+  `total_price` int(11) DEFAULT NULL,
+  `status` enum('waiting','complete') NOT NULL DEFAULT 'waiting',
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `transaction`
+--
+
+INSERT INTO `transaction` (`id`, `cashier_id`, `invoice`, `queue`, `customer_name`, `total_price`, `status`, `created_at`) VALUES
+(1, 2, 'INV-T20121639681', 'F1', 'Devan', 295000, 'waiting', '2020-12-16 01:06:28'),
+(4, 2, 'INV-T20121639844', 'F2', 'Firmansyah', 220000, 'complete', '2020-12-16 02:53:43');
 
 -- --------------------------------------------------------
 
@@ -214,9 +222,22 @@ CREATE TABLE `transaction_detail` (
   `vehicle_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `service_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `item_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-  `qty` int(11) NOT NULL,
-  `price` int(11) NOT NULL
+  `qty` int(11) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `transaction_detail`
+--
+
+INSERT INTO `transaction_detail` (`id`, `transaction_id`, `vehicle_data`, `service_data`, `item_data`, `qty`, `price`) VALUES
+(1, 1, NULL, NULL, '{\"name\":\"Kanvas Rem\",\"price\":\"15000\",\"price_currency_format\":\"Rp. 15.000\",\"stock\":\"85\",\"created_at\":\"2020-12-15 10:23:31\",\"updated_at\":\"2020-12-16 01:06:28\",\"in_active\":true,\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}}', 5, 75000),
+(2, 1, NULL, NULL, '{\"name\":\"Oli Repsol\",\"price\":\"30000\",\"price_currency_format\":\"Rp. 30.000\",\"stock\":\"74\",\"created_at\":\"2020-12-08 19:48:26\",\"updated_at\":\"2020-12-16 01:06:28\",\"in_active\":true,\"vehicle\":null}', 5, 150000),
+(3, 1, '{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}', NULL, NULL, NULL, NULL),
+(4, 1, NULL, '{\"id\":\"L0RJcWVINW9UN2k5d1p5bEE1N2d0QT09\",\"name\":\"Servis Lengkap\",\"price\":\"70000\",\"price_currency_format\":\"Rp. 70.000\",\"created_at\":\"2020-12-15 22:53:17\",\"updated_at\":\"2020-12-15 22:56:00\",\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}}', NULL, NULL, 70000),
+(11, 4, NULL, NULL, '{\"name\":\"Kanvas Rem\",\"price\":\"15000\",\"price_currency_format\":\"Rp. 15.000\",\"stock\":\"73\",\"created_at\":\"2020-12-15 10:23:31\",\"updated_at\":\"2020-12-16 02:53:43\",\"in_active\":true,\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}}', 12, 180000),
+(12, 4, '{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}', NULL, NULL, NULL, NULL),
+(13, 4, NULL, '{\"id\":\"aTJhd0tCU1QxM2Z2dng5Q0phRTZFUT09\",\"name\":\"Servis Ringan\",\"price\":\"40000\",\"price_currency_format\":\"Rp. 40.000\",\"created_at\":\"2020-12-15 09:58:15\",\"updated_at\":null,\"vehicle\":{\"name\":\"Yamaha\",\"created_at\":\"2020-12-08 10:47:33\",\"updated_at\":null,\"in_active\":true,\"children\":{\"name\":\"R15 250CC\",\"created_at\":\"2020-12-14 16:54:05\",\"updated_at\":\"2020-12-15 09:49:48\",\"in_active\":true}}}', NULL, NULL, 40000);
 
 -- --------------------------------------------------------
 
@@ -382,7 +403,7 @@ ALTER TABLE `purchase_detail`
 -- AUTO_INCREMENT untuk tabel `service`
 --
 ALTER TABLE `service`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `setting`
@@ -394,13 +415,13 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT untuk tabel `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaction_detail`
 --
 ALTER TABLE `transaction_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `vehicle`

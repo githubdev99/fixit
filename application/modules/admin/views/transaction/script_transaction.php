@@ -11,18 +11,9 @@
             destroy: true,
             order: [],
             columnDefs: [{
-                    targets: [0, 5, 7],
-                    orderable: false
-                },
-                {
-                    targets: 7,
-                    createdCell: function(td, cellData, rowData, row, col) {
-                        $(td).attr({
-                            style: 'white-space: nowrap;'
-                        });
-                    }
-                }
-            ],
+                targets: [0, 5],
+                orderable: false
+            }],
             language: {
                 paginate: {
                     previous: "<i class='uil uil-angle-left'>",
@@ -49,7 +40,7 @@
                 });
             },
             ajax: {
-                url: "<?= $core['url_api'] ?>datatable/purchase",
+                url: "<?= $core['url_api'] ?>datatable/transaction",
                 type: "POST",
                 dataType: "json",
                 error: function() {
@@ -108,11 +99,11 @@
                             });
                         },
                         ajax: {
-                            url: "<?= $core['url_api'] ?>datatable/purchase_detail",
+                            url: "<?= $core['url_api'] ?>datatable/transaction_detail",
                             type: "POST",
                             data: {
                                 params: {
-                                    purchase_id: params.id
+                                    transaction_id: params.id
                                 }
                             },
                             dataType: "json",

@@ -120,4 +120,35 @@ class Purchase extends MY_Controller
             $this->output->set_content_type('application/json')->set_output(json_encode($output));
         }
     }
+
+    public function option_item()
+    {
+        $response = json_decode(shoot_api([
+            'url' => $this->core['url_api'] . 'item',
+            'method' => 'get'
+        ]), true);
+
+        if ($response['status']['code'] == 200) {
+            $output = [
+                'error' => false,
+                'html' => '<option></option>'
+            ];
+
+            foreach ($response['data'] as $key) {
+                if ($key['in_active'] == true) {
+                    $output['html'] .= '
+                    <option value="' . $key['id'] . '">' . $key['name'] . ' (Stok : ' . $key['stock'] . ')</option>
+                    ';
+                }
+            }
+        } else {
+            $output = [
+                'error' => true,
+                'type' => 'error',
+                'message' => 'Ada kesalahan teknis.'
+            ];
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($output));
+    }
 }

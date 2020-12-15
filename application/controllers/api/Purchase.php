@@ -56,7 +56,6 @@ class Purchase extends REST_Controller
                 $this->api_model->send_data([
                     'data' => [
                         'supplier_name' => $this->post('supplier_name'),
-                        'total_price' => clean_rupiah($this->post('total_price')),
                         'created_at' => date('Y-m-d H:i:s')
                     ],
                     'table' => 'purchase'

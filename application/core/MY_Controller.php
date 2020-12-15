@@ -40,6 +40,9 @@ class MY_Controller extends MX_Controller
 			])->row()->data,
 			'transaction' => $this->api_model->select_data([
 				'field' => 'SUM(total_price) AS data',
+				'where' => [
+					'status' => 'complete'
+				],
 				'table' => 'transaction'
 			])->row()->data
 		];

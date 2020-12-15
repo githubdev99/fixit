@@ -11,7 +11,7 @@
             destroy: true,
             order: [],
             columnDefs: [{
-                    targets: [0, 5, 7],
+                    targets: [0, 6, 7],
                     orderable: false
                 },
                 {
@@ -49,7 +49,7 @@
                 });
             },
             ajax: {
-                url: "<?= $core['url_api'] ?>datatable/purchase",
+                url: "<?= $core['url_api'] ?>datatable/transaction",
                 type: "POST",
                 dataType: "json",
                 error: function() {
@@ -108,11 +108,11 @@
                             });
                         },
                         ajax: {
-                            url: "<?= $core['url_api'] ?>datatable/purchase_detail",
+                            url: "<?= $core['url_api'] ?>datatable/transaction_detail",
                             type: "POST",
                             data: {
                                 params: {
-                                    purchase_id: params.id
+                                    transaction_id: params.id
                                 }
                             },
                             dataType: "json",
@@ -126,6 +126,50 @@
                         backdrop: 'static',
                         keyboard: true,
                         show: true
+                    });
+                } else if (params.modal == 'payment') {
+                    Swal.fire({
+                        title: 'Konfirmasi!',
+                        html: `Anda yakin ingin melakukan pembayaran ?`,
+                        icon: 'warning',
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        confirmButtonColor: '#43d39e',
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.value) {
+                            $.ajax({
+                                type: 'put',
+                                url: '<?= $core['url_api'] ?>transaction/payment/' + params.id,
+                                dataType: 'json',
+                                success: function(response2) {
+                                    var data2 = response2.data;
+                                    console.log(data2);
+
+                                    if (response2.status.code == 200) {
+                                        show_alert({
+                                            type: 'success',
+                                            message: `Data transaksi ${data2.queue} oleh pelanggan ${data2.customer_name} berhasil di lakukan`
+                                        });
+
+                                        load_table();
+                                    } else {
+                                        if (response2.status.code == 404) {
+                                            show_alert({
+                                                type: 'warning',
+                                                message: `Data tidak ditemukan`
+                                            });
+                                        } else {
+                                            show_alert({
+                                                type: 'success',
+                                                message: `Data transaksi ${data2.queue} oleh pelanggan ${data2.customer_name} gagal di lakukan`
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     });
                 }
             } else {
