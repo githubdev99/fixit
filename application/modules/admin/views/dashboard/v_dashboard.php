@@ -62,24 +62,6 @@
 
 <div class="row">
     <div class="col-sm-6 col-md-6 col-lg-3">
-        <a href="<?= base_url() ?>admin/mechanic">
-            <div class="card card-dashboard">
-                <div class="card-body p-0">
-                    <div class="media p-3">
-                        <div class="media-body">
-                            <span class="text-muted text-uppercase font-size-11 font-weight-bold">Mekanik</span>
-                            <h5 class="mb-0"><?= $core['total_data']['mechanic'] ?></h5>
-                        </div>
-                        <div class="align-self-center">
-                            <span class="text-success font-weight-bold font-size-13"><i class="fas fa-users-cog fa-3x"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-sm-6 col-md-6 col-lg-3">
         <a href="<?= base_url() ?>admin/cashier">
             <div class="card card-dashboard">
                 <div class="card-body p-0">

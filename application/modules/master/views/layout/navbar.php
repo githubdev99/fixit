@@ -15,16 +15,6 @@ if (!empty($core['admin'])) {
     } else {
         $img_src = base_url() . 'asset/images/avatar_female.png';
     }
-} elseif (!empty($core['mechanic'])) {
-    $type = 'Mechanic';
-    $session = 'mechanic';
-    $name = $core['mechanic']->name;
-    $style = 'background-color: #A97142;';
-    if ($core['mechanic']->gender == 'male') {
-        $img_src = base_url() . 'asset/images/avatar_male.png';
-    } else {
-        $img_src = base_url() . 'asset/images/avatar_female.png';
-    }
 }
 ?>
 

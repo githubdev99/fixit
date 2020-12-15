@@ -25,9 +25,6 @@ class MY_Controller extends MX_Controller
 			'cashier' => $this->api_model->count_all_data([
 				'table' => 'cashier'
 			]),
-			'mechanic' => $this->api_model->count_all_data([
-				'table' => 'mechanic'
-			]),
 			'vehicle' => $this->api_model->count_all_data([
 				'table' => 'vehicle_children'
 			]),
@@ -68,16 +65,6 @@ class MY_Controller extends MX_Controller
 				'table' => 'cashier',
 				'where' => [
 					'id' => decrypt_text($this->session->userdata('cashier'))
-				]
-			])->row();
-		}
-
-		if ($this->session->has_userdata('mechanic')) {
-			$this->core['mechanic'] = $this->api_model->select_data([
-				'field' => '*',
-				'table' => 'mechanic',
-				'where' => [
-					'id' => decrypt_text($this->session->userdata('mechanic'))
 				]
 			])->row();
 		}
@@ -134,18 +121,6 @@ class MY_Controller extends MX_Controller
 				}
 			} else {
 				if (empty($this->core['cashier'])) {
-					redirect(base_url() . 'auth/login', 'refresh');
-				}
-			}
-		}
-
-		if ($param['session'] == 'mechanic') {
-			if ($param['login'] == true) {
-				if (!empty($this->core['mechanic'])) {
-					redirect(base_url() . 'mechanic/dashboard', 'refresh');
-				}
-			} else {
-				if (empty($this->core['mechanic'])) {
 					redirect(base_url() . 'auth/login', 'refresh');
 				}
 			}

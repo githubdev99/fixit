@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2020 at 12:29 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.4
+-- Waktu pembuatan: 15 Des 2020 pada 10.48
+-- Versi server: 10.4.17-MariaDB
+-- Versi PHP: 7.4.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Struktur dari tabel `admin`
 --
 
 CREATE TABLE `admin` (
@@ -35,7 +35,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `admin`
+-- Dumping data untuk tabel `admin`
 --
 
 INSERT INTO `admin` (`id`, `name`, `username`, `password`) VALUES
@@ -44,7 +44,7 @@ INSERT INTO `admin` (`id`, `name`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cashier`
+-- Struktur dari tabel `cashier`
 --
 
 CREATE TABLE `cashier` (
@@ -61,16 +61,16 @@ CREATE TABLE `cashier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `cashier`
+-- Dumping data untuk tabel `cashier`
 --
 
 INSERT INTO `cashier` (`id`, `name`, `birth_date`, `phone_number`, `username`, `password`, `gender`, `address`, `created_at`, `updated_at`) VALUES
-(2, 'Cashier 1', '2001-11-21', '098765', 'cashier1', '$2y$10$FiUv4lPZ.4yHs3wCC/rPe.MnJMIJsCR9nUE3Os/dopmJeNyVREx5m', 'female', 'Jl. jalan', '2020-12-09 09:47:42', NULL);
+(2, 'Cashier 1', '2001-11-21', '098765', 'cashier1', '$2y$10$YERCiDNBms94ZbsFzJmIS.A3uBfH9PgK/Zp/Sq02kkUQkGdTPmwUO', 'female', 'Jl. jalan', '2020-12-09 09:47:42', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `item`
+-- Struktur dari tabel `item`
 --
 
 CREATE TABLE `item` (
@@ -86,49 +86,22 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `item`
+-- Dumping data untuk tabel `item`
 --
 
 INSERT INTO `item` (`id`, `vehicle_id`, `vehicle_children_id`, `name`, `price`, `stock`, `created_at`, `updated_at`, `in_active`) VALUES
-(1, NULL, NULL, 'Oli Repsol', 30000, 15, '2020-12-08 19:48:26', NULL, 1),
-(2, 1, 1, 'Kanvas Rem', 15000, 10, '2020-12-08 20:03:36', NULL, 1);
+(1, NULL, NULL, 'Oli Repsol', 30000, 40, '2020-12-08 19:48:26', '2020-12-15 16:39:01', 1),
+(8, NULL, NULL, 'Kanvas Rem', 15000, 35, '2020-12-15 10:23:31', '2020-12-15 16:39:01', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mechanic`
---
-
-CREATE TABLE `mechanic` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `birth_date` date NOT NULL,
-  `phone_number` varchar(15) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` text NOT NULL,
-  `gender` enum('male','female') NOT NULL,
-  `address` text DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `mechanic`
---
-
-INSERT INTO `mechanic` (`id`, `name`, `birth_date`, `phone_number`, `username`, `password`, `gender`, `address`, `created_at`, `updated_at`) VALUES
-(3, 'Mechanic 1', '2001-11-21', '098765', 'mechanic1', '$2y$10$QjG1l3Q.8Y4/gO5oNpF2u.FYOs0o34bFarU9jN0CzFujoFpdJyzMu', 'male', 'Jl. jalan', '2020-12-09 17:12:32', NULL),
-(9, 'Testing Mekanik edit111', '1996-12-02', '11111111111111', 'test1', '$2y$10$jRwkDGVHmB5bn3fMCOovl.Zd6hDLLMPusD1J83bYuRhOtSEWIxuEG', 'male', 'Jl. kemana nih', '2020-12-12 05:34:09', '2020-12-12 06:14:40'),
-(10, 'Testing Mekanik', '2020-12-07', '2131313', 'test12', '$2y$10$c.g01oIRDHUDLB1txjXKmeAuVeBJQPEOJgogSSDMmb4PE5JGldmjK', 'female', 'assavasv\r\n', '2020-12-12 05:37:29', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `purchase`
+-- Struktur dari tabel `purchase`
 --
 
 CREATE TABLE `purchase` (
   `id` int(11) NOT NULL,
+  `invoice` text DEFAULT NULL,
   `supplier_name` varchar(100) NOT NULL,
   `total_price` int(11) NOT NULL,
   `created_at` datetime NOT NULL
@@ -137,19 +110,20 @@ CREATE TABLE `purchase` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `purchase_detail`
+-- Struktur dari tabel `purchase_detail`
 --
 
 CREATE TABLE `purchase_detail` (
   `id` int(11) NOT NULL,
   `purchase_id` int(11) NOT NULL,
-  `item_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`item_data`))
+  `item_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`item_data`)),
+  `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `service`
+-- Struktur dari tabel `service`
 --
 
 CREATE TABLE `service` (
@@ -162,10 +136,18 @@ CREATE TABLE `service` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `service`
+--
+
+INSERT INTO `service` (`id`, `vehicle_id`, `vehicle_children_id`, `name`, `price`, `created_at`, `updated_at`) VALUES
+(7, 3, 4, 'Servis Ringan', 40000, '2020-12-15 09:58:15', NULL),
+(9, 3, 4, 'Servis Lengkap', 75000, '2020-12-15 10:25:54', NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting`
+-- Struktur dari tabel `setting`
 --
 
 CREATE TABLE `setting` (
@@ -174,7 +156,7 @@ CREATE TABLE `setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `setting`
+-- Dumping data untuk tabel `setting`
 --
 
 INSERT INTO `setting` (`id`, `password_default`) VALUES
@@ -183,13 +165,12 @@ INSERT INTO `setting` (`id`, `password_default`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaction`
+-- Struktur dari tabel `transaction`
 --
 
 CREATE TABLE `transaction` (
   `id` int(11) NOT NULL,
   `cashier_id` int(11) NOT NULL,
-  `mechanic_id` int(11) NOT NULL,
   `invoice` text NOT NULL,
   `queue` int(11) NOT NULL,
   `customer_name` varchar(100) NOT NULL,
@@ -203,7 +184,7 @@ CREATE TABLE `transaction` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaction_detail`
+-- Struktur dari tabel `transaction_detail`
 --
 
 CREATE TABLE `transaction_detail` (
@@ -219,7 +200,7 @@ CREATE TABLE `transaction_detail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vehicle`
+-- Struktur dari tabel `vehicle`
 --
 
 CREATE TABLE `vehicle` (
@@ -231,16 +212,18 @@ CREATE TABLE `vehicle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `vehicle`
+-- Dumping data untuk tabel `vehicle`
 --
 
 INSERT INTO `vehicle` (`id`, `name`, `created_at`, `updated_at`, `in_active`) VALUES
-(1, 'Yamaha', '2020-12-08 10:47:33', NULL, 1);
+(1, 'Yamaha', '2020-12-08 10:47:33', NULL, 1),
+(3, 'Suzuki', '2020-12-14 16:53:52', '2020-12-15 10:19:13', 1),
+(4, 'Honda', '2020-12-15 15:07:05', NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vehicle_children`
+-- Struktur dari tabel `vehicle_children`
 --
 
 CREATE TABLE `vehicle_children` (
@@ -253,30 +236,33 @@ CREATE TABLE `vehicle_children` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `vehicle_children`
+-- Dumping data untuk tabel `vehicle_children`
 --
 
 INSERT INTO `vehicle_children` (`id`, `vehicle_id`, `name`, `created_at`, `updated_at`, `in_active`) VALUES
-(1, 1, 'Jupiter MX 135 CC', '2020-12-08 13:54:29', NULL, 1);
+(1, 1, 'Jupiter MX 135 CC', '2020-12-08 13:54:29', NULL, 1),
+(2, 1, 'R15 250CC', '2020-12-14 16:54:05', '2020-12-15 09:49:48', 1),
+(4, 3, 'GSX-R 150', '2020-12-14 16:54:46', NULL, 1),
+(5, 4, 'CBR 150', '2020-12-15 15:07:14', NULL, 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `admin`
+-- Indeks untuk tabel `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cashier`
+-- Indeks untuk tabel `cashier`
 --
 ALTER TABLE `cashier`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `item`
+-- Indeks untuk tabel `item`
 --
 ALTER TABLE `item`
   ADD PRIMARY KEY (`id`),
@@ -284,26 +270,20 @@ ALTER TABLE `item`
   ADD KEY `vehicle_children_id` (`vehicle_children_id`);
 
 --
--- Indexes for table `mechanic`
---
-ALTER TABLE `mechanic`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `purchase`
+-- Indeks untuk tabel `purchase`
 --
 ALTER TABLE `purchase`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `purchase_detail`
+-- Indeks untuk tabel `purchase_detail`
 --
 ALTER TABLE `purchase_detail`
   ADD PRIMARY KEY (`id`),
   ADD KEY `purchase_id` (`purchase_id`);
 
 --
--- Indexes for table `service`
+-- Indeks untuk tabel `service`
 --
 ALTER TABLE `service`
   ADD PRIMARY KEY (`id`),
@@ -311,154 +291,146 @@ ALTER TABLE `service`
   ADD KEY `vehicle_children_id` (`vehicle_children_id`);
 
 --
--- Indexes for table `setting`
+-- Indeks untuk tabel `setting`
 --
 ALTER TABLE `setting`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transaction`
+-- Indeks untuk tabel `transaction`
 --
 ALTER TABLE `transaction`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `cashier_id` (`cashier_id`),
-  ADD KEY `mechanic_id` (`mechanic_id`);
+  ADD KEY `cashier_id` (`cashier_id`);
 
 --
--- Indexes for table `transaction_detail`
+-- Indeks untuk tabel `transaction_detail`
 --
 ALTER TABLE `transaction_detail`
   ADD PRIMARY KEY (`id`),
   ADD KEY `transaction_id` (`transaction_id`);
 
 --
--- Indexes for table `vehicle`
+-- Indeks untuk tabel `vehicle`
 --
 ALTER TABLE `vehicle`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `vehicle_children`
+-- Indeks untuk tabel `vehicle_children`
 --
 ALTER TABLE `vehicle_children`
   ADD PRIMARY KEY (`id`),
   ADD KEY `vehicle_id` (`vehicle_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `cashier`
+-- AUTO_INCREMENT untuk tabel `cashier`
 --
 ALTER TABLE `cashier`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `item`
+-- AUTO_INCREMENT untuk tabel `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `mechanic`
---
-ALTER TABLE `mechanic`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `purchase`
+-- AUTO_INCREMENT untuk tabel `purchase`
 --
 ALTER TABLE `purchase`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `purchase_detail`
+-- AUTO_INCREMENT untuk tabel `purchase_detail`
 --
 ALTER TABLE `purchase_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `service`
+-- AUTO_INCREMENT untuk tabel `service`
 --
 ALTER TABLE `service`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `setting`
+-- AUTO_INCREMENT untuk tabel `setting`
 --
 ALTER TABLE `setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `transaction`
+-- AUTO_INCREMENT untuk tabel `transaction`
 --
 ALTER TABLE `transaction`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `transaction_detail`
+-- AUTO_INCREMENT untuk tabel `transaction_detail`
 --
 ALTER TABLE `transaction_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `vehicle`
+-- AUTO_INCREMENT untuk tabel `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `vehicle_children`
+-- AUTO_INCREMENT untuk tabel `vehicle_children`
 --
 ALTER TABLE `vehicle_children`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `item`
+-- Ketidakleluasaan untuk tabel `item`
 --
 ALTER TABLE `item`
   ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `item_ibfk_2` FOREIGN KEY (`vehicle_children_id`) REFERENCES `vehicle_children` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `purchase_detail`
+-- Ketidakleluasaan untuk tabel `purchase_detail`
 --
 ALTER TABLE `purchase_detail`
   ADD CONSTRAINT `purchase_detail_ibfk_1` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `service`
+-- Ketidakleluasaan untuk tabel `service`
 --
 ALTER TABLE `service`
   ADD CONSTRAINT `service_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `service_ibfk_2` FOREIGN KEY (`vehicle_children_id`) REFERENCES `vehicle_children` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `transaction`
+-- Ketidakleluasaan untuk tabel `transaction`
 --
 ALTER TABLE `transaction`
-  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`cashier_id`) REFERENCES `cashier` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`mechanic_id`) REFERENCES `mechanic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`cashier_id`) REFERENCES `cashier` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `transaction_detail`
+-- Ketidakleluasaan untuk tabel `transaction_detail`
 --
 ALTER TABLE `transaction_detail`
   ADD CONSTRAINT `transaction_detail_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `vehicle_children`
+-- Ketidakleluasaan untuk tabel `vehicle_children`
 --
 ALTER TABLE `vehicle_children`
   ADD CONSTRAINT `vehicle_children_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

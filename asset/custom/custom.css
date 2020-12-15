@@ -6,70 +6,86 @@
 }
 
 .slimscroll-menu a {
-    cursor: pointer;
+	cursor: pointer;
 }
+
 .slimscroll-menu .nav-second-level li.mm-active {
 	background-color: #e3e3e3;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 	font-weight: bold;
 }
+
 .slimscroll-menu .nav-second-level li.mm-active a {
 	color: #44494F !important;
 }
+
 .slimscroll-menu .nav-second-level a:hover {
-    background-color: #e3e3e3;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    font-weight: bold;
-    color: #44494F !important;
-}
-#sidebar-menu>ul>li>a:hover {
-    color: #64B0C9 !important;
 	background-color: #e3e3e3;
-}
-#sidebar-menu>ul>li>a {
-    font-weight: bold;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	font-weight: bold;
 	color: #44494F !important;
 }
-.card-dashboard:hover {
-    background-color: #f0f0f0;
+
+#sidebar-menu>ul>li>a:hover {
+	color: #64B0C9 !important;
+	background-color: #e3e3e3;
 }
+
+#sidebar-menu>ul>li>a {
+	font-weight: bold;
+	color: #44494F !important;
+}
+
+.card-dashboard:hover {
+	background-color: #f0f0f0;
+}
+
 .nav-pills .nav-link.active {
 	color: #6c757d;
-    background-color: #cdedf7;
-    color: #64B0C9;
+	background-color: #cdedf7;
+	color: #64B0C9;
 }
-.text-blue-jaja {
-    color: #64B0C9;
+
+.text-blue-href {
+	color: #64B0C9;
 }
-.text-blue-jaja:hover {
-    color: #64B0C9;
-    text-decoration: underline !important;
+
+.text-blue-href:hover {
+	color: #64B0C9;
+	text-decoration: underline !important;
 }
+
 .text-bold {
-    font-weight: bold;
+	font-weight: bold;
 }
+
 .box-shadow {
-    box-shadow: 0 0 24px -4px rgba(0, 0, 0, .12);
+	box-shadow: 0 0 24px -4px rgba(0, 0, 0, .12);
 }
+
 .dropdown-item:hover {
-    background-color: rgb(243, 244, 245);
+	background-color: rgb(243, 244, 245);
 }
+
 .select2-container .select2-results__option--selected {
-    background-color: #DDDDDD !important;
-    color: black !important;
+	background-color: #DDDDDD !important;
+	color: black !important;
 }
+
 .select2-container .select2-results__option--highlighted {
-    background-color: #64B0C9 !important;
-    color: white !important;
+	background-color: #64B0C9 !important;
+	color: white !important;
 }
+
 .select2-container .select2-selection--multiple .select2-selection__choice__remove {
-    color: #fff;
-    margin-right: 5px;
-    border: 0px;
-    background-color: #64B0C9;
+	color: #fff;
+	margin-right: 5px;
+	border: 0px;
+	background-color: #64B0C9;
 }
+
 .alert-warning {
 	color: #8a6d3b !important;
 	background-color: #fcf8e3 !important;

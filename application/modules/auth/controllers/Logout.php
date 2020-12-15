@@ -18,7 +18,6 @@ class Logout extends MY_Controller
 
         $this->session->unset_userdata('admin');
         $this->session->unset_userdata('cashier');
-        $this->session->unset_userdata('mechanic');
 
         $this->alert_popup([
             'name' => 'show_alert',

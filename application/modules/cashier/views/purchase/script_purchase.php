@@ -1,8 +1,6 @@
 <script>
     $(document).ready(function() {
-        load_table({
-            in_active: 'all'
-        });
+        load_table();
     });
 
     function load_table(params) {
@@ -51,25 +49,12 @@
                 });
             },
             ajax: {
-                url: "<?= $core['url_api'] ?>datatable/item",
+                url: "<?= $core['url_api'] ?>datatable/purchase",
                 type: "POST",
-                data: {
-                    params: params
-                },
                 dataType: "json",
                 error: function() {
                     show_alert();
                 }
-            }
-        });
-    }
-
-    function refresh_table() {
-        $('.status_load').each(function() {
-            if ($(this).hasClass('active')) {
-                load_table({
-                    in_active: $(this).data('load')
-                });
             }
         });
     }
@@ -79,142 +64,20 @@
             if (params.id) {
                 $.ajax({
                     type: 'get',
-                    url: '<?= $core['url_api'] ?>item/' + params.id,
+                    url: '<?= $core['url_api'] ?>purchase/detail?from_parent=' + params.id,
                     dataType: 'json',
                     success: function(response) {
                         var data = response.data;
 
-                        if (data.vehicle) {
-                            var vehicle_id = data.vehicle.id;
+                        if (params.modal == 'detail') {
+                            $('#detail [name="id"]').val(data.id);
+                            $('#detail [name="in_active"]').val(data.in_active);
+                            $('#detail [name="name"]').val(data.name);
 
-                            if (data.vehicle.children) {
-                                var vehicle_children_id = data.vehicle.children.id;
-                            } else {
-                                var vehicle_children_id = null;
-                            }
-                        } else {
-                            var vehicle_id = null;
-                            var vehicle_children_id = null;
-                        }
-
-                        if (params.modal == 'delete') {
-                            Swal.fire({
-                                title: 'Konfirmasi!',
-                                html: `Anda yakin ingin menghapus data barang ${data.name} ?`,
-                                icon: 'warning',
-                                showCloseButton: true,
-                                showCancelButton: true,
-                                confirmButtonColor: '#d33',
-                                confirmButtonText: 'OK',
-                                cancelButtonText: 'Batal'
-                            }).then((result) => {
-                                if (result.value) {
-                                    $.ajax({
-                                        type: 'delete',
-                                        url: '<?= $core['url_api'] ?>item/' + params.id,
-                                        dataType: 'json',
-                                        success: function(response2) {
-                                            var data2 = response2.data;
-
-                                            if (response2.status.code == 200) {
-                                                show_alert({
-                                                    type: 'success',
-                                                    message: `Data barang ${data2.name} berhasil di hapus`
-                                                });
-
-                                                refresh_table();
-                                            } else {
-                                                if (response2.status.code == 404) {
-                                                    show_alert({
-                                                        type: 'warning',
-                                                        message: `Data tidak ditemukan`
-                                                    });
-                                                } else {
-                                                    show_alert({
-                                                        type: 'success',
-                                                        message: `Data barang ${data2.name} gagal di hapus`
-                                                    });
-                                                }
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        } else if (params.modal == 'active') {
-                            $.ajax({
-                                type: 'put',
-                                url: '<?= $core['url_api'] ?>item/' + params.id,
-                                data: {
-                                    vehicle_id: vehicle_id,
-                                    vehicle_children_id: vehicle_children_id,
-                                    name: data.name,
-                                    price: data.price,
-                                    stock: data.stock,
-                                    in_active: 1
-                                },
-                                dataType: 'json',
-                                success: function(response2) {
-                                    var data2 = response2.data;
-
-                                    if (response2.status.code == 200) {
-                                        show_alert({
-                                            type: 'success',
-                                            message: `Data barang ${data2.name} berhasil di aktifkan`
-                                        });
-
-                                        refresh_table();
-                                    } else {
-                                        if (response2.status.code == 404) {
-                                            show_alert({
-                                                type: 'warning',
-                                                message: `Data tidak ditemukan`
-                                            });
-                                        } else {
-                                            show_alert({
-                                                type: 'success',
-                                                message: `Data barang ${data2.name} gagal di aktifkan`
-                                            });
-                                        }
-                                    }
-                                }
-                            });
-                        } else if (params.modal == 'not_active') {
-                            $.ajax({
-                                type: 'put',
-                                url: '<?= $core['url_api'] ?>item/' + params.id,
-                                data: {
-                                    vehicle_id: vehicle_id,
-                                    vehicle_children_id: vehicle_children_id,
-                                    name: data.name,
-                                    price: data.price,
-                                    stock: data.stock,
-                                    in_active: 0
-                                },
-                                dataType: 'json',
-                                success: function(response2) {
-                                    var data2 = response2.data;
-
-                                    if (response2.status.code == 200) {
-                                        show_alert({
-                                            type: 'success',
-                                            message: `Data barang ${data2.name} berhasil di nonaktifkan`
-                                        });
-
-                                        refresh_table();
-                                    } else {
-                                        if (response2.status.code == 404) {
-                                            show_alert({
-                                                type: 'warning',
-                                                message: `Data tidak ditemukan`
-                                            });
-                                        } else {
-                                            show_alert({
-                                                type: 'success',
-                                                message: `Data barang ${data2.name} gagal di nonaktifkan`
-                                            });
-                                        }
-                                    }
-                                }
+                            $('#detail').modal({
+                                backdrop: 'static',
+                                keyboard: true,
+                                show: true
                             });
                         }
                     },

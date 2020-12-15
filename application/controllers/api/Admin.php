@@ -187,22 +187,6 @@ class Admin extends REST_Controller
                             ]);
                         }
 
-                        $parsing['mechanic'] = $this->api_model->select_data([
-                            'field' => '*',
-                            'table' => 'mechanic'
-                        ])->result();
-                        foreach ($parsing['mechanic'] as $key_mechanic) {
-                            $this->api_model->send_data([
-                                'where' => [
-                                    'id' => $key_mechanic->id
-                                ],
-                                'data' => [
-                                    'password' => password_hash($this->post('password_default'), PASSWORD_DEFAULT)
-                                ],
-                                'table' => 'mechanic'
-                            ]);
-                        }
-
                         $parsing['setting'] = $this->api_model->select_data([
                             'field' => '*',
                             'table' => 'setting',
@@ -264,22 +248,6 @@ class Admin extends REST_Controller
                                     'password' => password_hash($this->post('password_default'), PASSWORD_DEFAULT)
                                 ],
                                 'table' => 'cashier'
-                            ]);
-                        }
-
-                        $parsing['mechanic'] = $this->api_model->select_data([
-                            'field' => '*',
-                            'table' => 'mechanic'
-                        ])->result();
-                        foreach ($parsing['mechanic'] as $key_mechanic) {
-                            $this->api_model->send_data([
-                                'where' => [
-                                    'id' => $key_mechanic->id
-                                ],
-                                'data' => [
-                                    'password' => password_hash($this->post('password_default'), PASSWORD_DEFAULT)
-                                ],
-                                'table' => 'mechanic'
                             ]);
                         }
 

@@ -45,15 +45,7 @@ class Login extends REST_Controller
                 ]
             ])->row();
 
-            $parsing['mechanic'] = $this->api_model->select_data([
-                'field' => '*',
-                'table' => 'mechanic',
-                'where' => [
-                    'LOWER(username)' => trim(strtolower($this->post('username')))
-                ]
-            ])->row();
-
-            if (empty($parsing['admin']) && empty($parsing['cashier']) && empty($parsing['mechanic'])) {
+            if (empty($parsing['admin']) && empty($parsing['cashier'])) {
                 $checking = false;
                 $response = [
                     'result' => [
@@ -82,20 +74,6 @@ class Login extends REST_Controller
                     }
                 } elseif (!empty($parsing['cashier'])) {
                     if (!password_verify($this->post('password'), $parsing['cashier']->password)) {
-                        $checking = false;
-                        $response = [
-                            'result' => [
-                                'status' => [
-                                    'code' => SELF::HTTP_UNAUTHORIZED,
-                                    'message' => 'incorrect username or password'
-                                ],
-                                'data' => null
-                            ],
-                            'status' => SELF::HTTP_OK
-                        ];
-                    }
-                } elseif (!empty($parsing['mechanic'])) {
-                    if (!password_verify($this->post('password'), $parsing['mechanic']->password)) {
                         $checking = false;
                         $response = [
                             'result' => [
@@ -141,9 +119,6 @@ class Login extends REST_Controller
                 } elseif (!empty($parsing['cashier'])) {
                     $data['session'] = 'cashier';
                     $data['id'] = encrypt_text($parsing['cashier']->id);
-                } elseif (!empty($parsing['mechanic'])) {
-                    $data['session'] = 'mechanic';
-                    $data['id'] = encrypt_text($parsing['mechanic']->id);
                 }
 
                 $response['result']['data'] = $data;

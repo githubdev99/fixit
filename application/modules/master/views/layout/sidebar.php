@@ -15,16 +15,6 @@ if (!empty($core['admin'])) {
     } else {
         $img_src = base_url() . 'asset/images/avatar_female.png';
     }
-} elseif (!empty($core['mechanic'])) {
-    $type = 'Mechanic';
-    $session = 'mechanic';
-    $name = $core['mechanic']->name;
-    $style = 'background-color: #A97142;';
-    if ($core['mechanic']->gender == 'male') {
-        $img_src = base_url() . 'asset/images/avatar_male.png';
-    } else {
-        $img_src = base_url() . 'asset/images/avatar_female.png';
-    }
 }
 ?>
 
@@ -70,12 +60,6 @@ if (!empty($core['admin'])) {
                         <a href="<?= base_url() ?>admin/purchase">
                             <i class="fas fa-shopping-cart"></i>
                             <span> Pembelian Supplier </span>
-                        </a>
-                    </li>
-                    <li class="<?= ($this->uri->segment(2) == 'mechanic') ? 'mm-active' : ''; ?>">
-                        <a href="<?= base_url() ?>admin/mechanic">
-                            <i class="fas fa-users-cog"></i>
-                            <span> Mekanik </span>
                         </a>
                     </li>
                     <li class="<?= ($this->uri->segment(2) == 'cashier') ? 'mm-active' : ''; ?>">

@@ -1,24 +1,24 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Mechanic extends MY_Controller
+class Purchase extends MY_Controller
 {
 
     public function __construct()
     {
         parent::__construct();
         $this->auth([
-            'session' => 'admin',
+            'session' => 'cashier',
             'login' => false
         ]);
     }
 
     public function index()
     {
-        $title = 'Mekanik';
+        $title = 'Pembelian Supplier';
         $data = [
             'core' => $this->core($title),
-            'get_view' => 'admin/mechanic/v_mechanic',
-            'get_script' => 'admin/mechanic/script_mechanic'
+            'get_view' => 'cashier/purchase/v_purchase',
+            'get_script' => 'cashier/purchase/script_purchase'
         ];
 
         $this->master->template($data);
@@ -27,16 +27,16 @@ class Mechanic extends MY_Controller
     public function detail($id = null)
     {
         $response = json_decode(shoot_api([
-            'url' => $this->core['url_api'] . 'mechanic/' . $id,
+            'url' => $this->core['url_api'] . 'purchase/' . $id,
             'method' => 'get'
         ]), true);
 
         if ($response['status']['code'] == 200) {
-            $title = 'Detail Mekanik';
+            $title = 'Detail Pembelian Supplier';
             $data = [
                 'core' => $this->core($title),
-                'get_view' => 'admin/mechanic/v_detail_mechanic',
-                'get_script' => 'admin/mechanic/script_detail_mechanic',
+                'get_view' => 'cashier/purchase/v_detail_purchase',
+                'get_script' => 'cashier/purchase/script_detail_purchase',
                 'get_data' => $response['data']
             ];
 
@@ -50,18 +50,18 @@ class Mechanic extends MY_Controller
                 ]
             ]);
 
-            redirect(base_url() . 'admin/mechanic', 'refresh');
+            redirect(base_url() . 'cashier/item', 'refresh');
         }
     }
 
     public function form($id = null)
     {
         if (empty($id)) {
-            $title = 'Tambah Mekanik';
+            $title = 'Tambah Pembelian Supplier';
             $data = [
                 'core' => $this->core($title),
-                'get_view' => 'admin/mechanic/v_add_mechanic',
-                'get_script' => 'admin/mechanic/script_add_mechanic'
+                'get_view' => 'cashier/purchase/v_add_purchase',
+                'get_script' => 'cashier/purchase/script_add_purchase'
             ];
 
             if (!$this->input->post()) {
@@ -69,18 +69,17 @@ class Mechanic extends MY_Controller
             } else {
                 if ($this->input->post('submit') == 'add') {
                     $response = json_decode(shoot_api([
-                        'url' => $this->core['url_api'] . 'mechanic',
+                        'url' => $this->core['url_api'] . 'item',
                         'method' => 'POST',
                         'header' => [
                             "Content-Type: application/json"
                         ],
                         'data' => json_encode([
+                            'vehicle_id' => $this->input->post('vehicle_id'),
+                            'vehicle_children_id' => $this->input->post('vehicle_children_id'),
                             'name' => $this->input->post('name'),
-                            'birth_date' => $this->input->post('birth_date'),
-                            'phone_number' => $this->input->post('phone_number'),
-                            'username' => $this->input->post('username'),
-                            'gender' => $this->input->post('gender'),
-                            'address' => $this->input->post('address')
+                            'price' => $this->input->post('price'),
+                            'stock' => $this->input->post('stock')
                         ])
                     ]), true);
 
@@ -89,13 +88,13 @@ class Mechanic extends MY_Controller
                             'error' => false,
                             'type' => 'info',
                             'message' => 'Data sedang di simpan, mohon tunggu...',
-                            'callback' => base_url() . 'admin/mechanic'
+                            'callback' => base_url() . 'cashier/item'
                         ];
 
                         $this->alert_popup([
                             'name' => 'show_alert',
                             'swal' => [
-                                'title' => 'Data mekanik ' . $response['data']['username'] . ' berhasil di simpan',
+                                'title' => 'Data barang ' . $response['data']['name'] . ' berhasil di simpan',
                                 'type' => 'success'
                             ]
                         ]);
@@ -104,19 +103,19 @@ class Mechanic extends MY_Controller
                             $output = [
                                 'error' => true,
                                 'type' => 'error',
-                                'message' => 'Username sudah terpakai'
+                                'message' => 'Data barang ' . $response['data']['name'] . ' sudah ada'
                             ];
                         } elseif ($response['status']['code'] == 404) {
                             $output = [
                                 'error' => true,
                                 'type' => 'warning',
-                                'message' => 'Jenis kelamin tidak ditemukan'
+                                'message' => 'Data tidak ditemukan'
                             ];
                         } else {
                             $output = [
                                 'error' => true,
                                 'type' => 'error',
-                                'message' => 'Data mekanik gagal di simpan'
+                                'message' => 'Data barang gagal di simpan'
                             ];
                         }
                     }
@@ -132,16 +131,16 @@ class Mechanic extends MY_Controller
             }
         } else {
             $response = json_decode(shoot_api([
-                'url' => $this->core['url_api'] . 'mechanic/' . $id,
+                'url' => $this->core['url_api'] . 'purchase/' . $id,
                 'method' => 'get'
             ]), true);
 
             if ($response['status']['code'] == 200) {
-                $title = 'Edit Mekanik';
+                $title = 'Edit Pembelian Supplier';
                 $data = [
                     'core' => $this->core($title),
-                    'get_view' => 'admin/mechanic/v_edit_mechanic',
-                    'get_script' => 'admin/mechanic/script_edit_mechanic',
+                    'get_view' => 'cashier/purchase/v_edit_purchase',
+                    'get_script' => 'cashier/purchase/script_edit_purchase',
                     'get_data' => $response['data']
                 ];
 
@@ -150,18 +149,18 @@ class Mechanic extends MY_Controller
                 } else {
                     if ($this->input->post('submit') == 'edit') {
                         $response = json_decode(shoot_api([
-                            'url' => $this->core['url_api'] . 'mechanic/' . $id,
+                            'url' => $this->core['url_api'] . 'purchase/' . $id,
                             'method' => 'PUT',
                             'header' => [
                                 "Content-Type: application/json"
                             ],
                             'data' => json_encode([
+                                'vehicle_id' => $this->input->post('vehicle_id'),
+                                'vehicle_children_id' => $this->input->post('vehicle_children_id'),
                                 'name' => $this->input->post('name'),
-                                'birth_date' => $this->input->post('birth_date'),
-                                'phone_number' => $this->input->post('phone_number'),
-                                'username' => $this->input->post('username'),
-                                'gender' => $this->input->post('gender'),
-                                'address' => $this->input->post('address')
+                                'price' => $this->input->post('price'),
+                                'stock' => $this->input->post('stock'),
+                                'in_active' => $this->input->post('in_active')
                             ])
                         ]), true);
 
@@ -170,28 +169,34 @@ class Mechanic extends MY_Controller
                                 'error' => false,
                                 'type' => 'info',
                                 'message' => 'Data sedang di edit, mohon tunggu...',
-                                'callback' => base_url() . 'admin/mechanic'
+                                'callback' => base_url() . 'cashier/item'
                             ];
 
                             $this->alert_popup([
                                 'name' => 'show_alert',
                                 'swal' => [
-                                    'title' => 'Data mekanik ' . $response['data']['username'] . ' berhasil di edit',
+                                    'title' => 'Data barang ' . $response['data']['name'] . ' berhasil di edit',
                                     'type' => 'success'
                                 ]
                             ]);
                         } else {
-                            if ($response['status']['code'] == 404) {
+                            if ($response['status']['code'] == 409) {
+                                $output = [
+                                    'error' => true,
+                                    'type' => 'error',
+                                    'message' => 'Data barang ' . $response['data']['name'] . ' sudah ada'
+                                ];
+                            } elseif ($response['status']['code'] == 404) {
                                 $output = [
                                     'error' => true,
                                     'type' => 'warning',
-                                    'message' => 'Jenis kelamin tidak ditemukan'
+                                    'message' => 'Data tidak ditemukan'
                                 ];
                             } else {
                                 $output = [
                                     'error' => true,
                                     'type' => 'error',
-                                    'message' => 'Data mekanik gagal di edit'
+                                    'message' => 'Data barang gagal di edit'
                                 ];
                             }
                         }
@@ -214,7 +219,7 @@ class Mechanic extends MY_Controller
                     ]
                 ]);
 
-                redirect(base_url() . 'admin/mechanic', 'refresh');
+                redirect(base_url() . 'cashier/item', 'refresh');
             }
         }
     }

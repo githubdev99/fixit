@@ -11,67 +11,6 @@ class Datatable extends REST_Controller
         parent::__construct();
     }
 
-    public function mechanic_post()
-    {
-        if (!empty($_REQUEST['draw'])) {
-            $draw = $_REQUEST['draw'];
-        } else {
-            $draw = 0;
-        }
-
-        $param['column_search'] = [
-            'name', 'birth_date', 'phone_number', 'username', 'gender', 'created_at', 'updated_at'
-        ];
-        $param['column_order'] = [
-            null, 'name', 'phone_number', 'gender', 'created_at', 'updated_at', null
-        ];
-        $param['field'] = '*';
-        $param['table'] = 'mechanic';
-
-        $param['order_by'] = [
-            'name' => 'asc'
-        ];
-
-        $data_parsing = $this->api_model->get_datatable($param);
-        $total_filtered = $this->api_model->get_total_filtered($param);
-        $total_data = $this->api_model->get_total_data($param);
-
-        $data = [];
-        if (!empty($data_parsing)) {
-            $no = $_REQUEST['start'];
-            foreach ($data_parsing as $key) {
-                $no++;
-                $column = [];
-
-                $column[] = $no;
-                $column[] = $key->name;
-                $column[] = $key->username;
-                $column[] = $key->phone_number;
-                $column[] = ($key->gender == 'male') ? 'Laki-Laki' : 'Perempuan';
-                $column[] = date_indo(date('d-m-Y', strtotime($key->birth_date)));
-                $column[] = '
-                <a href="' . base_url() . 'admin/mechanic/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
-                <a href="' . base_url() . 'admin/mechanic/form/' . encrypt_text($key->id) . '" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data"><i class="fas fa-edit"></i></a>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
-				';
-
-                $data[] = $column;
-            }
-        }
-
-        $response = [
-            'result' => [
-                'draw' => intval($draw),
-                'recordsTotal' => intval($total_data),
-                'recordsFiltered' => intval($total_filtered),
-                'data' => $data
-            ],
-            'status' => SELF::HTTP_OK
-        ];
-
-        $this->response($response['result'], $response['status']);
-    }
-
     public function cashier_post()
     {
         if (!empty($_REQUEST['draw'])) {
@@ -346,12 +285,18 @@ class Datatable extends REST_Controller
                 $column = [];
                 $jenis = '';
 
+                if (!empty($this->core['admin'])) {
+                    $disabled = '';
+                } else {
+                    $disabled = 'disabled';
+                }
+
                 if ($key->in_active != 0) {
                     $in_active = '<div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="item_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked><label class="custom-control-label" for="item_' . encrypt_text($key->id) . '"></label></div>';
+                    <input type="checkbox" class="custom-control-input" id="item_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'not_active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" checked ' . $disabled . '><label class="custom-control-label" for="item_' . encrypt_text($key->id) . '"></label></div>';
                 } else {
                     $in_active = '<div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="item_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><label class="custom-control-label" for="item_' . encrypt_text($key->id) . '"></label></div>';
+                    <input type="checkbox" class="custom-control-input" id="item_' . encrypt_text($key->id) . '" onclick="show_modal({ modal: ' . "'active'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })" ' . $disabled . '><label class="custom-control-label" for="item_' . encrypt_text($key->id) . '"></label></div>';
                 }
 
                 if (!empty($key->vehicle_id)) {
@@ -470,6 +415,73 @@ class Datatable extends REST_Controller
                 <a href="' . base_url() . 'admin/service/form/' . encrypt_text($key->id) . '" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Edit Data"><i class="fas fa-edit"></i></a>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
 				';
+
+                $data[] = $column;
+            }
+        }
+
+        $response = [
+            'result' => [
+                'draw' => intval($draw),
+                'recordsTotal' => intval($total_data),
+                'recordsFiltered' => intval($total_filtered),
+                'data' => $data
+            ],
+            'status' => SELF::HTTP_OK
+        ];
+
+        $this->response($response['result'], $response['status']);
+    }
+
+    public function purchase_post()
+    {
+        if (!empty($_REQUEST['draw'])) {
+            $draw = $_REQUEST['draw'];
+        } else {
+            $draw = 0;
+        }
+
+        $param['column_search'] = [
+            'invoice', 'supplier_name', 'total_price', 'created_at'
+        ];
+        $param['column_order'] = [
+            null, 'invoice', 'supplier_name', 'total_price', null, 'created_at', null
+        ];
+        $param['field'] = '*';
+        $param['table'] = 'purchase';
+
+        $param['order_by'] = [
+            'created_at' => 'desc'
+        ];
+
+        $data_parsing = $this->api_model->get_datatable($param);
+        $total_filtered = $this->api_model->get_total_filtered($param);
+        $total_data = $this->api_model->get_total_data($param);
+
+        $data = [];
+        if (!empty($data_parsing)) {
+            $no = $_REQUEST['start'];
+            foreach ($data_parsing as $key) {
+                $no++;
+                $column = [];
+
+                $created_at = explode(' ', $key->created_at);
+                $count_detail = $this->api_model->count_all_data([
+                    'where' => [
+                        'purchase_id' => $key->id
+                    ],
+                    'table' => 'purchase_detail'
+                ]);
+
+                $column[] = $no;
+                $column[] = $key->invoice;
+                $column[] = $key->supplier_name;
+                $column[] = rupiah($key->total_price);
+                $column[] = '<a href="javascript:;" class="text-blue-href" onclick="onclick="show_modal({ modal: ' . "'detail'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })">' . $count_detail . ' Barang</a>';
+                $column[] = date_indo(date('d-m-Y', strtotime($created_at[0]))) . '<br>' . $created_at[1];
+                $column[] = '
+                <a href="' . base_url() . 'cashier/item/detail/' . encrypt_text($key->id) . '" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Detail Data"><i class="fas fa-info"></i></a>
+                ';
 
                 $data[] = $column;
             }

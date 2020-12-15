@@ -15,11 +15,6 @@ class Login extends MY_Controller
             'session' => 'cashier',
             'login' => true
         ]);
-
-        $this->auth([
-            'session' => 'mechanic',
-            'login' => true
-        ]);
     }
 
     public function index()
@@ -63,14 +58,6 @@ class Login extends MY_Controller
                             'type' => 'success',
                             'message' => 'Anda berhasil login, mohon tunggu...',
                             'callback' => base_url() . 'cashier/dashboard'
-                        ];
-                    } elseif ($response['data']['session'] == 'mechanic') {
-                        $this->session->set_userdata('mechanic', $response['data']['id']);
-                        $output = [
-                            'error' => false,
-                            'type' => 'success',
-                            'message' => 'Anda berhasil login, mohon tunggu...',
-                            'callback' => base_url() . 'mechanic/dashboard'
                         ];
                     }
                 } else {

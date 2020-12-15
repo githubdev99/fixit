@@ -108,7 +108,7 @@ class Setting extends MY_Controller
                                     <div class="form-group mt-3 mt-sm-0">
                                         <label>Password Default <span class="text-danger">*</span></label>
                                         ' . $form_input . '
-                                        <small class="help-block float-left mt-1 ml-1">Password ini digunakan sebagai password default untuk seluruh akun Kasir dan Mekanik</small>
+                                        <small class="help-block float-left mt-1 ml-1">Password ini digunakan sebagai password default untuk seluruh akun Kasir</small>
                                     </div>
                                 </div>
                             </div>
