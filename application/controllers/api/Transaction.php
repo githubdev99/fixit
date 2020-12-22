@@ -626,6 +626,136 @@ class Transaction extends REST_Controller
         $this->response($response['result'], $response['status']);
     }
 
+    public function index_delete($id = null)
+    {
+        $checking = true;
+
+        if (empty($id)) {
+            $response = [
+                'result' => [
+                    'status' => [
+                        'code' => SELF::HTTP_BAD_REQUEST,
+                        'message' => 'bad request'
+                    ],
+                    'data' => null
+                ],
+                'status' => SELF::HTTP_OK
+            ];
+        } else {
+            $check['transaction'] = $this->api_model->select_data([
+                'field' => '*',
+                'table' => 'transaction',
+                'where' => [
+                    'id' => decrypt_text($id)
+                ]
+            ])->row();
+            if (empty($check['transaction'])) {
+                $checking = false;
+                $response = [
+                    'result' => [
+                        'status' => [
+                            'code' => SELF::HTTP_NOT_FOUND,
+                            'message' => 'data not found'
+                        ],
+                        'data' => null
+                    ],
+                    'status' => SELF::HTTP_OK
+                ];
+            } else {
+                $parsing['transaction_detail'] = $this->api_model->select_data([
+                    'field' => '*',
+                    'table' => 'transaction_detail',
+                    'where' => [
+                        'transaction_id' => decrypt_text($id)
+                    ]
+                ])->result();
+            }
+
+            if ($checking == true) {
+                $query = $this->api_model->delete_data([
+                    'where' => [
+                        'id' => decrypt_text($id)
+                    ],
+                    'table' => 'transaction'
+                ]);
+
+                if ($query['error'] == true) {
+                    $response = [
+                        'result' => [
+                            'status' => [
+                                'code' => SELF::HTTP_BAD_REQUEST,
+                                'message' => 'delete data failed',
+                                'from_system' => $query['system']
+                            ],
+                            'data' => null
+                        ],
+                        'status' => SELF::HTTP_OK
+                    ];
+                } else {
+                    $response = [
+                        'result' => [
+                            'status' => [
+                                'code' => SELF::HTTP_OK,
+                                'message' => 'delete data success'
+                            ],
+                            'data' => []
+                        ],
+                        'status' => SELF::HTTP_OK
+                    ];
+
+                    $data['id'] = encrypt_text($check['transaction']->id);
+                    $data['customer_name'] = $check['transaction']->customer_name;
+                    $data['invoice'] = $check['transaction']->invoice;
+                    $data['queue'] = $check['transaction']->queue;
+                    $data['total_price'] = $check['transaction']->total_price;
+                    $data['total_price_currency_format'] = rupiah($check['transaction']->total_price);
+                    $data['status'] = $check['transaction']->status;
+                    $data['created_at'] = $check['transaction']->created_at;
+
+                    $parsing['cashier'] = $this->api_model->select_data([
+                        'field' => '*',
+                        'table' => 'cashier',
+                        'where' => [
+                            'id' => $check['transaction']->cashier_id
+                        ]
+                    ])->row();
+                    $cashier['id'] = encrypt_text($parsing['cashier']->id);
+                    $cashier['name'] = $parsing['cashier']->name;
+                    $cashier['birth_date'] = $parsing['cashier']->birth_date;
+                    $cashier['phone_number'] = $parsing['cashier']->phone_number;
+                    $cashier['username'] = $parsing['cashier']->username;
+                    $cashier['gender'] = $parsing['cashier']->gender;
+                    $cashier['address'] = $parsing['cashier']->address;
+                    $cashier['created_at'] = $parsing['cashier']->created_at;
+                    $cashier['updated_at'] = $parsing['cashier']->updated_at;
+
+                    $data['cashier'] = $cashier;
+
+                    if (!empty($parsing['transaction_detail'])) {
+                        $data['detail'] = [];
+                        foreach ($parsing['transaction_detail'] as $key_transaction_detail) {
+                            $detail['id'] = encrypt_text($key_transaction_detail->id);
+                            $detail['qty'] = $key_transaction_detail->qty;
+                            $detail['price'] = $key_transaction_detail->price;
+                            $detail['price_currency_format'] = rupiah($key_transaction_detail->price);
+                            $detail['vehicle'] = json_decode($key_transaction_detail->vehicle_data);
+                            $detail['service'] = json_decode($key_transaction_detail->service_data);
+                            $detail['item'] = json_decode($key_transaction_detail->item_data);
+
+                            $data['detail'][] = $detail;
+                        }
+                    } else {
+                        $data['detail'] = null;
+                    }
+
+                    $response['result']['data'] = $data;
+                }
+            }
+        }
+
+        $this->response($response['result'], $response['status']);
+    }
+
     public function detail_get($id = null)
     {
         $checking = true;

@@ -596,7 +596,7 @@ class Datatable extends REST_Controller
             'cashier.name', 'transaction.invoice', 'transaction.queue', 'transaction.customer_name', 'transaction.total_price', 'transaction.total_payment', 'transaction.total_change', 'transaction.status', 'transaction.created_at'
         ];
         $param['column_order'] = [
-            null, 'transaction.invoice', 'cashier.name', 'transaction.queue', 'transaction.total_price', 'transaction.total_payment', null, 'transaction.status', null
+            null, 'transaction.invoice', 'cashier.name', 'transaction.queue', 'transaction.total_price', 'transaction.total_payment', null, 'transaction.status', null, null
         ];
         $param['field'] = 'transaction.*, cashier.name as cashier_name';
         $param['table'] = 'transaction';
@@ -624,6 +624,7 @@ class Datatable extends REST_Controller
                 $no++;
                 $column = [];
                 $service = '';
+                $created_at = explode(' ', $key->created_at);
 
                 $count_detail = $this->api_model->count_all_data([
                     'where' => [
@@ -656,7 +657,7 @@ class Datatable extends REST_Controller
                 $column[] = $no;
                 $column[] = $key->invoice;
                 $column[] = $key->cashier_name;
-                $column[] = $key->queue . ' - ' . $key->customer_name;
+                $column[] = $key->queue . ' - ' . $key->customer_name . '<br>' . date_indo(date('d-m-Y', strtotime($created_at[0]))) . '<br>' . $created_at[1];
                 $column[] = rupiah($key->total_price);
                 $column[] = '
                 ' . $service . '
@@ -664,10 +665,17 @@ class Datatable extends REST_Controller
                 $column[] = $status;
 
                 if (!empty($this->core['admin'])) {
-                } else {
                     $column[] = '
-                    <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Pembayaran" onclick="show_modal({ modal: ' . "'payment'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-wallet"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Hapus Data" onclick="show_modal({ modal: ' . "'delete'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-trash-alt"></i></button>
                     ';
+                } else {
+                    if ($key->status == 'waiting') {
+                        $column[] = '
+                        <button type="button" class="btn btn-success btn-sm mr-2" data-toggle="tooltip" title="Pembayaran" onclick="show_modal({ modal: ' . "'payment'" . ', id: ' . "'" . encrypt_text($key->id) . "'" . ' })"><i class="fas fa-wallet"></i></button>
+                        ';
+                    } else {
+                        $column[] = 'Tidak ada';
+                    }
                 }
 
                 $data[] = $column;

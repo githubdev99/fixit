@@ -19,6 +19,7 @@
                                 <th>Total</th>
                                 <th>Detail</th>
                                 <th>Status</th>
+                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
