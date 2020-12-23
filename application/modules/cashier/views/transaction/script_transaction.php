@@ -11,7 +11,7 @@
             destroy: true,
             order: [],
             columnDefs: [{
-                    targets: [0, 6, 7],
+                    targets: [0, 7],
                     orderable: false
                 },
                 {

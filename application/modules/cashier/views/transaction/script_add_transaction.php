@@ -137,17 +137,24 @@
                     success: function(response) {
                         var data = response.data;
 
-                        save_detail({
-                            id: data.id,
-                            name: data.name,
-                            price: data.price,
-                            price_currency_format: data.price_currency_format,
-                            stock: data.stock,
-                            qty: qty
-                        });
+                        if (qty > data.stock) {
+                            show_alert({
+                                type: 'warning',
+                                message: 'Kuantitas melebihi stok!'
+                            });
+                        } else {
+                            save_detail({
+                                id: data.id,
+                                name: data.name,
+                                price: data.price,
+                                price_currency_format: data.price_currency_format,
+                                stock: data.stock,
+                                qty: qty
+                            });
 
-                        $('#item_option').val(null).trigger('change');
-                        $('#qty').val('');
+                            $('#item_option').val(null).trigger('change');
+                            $('#qty').val('');
+                        }
                     },
                     error: function() {
                         show_alert();

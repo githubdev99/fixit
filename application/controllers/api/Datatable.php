@@ -595,9 +595,15 @@ class Datatable extends REST_Controller
         $param['column_search'] = [
             'cashier.name', 'transaction.invoice', 'transaction.queue', 'transaction.customer_name', 'transaction.total_price', 'transaction.total_payment', 'transaction.total_change', 'transaction.status', 'transaction.created_at'
         ];
-        $param['column_order'] = [
-            null, 'transaction.invoice', 'cashier.name', 'transaction.queue', 'transaction.total_price', 'transaction.total_payment', null, 'transaction.status', null, null
-        ];
+        if (!empty($this->core['admin'])) {
+            $param['column_order'] = [
+                null, 'transaction.invoice', 'cashier.name', 'transaction.queue', 'transaction.total_price', null, 'transaction.status', null, null
+            ];
+        } else {
+            $param['column_order'] = [
+                null, 'transaction.invoice', 'cashier.name', 'transaction.queue', 'transaction.total_price', null, 'transaction.status', null
+            ];
+        }
         $param['field'] = 'transaction.*, cashier.name as cashier_name';
         $param['table'] = 'transaction';
 
@@ -608,6 +614,12 @@ class Datatable extends REST_Controller
                 'type' => 'inner'
             ]
         ];
+
+        if (empty($this->core['admin'])) {
+            $param['where'] = [
+                'cashier_id' => $this->core['cashier']->id
+            ];
+        }
 
         $param['order_by'] = [
             'transaction.created_at' => 'desc'
